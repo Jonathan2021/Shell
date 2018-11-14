@@ -73,6 +73,8 @@ int main(void)
     struct Token *token = NULL;
     while(fgets(str,4095,stdin))
     {
+        if (strncmp(str,"exit",4) == 0)
+            exit(0);
         token = parse_path(token,str);
         while(token)
         {
