@@ -21,9 +21,9 @@ struct Token *exemple()
     struct Token *a = res->next->next->next->next->next;
     a->next = init("cd", "WORD");
     a->next->next = init(";", "SEMICOLON");
-    a->next->next->next = init("else", "ELSE");
-    a->next->next->next->next = init("alias", "WORD");
-    a->next->next->next->next->next = init(";", "SEMICOLON");
+    a->next->next->next = init("fi", "FI");
+    //a->next->next->next->next = init("alias", "WORD");
+    //a->next->next->next->next->next = init(";", "SEMICOLON");
     //a->next->next->next->next->next->next = init("fi", "FI");
     return res;
 }
