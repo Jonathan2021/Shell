@@ -76,11 +76,20 @@ int main(void)
         token = parse_path(token,str);
         if (isatty(0))
             printf("42sh$ ");
+        while(token)
+        {
+            printf("->%s",token->type);
+            token = token->next;
+        }
+        printf("\n");
     }
-    while(token)
+    if (!isatty(0))
     {
-        printf("->%s",token->type);
-        token = token->next;
+        while(token)
+        {
+            printf("->%s",token->type);
+            token = token->next;
+        }
     }
     printf("\n");
     return 0;
