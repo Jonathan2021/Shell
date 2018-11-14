@@ -48,15 +48,31 @@ int and_or(struct Token *t)
 }
 int rule_if (struct Token *t)
 {
+    struct Token *tmp = t;
     if (strcmp("if", t->name) != 0)
+    {
+        t = tmp;
         return 0;
+    }
+    t = t->next;
     if (list(t) == 0)
+    {
+        t = tmp;
         return 0;
+    }
+    t = t->next;
     if (strcmp("then", t->name) != 0)
+    {
+        t = tmp;
         return 0;
+    }
     else_clause(t);
+    t = t->next;
     if (strcmp("fi", t->name) != 0)
+    {
+        t = tmp;
         return 0;
+    }
 }
 
 int else_clause(struct Token *t)
