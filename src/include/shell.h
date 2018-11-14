@@ -9,6 +9,6 @@ struct token
 };
 
 void add_token(struct token **token, char *str);
-struct token *parse_path(char * str);
+struct token *parse_path(struct token *token, char * str);
 
 #endif /* !SHELL_H */
