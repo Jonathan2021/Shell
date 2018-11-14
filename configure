@@ -1,0 +1,18 @@
+#! /bin/sh
+
+print_help()
+{
+    cat <<EOF
+    SYNOPSIS:
+        configure [-DXUh]
+
+    OPTIONS
+        -D, --with-debug
+            Compile with flags debug:
+            -g -ggdb
+        -v, --valgriind
+            Compile with valgrind
+        -h, --help
+            Print this help.
+    EOF
+}
