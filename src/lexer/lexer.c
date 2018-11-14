@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "lexer_struct.h"
+#include "include/lexer_struct.h"
 
 int input(struct Token **t)
 {

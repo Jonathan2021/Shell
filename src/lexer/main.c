@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lexer_struct.h"
+#include "include/lexer_struct.h"
 
 struct Token* init(char *name, char *type)
 {
