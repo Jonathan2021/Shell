@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include "include/shell.h"
+#include "lexer/include/lexer_struct.h"
 
 
 void add_token(struct Token **token, char *str)
@@ -65,6 +66,16 @@ struct Token *parse_path(struct Token *token,char * str)
     return token;
 }
 
+void print_t(struct Token *t)
+{
+    for (; t != NULL; t = t->next)
+        printf("\n%s", t->name);
+}
+struct Token *lexer(struct Token *t)
+{
+    printf("\nResult: %d", input(&t));
+    return t;
+}
 struct Token*carving(void)
 {
     char str[4095];
@@ -78,14 +89,18 @@ struct Token*carving(void)
         if (strncmp(str,"exit",4) == 0)
             exit(0);
         token = parse_path(token,str);
-        while(token)
+        struct Token *tmp = token;
+        while(tmp)
         {
             ret = 1;
-            printf("->%s",token->type);
-            token = token->next;
+            printf("->%s",tmp->type);
+            tmp = tmp->next;
         }
         if (ret == 1)
+        {
+            lexer(token);
             printf("\n");
+        }
         if (isatty(0))
             printf("42sh$ ");
     }
@@ -100,14 +115,6 @@ struct Token*carving(void)
     printf("\n");
     return 0;
 }
-void print_t(struct Token *t)
-{
-    for (;t != NULL ; t = t->next)
-    {
-        printf("%s ",t->name);
-    }
-}
-
 int main(void)
 {
     carving();
