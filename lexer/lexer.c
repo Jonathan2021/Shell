@@ -1,17 +1,24 @@
 #include <stdio.h>
 #include <string.h>
+#include "lexer_struct.h"
 
 int input(struct Token **t)
 {
-    if (list(*t) == 1)
+    struct Token *tmp = *t;
+    if (list(&tmp) == 1)
     {
-        if (*t == NULL)
+        if (tmp == NULL)
+        {
+            *t = tmp;
             return 1;
+        }
         else
             return 0;
     }
-    else if (*t == NULL)
+    tmp = *t;
+    if (tmp == NULL)
     {
+        *t = tmp;
         return 1;
     }
     else
@@ -24,6 +31,11 @@ int list(struct Token **t)
     struct Token *t2 = *t;
     if (and_or(&t2) == 0)
         return 0;
+    if (t2 == NULL)
+    {
+        *t = t2;
+        return 1;
+    }
     while (1)
     {
         check = 0;
@@ -34,6 +46,11 @@ int list(struct Token **t)
             if (and_or(&t2) == 0)
             {
                 break;
+            }
+            if (t2 == NULL)
+            {
+                *t = t2;
+                return 1;
             }
         }
         else
@@ -55,9 +72,12 @@ int and_or(struct Token **t)
     {
         if (check == 1)
             *t = cpy;
-        if (check == 0)
+        if (check == 0 || cpy == NULL)
+        {
+            *t = cpy;
             return 1;
-        if (strcmp(";", cpy->name) == 0 || strcmp("&", cpy->name) == 0)
+        }
+        if (strcmp("||", cpy->name) == 0 || strcmp("&&", cpy->name) == 0)
         {
             cpy = cpy->next;
             while (1)
@@ -117,7 +137,7 @@ int else_clause(struct Token **t)
         tmp = tmp->next;
         if (list(&tmp) == 1)
         {
-            t* = tmp;
+            *t = tmp;
             return 1;
         }
 
@@ -131,7 +151,7 @@ int else_clause(struct Token **t)
 
         if (strcmp("then",tmp->name) != 0)
             return 0;
-        *t = *t->next;
+        tmp = tmp->next;
 
         if (list(&tmp) == 0)
             return 0;
@@ -173,8 +193,5 @@ int shell_command(struct Token **t)
         *t = t3;
         return 1;
     }
-    else
-    {
-        return 0;
-    }
+    return 0;
 }
