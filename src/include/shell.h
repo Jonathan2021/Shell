@@ -1,14 +1,14 @@
 #ifndef SHELL_H
 # define SHELL_H
 
-struct token
+struct Token
 {
     char *name;
     char *type;
-    struct token *next;
+    struct Token *next;
 };
 
-void add_token(struct token **token, char *str);
-struct token *parse_path(struct token *token, char * str);
+void add_token(struct Token **token, char *str);
+struct Token *parse_path(struct Token *token, char * str);
 
 #endif /* !SHELL_H */

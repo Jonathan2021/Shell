@@ -9,7 +9,7 @@
 #include <sys/stat.h>
 #include "include/shell.h"
 
-void add_token(struct token **token, char *str)
+void add_token(struct Token **token, char *str)
 {
     char *grammar[20][20] =
     {{"WORD","ls","pwd","cd","\0"},
@@ -25,7 +25,7 @@ void add_token(struct token **token, char *str)
     {"LOOP","case","esac","while","until","for","\0"},
     {"BRACE","{","}","!","\0"},
     {"IN","in","\0"}};
-    struct token *next = malloc(sizeof(struct token));
+    struct Token *next = malloc(sizeof(struct Token));
     for(int i = 0; i < 12; i++)
     {
         for (int j = 0; grammar[i][j][0] != '\0'; j++ )
@@ -43,7 +43,7 @@ void add_token(struct token **token, char *str)
         *token = next;
         return;
     }
-    struct token *copy = *token;
+    struct Token *copy = *token;
     while (copy->next)
     {
         copy = copy->next;
@@ -51,7 +51,7 @@ void add_token(struct token **token, char *str)
     copy->next = next;
 }
 
-struct token *parse_path(struct token *token,char * str)
+struct Token *parse_path(struct Token *token,char * str)
 {
     char *parse;
     char *delim = {"\n\t "};
@@ -70,7 +70,7 @@ int main(void)
     char str[4095];
     if (isatty(0))
         printf("42sh$ ");
-    struct token *token = NULL;
+    struct Token *token = NULL;
     while(fgets(str,4095,stdin))
     {
         token = parse_path(token,str);
