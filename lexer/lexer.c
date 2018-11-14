@@ -46,53 +46,71 @@ int list(struct Token *t)
 int and_or(struct Token *t)
 {
 }
-int rule_if (struct Token *t)
+int rule_if (struct Token **t)
 {
-    struct Token *tmp = t;
+    struct Token **tmp = t;
     if (strcmp("if", t->name) != 0)
     {
         t = tmp;
         return 0;
     }
-    t = t->next;
+    *t = *t->next;
     if (list(t) == 0)
     {
         t = tmp;
         return 0;
     }
-    t = t->next;
+    *t = *t->next;
     if (strcmp("then", t->name) != 0)
     {
         t = tmp;
         return 0;
     }
     else_clause(t);
-    t = t->next;
+    *t = *t->next;
     if (strcmp("fi", t->name) != 0)
     {
         t = tmp;
         return 0;
     }
+    return 1;
 }
 
-int else_clause(struct Token *t)
+int else_clause(struct Token **t)
 {
+    struct Token **tmp = t;
     if (strcmp(t->name, "else") == 0)
     {
         if (list(t) == 0)
-            return 0;
-        return 1;
+        {
+            t = tmp;
+        }
+        else
+        {
+            *t = *t->next;
+            return 1;
+        }
     }
     else
     {
+        t = tmp;
         if (strcmp(t->name, "elif") == 0)
         {
             if (list(t) == 0)
                 return 0;
+            *t = *t->next;
             if (strcmp("then",t->name) != 0)
+            {
+                t = tmp;
                 return 0;
+            }
+            *t = *t->next;
             if (list(t) == 0)
+            {
+                t = tmp;
                 return 0;
+            }
+            *t = *t->next;
             else_clause(t);
             return 1;
 
