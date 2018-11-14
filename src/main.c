@@ -74,14 +74,13 @@ int main(void)
     while(fgets(str,4095,stdin))
     {
         token = parse_path(token,str);
-        if (isatty(0))
-            printf("42sh$ ");
         while(token)
         {
             printf("->%s",token->type);
             token = token->next;
         }
-        printf("\n");
+        if (isatty(0))
+            printf("\n42sh$ ");
     }
     if (!isatty(0))
     {
