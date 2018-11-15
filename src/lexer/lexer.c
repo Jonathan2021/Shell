@@ -169,7 +169,7 @@ int else_clause(struct Token **t)
         {
             return 0;
         }
-        if (list(&tmp) == 1)
+        if (compound_list(&tmp) == 1)
         {
             *t = tmp;
             return 1;
@@ -179,7 +179,7 @@ int else_clause(struct Token **t)
     if (strcmp(tmp->name, "elif") == 0)
     {
         tmp = tmp->next;
-        if (tmp == NULL || list(&tmp) == 0)
+        if (tmp == NULL || compound_list(&tmp) == 0)
             return 0;
 
         if (tmp == NULL || strcmp("then", tmp->name) != 0)
@@ -442,5 +442,151 @@ int compound_list(struct Token **t)
             }
             *t = tmp;
         }
+    return 1;
+}
+
+int rule_for(struct Token **t)
+{
+    struct Token *tmp = *t;
+    if (strcmp(tmp->name,"for"))
+        return 0;
+    tmp = tmp->next;
+    if (tmp == NULL || strcmp(tmp->type,"WORD"))
+        return 0;
+    tmp = tmp->next;
+    if (tmp == NULL)
+        return 0;
+    struct Token *save = tmp;
+    if (strcmp(tmp->name,";") == 0)
+    {
+        tmp = tmp->next;
+    }
+    else
+    {
+        while(strcmp(tmp->name,"\n") == 0)
+        {
+            tmp = tmp->next;
+            if (tmp == NULL)
+                break;
+        }
+        if (tmp && strcmp(tmp->name,"in") == 0)
+        {
+            tmp = tmp->next;
+
+            while(tmp && strcmp(tmp->type,"WORD") == 0)
+            {
+                tmp = tmp->next;
+                if (tmp == NULL)
+                    break;
+            }
+            if (tmp && (strcmp(tmp->name,";") == 0 ||
+                strcmp(tmp->name,"\n") == 0))
+                {
+                    tmp = tmp->next;
+                }
+        }
+    }
+    if (tmp == NULL)
+        return 0;
+    while(strcmp(tmp->name,"\n") == 0)
+    {
+        tmp = tmp->next;
+        if (tmp == NULL)
+            return 0;
+    }
+    if (do_group(&tmp) == 0)
+        return 0;
+    else
+        tmp = tmp->next;
+    *t = tmp;
+    return 1;
+}
+
+int rule_case(struct Token **t)
+{
+    struct Token *tmp = *t;
+    if (strcmp(tmp->name,"case"))
+        return 0;
+    tmp = tmp->next;
+    if (tmp == NULL || strcmp(tmp->type,"WORD"))
+        return 0;
+    tmp = tmp->next;
+    if (tmp == NULL)
+        return 0;
+    while(strcmp(tmp->name,"\n") == 0)
+    {
+        tmp = tmp->next;
+        if (tmp == NULL)
+            return 0;
+    }
+    if (tmp == NULL || strcmp(tmp->name,"in"))
+        return 0;
+    tmp = tmp->next;
+    if (tmp == NULL)
+        return 0;
+    while(strcmp(tmp->name,"\n") == 0)
+    {
+        tmp = tmp->next;
+        if (tmp == NULL)
+            return 0;
+    }
+    if (case_clause(&tmp) == 1)
+        tmp = tmp->next;
+    if (tmp == NULL || strcmp(tmp->name,"esac"))
+        return 0;
+    tmp = tmp->next;
+    *t = tmp;
+    return 1;
+}
+
+int do_group(struct Token **t)
+{
+    struct Token *tmp = *t;
+    if (strcmp(tmp->name,"do"))
+        return 0;
+    tmp = tmp->next;
+    if (tmp == NULL || compound_list(&tmp))
+        return 0;
+    tmp = tmp->next;
+    if (tmp == NULL || strcmp(tmp->name,"done"))
+        return 0;
+    tmp = tmp->next;
+    *t = tmp;
+    return 1;
+}
+
+int case_item(struct Token **t)
+{
+    struct Token *tmp = *t;
+    if (strcmp(tmp->name,"(") == 0)
+        tmp = tmp->next;
+    if (tmp == NULL || strcmp(tmp->type,"WORD"))
+        return 0;
+    while(strcmp(tmp->name,"|") == 0 ||
+        strcmp(tmp->type,"WORD") == 0)
+    {
+        tmp = tmp->next;
+        if (tmp == NULL)
+            return 0;
+    }
+    if (strcmp(tmp->name,")"))
+        return 0;
+    *t = tmp;
+    if (tmp == NULL)
+        return 1;
+    while(strcmp(tmp->name,"\n") == 0)
+    {
+        tmp = tmp->next;
+        if (tmp == NULL)
+        {
+            *t = tmp;
+            return 1;
+        }
+    }
+    if (compound_list(&tmp) == 1)
+    {
+        tmp = tmp->next;
+    }
+    *t = tmp;
     return 1;
 }
