@@ -1,0 +1,4 @@
+IFS "cerise"
+name ""
+epita "super"
+lol "mdr"
