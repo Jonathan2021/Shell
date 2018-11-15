@@ -42,36 +42,16 @@ char *color(struct AST *cur)
 
 void print_ast(struct AST *cur, FILE *file)
 {
-    if (cur->nb_child >= 1 && cur->child[0])
+    for (int i = 0; i < cur->nb_child && cur->child[i]; i++)
     {
         char *type = color(cur);
-        char *type_child = color(cur->child[0]);
-        fprintf(file,"\"%s\"%s\n",cur->child[0]->self->name,type_child);
+        char *type_child = color(cur->child[i]);
+        fprintf(file,"\"%s\"%s\n",cur->child[i]->self->name,type_child);
         fprintf(file,"\"%s\"%s\n",cur->self->name,type);
-        fprintf(file,"\"%s\" -> \"%s\"\n",cur->self->name,cur->child[0]->self->name);
+        fprintf(file,"\"%s\" -> \"%s\"\n",cur->self->name,cur->child[i]->self->name);
         free(type);
         free(type_child);
-        print_ast(cur->child[0],file);
-    }
-    if (cur->nb_child >= 2 && cur->child[1])
-    {
-        char *type = color(cur);
-        char *type_child = color(cur->child[1]);
-        fprintf(file,"\"%s\"%s\n",cur->child[1]->self->name,type_child);
-        fprintf(file,"\"%s\"%s\n",cur->self->name,type);
-        fprintf(file,"\"%s\" -> \"%s\"\n",cur->self->name,cur->child[1]->self->name);
-        free(type);
-        free(type_child);
-    }
-    if (cur->nb_child >= 3 && cur->child[2])
-    {
-        char *type = color(cur);
-        char *type_child = color(cur->child[2]);
-        fprintf(file,"\"%s\"%s\n",cur->child[2]->self->name,type_child);
-        fprintf(file,"\"%s\"%s\n",cur->self->name,type);
-        fprintf(file,"\"%s\" -> \"%s\"\n",cur->self->name,cur->child[2]->self->name);
-        free(type);
-        free(type_child);
+        print_ast(cur->child[i],file);
     }
 }
 
