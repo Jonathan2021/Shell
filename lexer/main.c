@@ -12,8 +12,8 @@ struct Token* init(char *name, char *type)
 
 struct Token *exemple()
 {
-    struct Token *res = init("if", "IF");
-    res->next = init("pwd", "WORD");
+    struct Token *res = init("q", "rien");
+    /*res->next = init("pwd", "WORD");
     res->next->next = init("&&", "LOGICAL_AND");
     res->next->next->next = init("ls", "WORD");
     res->next->next->next->next = init(";", "SEMICOLON");
@@ -21,7 +21,7 @@ struct Token *exemple()
     struct Token *a = res->next->next->next->next->next;
     a->next = init("cd", "WORD");
     a->next->next = init(";", "SEMICOLON");
-    a->next->next->next = init("fi", "FI");
+    a->next->next->next = init("fi", "FI");*/
     //a->next->next->next->next = init("alias", "WORD");
     //a->next->next->next->next->next = init(";", "SEMICOLON");
     //a->next->next->next->next->next->next = init("fi", "FI");

@@ -79,7 +79,7 @@ int and_or(struct Token **t)
         *t = cpy;
         return 1;
     }
-    while(1)
+    while (1)
     {
         if (check == 1)
             *t = cpy;
@@ -120,14 +120,13 @@ int and_or(struct Token **t)
                     return 1;
                 }
             }
-                
         }
         else
             break;
     }
     return 1;
 }
-int rule_if (struct Token **t)
+int rule_if(struct Token **t)
 {
     struct Token *tmp = *t;
     if (strcmp("if", tmp->name) != 0)
@@ -173,7 +172,6 @@ int else_clause(struct Token **t)
             *t = tmp;
             return 1;
         }
-
     }
     tmp = *t;
     if (strcmp(tmp->name, "elif") == 0)
@@ -182,7 +180,7 @@ int else_clause(struct Token **t)
         if (tmp == NULL || list(&tmp) == 0)
             return 0;
 
-        if (tmp == NULL ||strcmp("then",tmp->name) != 0)
+        if (tmp == NULL || strcmp("then", tmp->name) != 0)
             return 0;
         tmp = tmp->next;
 
@@ -192,7 +190,6 @@ int else_clause(struct Token **t)
         else_clause(&tmp);
         *t = tmp;
         return 1;
-
     }
     else
         return 0;
@@ -231,6 +228,136 @@ int shell_command(struct Token **t)
             t3 = t3->next;
         *t = t3;
         return 1;
+    }
+    return 0;
+}
+
+// nouvelle partie
+
+int pipeline(struct Token **t)
+{
+    struct Token *tmp = *t;
+    if (strcmp("!", tmp->name) == 0)
+    {
+        tmp = tmp->next;
+        if (tmp == NULL)
+            return 0;
+    }
+    if (command(&tmp) == 0)
+        return 0;
+    while (1)
+    {
+        *t = tmp;
+        if (strcmp("|", tmp->name) == 0)
+        {
+            tmp = tmp->next;
+            if (tmp == NULL)
+                return 1;
+            while (strcmp("\n", tmp->name) == 0)
+            {
+                tmp = tmp->next;
+                if (tmp == NULL)
+                    return 1;
+                }
+            if (command(&tmp) == 0)
+                return 0;
+            if (tmp == NULL)
+            {
+                *t = tmp;
+                return 1;
+            }
+        }
+        else
+            break;
+    }
+    return 1;
+}
+
+int command(struct Token **t)
+{
+    struct Token *tmp = *t;
+    if (simple_command(&tmp) == 1)
+    {
+        *t = tmp;
+        return 1;
+    }
+    tmp = *t;
+    if (shell_command(&tmp) == 1)
+    {
+        *t = tmp;
+        if (tmp == NULL)
+            return 1;
+        while (1)
+        {
+            if (redirection(&tmp) == 1)
+                *t = tmp;
+            else
+                return 1;
+            if (tmp == NULL)
+                return 1;
+        }
+    }
+    tmp = *t;
+    if (funcdec(&tmp) == 1)
+    {
+        *t = tmp;
+        if (tmp == NULL)
+            return 1;
+        while (1)
+        {
+            if (redirection(&tmp) == 1)
+                *t = tmp;
+            else
+                return 1;
+            if (tmp == NULL)
+                return 1;
+        }
+    }
+    return 0;
+}
+
+int simple_command(struct Token **t)
+{
+    struct Token *tmp = *t;
+    if (prefix(&tmp) == 1)
+    {
+        *t = tmp;
+        if (tmp == NULL)
+            return 1;
+        while (1)
+        {
+            if (prefix(&tmp) == 1)
+                *t = tmp;
+            else
+                return 1;
+            if (tmp == NULL)
+                return 1;
+        }
+    }
+    tmp = *t;
+    while (1)
+    {
+        if (prefix(&tmp) == 1)
+            *t = tmp;
+        else
+            break;
+        if (tmp == NULL)
+            return 0;
+    }
+    if (element(&tmp) == 1)
+    {
+        *t = tmp;
+        if (tmp == NULL)
+            return 1;
+        while (1)
+        {
+            if (element(&tmp) == 1)
+                *t = tmp;
+            else
+                return 1;
+            if (tmp == NULL)
+                return 1;
+        }
     }
     return 0;
 }
