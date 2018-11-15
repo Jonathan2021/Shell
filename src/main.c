@@ -14,8 +14,7 @@
 void add_token(struct Token **token, char *str)
 {
     char *grammar[20][20] =
-    {{"WORD","ls","pwd","cd","\0"},
-        {"SEMICOLON",";","\0"},
+    {{"SEMICOLON",";","\0"},
         {"OP_LOGIQUE","&&","||",";;","\0"},
         {"OP_IO","<<",">>","<&",">&","<>","<<-","\0"},
         {"CLOBBER",">|","\0"},
@@ -28,6 +27,7 @@ void add_token(struct Token **token, char *str)
         {"BRACE","{","}","!","\0"},
         {"IN","in","\0"}};
     struct Token *next = malloc(sizeof(struct Token));
+    next->name = NULL;
     for(int i = 0; i < 12; i++)
     {
         for (int j = 0; grammar[i][j][0] != '\0'; j++ )
@@ -39,6 +39,12 @@ void add_token(struct Token **token, char *str)
                 next->next = NULL;
             }
         }
+    }
+    if (!next->name)
+    {
+        next->name = str;
+        next->type = "WORD";
+        next->next = NULL;
     }
     if (!*token)
     {
