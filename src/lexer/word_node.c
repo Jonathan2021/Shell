@@ -26,7 +26,7 @@ struct AST *shell_command(struct Token **t)
         t1 = t1->next;
         if (t1 == NULL)
             return NULL;
-        if ((shell = list(&t1)) == 1)
+        if ((shell = list(&t1)) != NULL)
         {
             if (t1 == NULL)
                 return NULL;
@@ -39,7 +39,7 @@ struct AST *shell_command(struct Token **t)
             }
         }
     }
-    else if ((shell = rule_if(&t2)) == 1)
+    else if ((shell = rule_if(&t2)) != NULL)
     {
         *t = t2;
         return shell;
