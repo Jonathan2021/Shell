@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
+#include "include/rule.h"
 
 struct AST *else_init(struct Token *token)
 {
@@ -55,7 +56,7 @@ struct AST *else_clause(struct Token **t)
 
         else_body = else_clause(&tmp);
         *t = tmp;
-        struct AST *elif = elif_init(t);
+        struct AST *elif = elif_init(*t);
         elif->child[0] = condition;
         elif->child[1] = elif_body;
         elif->child[2] = else_body;

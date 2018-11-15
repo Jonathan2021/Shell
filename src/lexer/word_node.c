@@ -1,6 +1,8 @@
-nclude <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
+#include "include/rule.h"
+
 
 
 
@@ -46,10 +48,10 @@ struct AST *shell_command(struct Token **t)
     }
     else if (strcmp("WORD", t3->type) == 0)
     {
+        shell = word_init(t3);
         if (t3 != NULL)
             t3 = t3->next;
         *t = t3;
-        shell = word_init(t);
         return shell;
     }
     return NULL;
