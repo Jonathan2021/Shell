@@ -14,8 +14,7 @@
 void add_token(struct Token **token, char *str)
 {
     char *grammar[20][20] =
-    {{"WORD","ls","pwd","cd","\0"},
-        {"SEMICOLON",";","\0"},
+    {{"SEMICOLON",";","\0"},
         {"OP_LOGIQUE","&&","||",";;","\0"},
         {"OP_IO","<<",">>","<&",">&","<>","<<-","\0"},
         {"CLOBBER",">|","\0"},
