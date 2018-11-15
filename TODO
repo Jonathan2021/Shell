@@ -1,0 +1,18 @@
+TODO
+
+actualisé:
+    - input
+    - and_or
+    - shell_command
+    - rule_if
+    - else_clause
+
+faire:
+    - redirection
+    - prefix
+    - element-
+    - counpound_list
+    - rule_for
+    - rule_until
+    - rule case
+    - do_froup
