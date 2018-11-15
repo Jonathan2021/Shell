@@ -113,15 +113,6 @@ struct Token*carving(void)
             printf("42sh$ ");
         DestroyToken(token);
     }
-    if (!isatty(0))
-    {
-        while(token)
-        {
-            printf("->%s",token->type);
-            token = token->next;
-        }
-    }
-    printf("\n");
     return 0;
 }
 int main(void)
