@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "my_tree.h"
+#include "include/my_tree.h"
 
 struct AST *AST_init(int nb_child)
 {
@@ -11,7 +11,7 @@ struct AST *AST_init(int nb_child)
     new->nb_child = nb_child;
     for (int i = 0; i < nb_child; i++)
     {
-        new->child[i] == NULL;
+        new->child[i] = NULL;
     }
     new->res = 0;
     return new;
@@ -20,7 +20,7 @@ void AST_print_prefix(const struct AST *tree)
 {
     if (tree != NULL)
     {
-        printf(tree->name);
+        printf("%s ",tree->self->name);
         for (int i = 0; i < tree->nb_child; i++)
         {
             AST_print_infix(tree->child[i]);

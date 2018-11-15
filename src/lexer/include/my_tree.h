@@ -2,6 +2,7 @@
 #define MY_TREE_H
 
 #include <stddef.h>
+#include "lexer_struct.h"
 
 struct AST
 {
