@@ -7,21 +7,9 @@
 #include <err.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include "../lexer/include/lexer_struct.h"
+#include "../lexer/include/my_tree.h"
 // dot -Tps ast.gv -o outfile.ps
-struct AST
-{
-    int nb_child;
-    struct AST** child;
-    struct Token *self;
-    int res;
-};
-
-struct Token
-{
-    char *name;
-    char *type;
-    struct Token *next;
-};
 
 char *color(struct AST *cur)
 {
@@ -98,7 +86,7 @@ void print_ast(struct AST *cur, FILE *file)
 
 int main(void)
 {
-    struct Token *tok_cur = malloc(sizeof(struct AST));
+    /*struct Token *tok_cur = malloc(sizeof(struct AST));
     tok_cur->name = "ls";
     tok_cur->type = "WORD";
     struct AST *cur = malloc(sizeof(struct AST));
@@ -129,7 +117,8 @@ int main(void)
 
     cur->child[0] = child1;
     cur->child[1] = child2;
-    cur->child[2] = child3;
+    cur->child[2] = child3;*/
 
+    // dot -Tps ast.gv -o outfile.ps
     create_dot(cur,"ast.gv");
 }
