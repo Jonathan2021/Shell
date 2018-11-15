@@ -7,7 +7,7 @@ struct AST *AST_init(int nb_child)
     struct AST *new = malloc(sizeof(struct AST));
     if (new == NULL)
         return NULL;
-    new->child = malloc(sizeof(struct AST) * nb_child);
+    new->child = malloc(sizeof(struct AST *) * nb_child);
     new->nb_child = nb_child;
     for (int i = 0; i < nb_child; i++)
     {
