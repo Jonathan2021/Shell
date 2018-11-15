@@ -76,6 +76,12 @@ struct Token *lexer(struct Token *t)
     printf("\nResult: %d", input(&t));
     return t;
 }
+void DestroyToken(struct Token *t)
+{
+    if (t != NULL)
+        DestroyToken(t->next);
+    free(t);
+}
 struct Token*carving(void)
 {
     char str[4095];
@@ -85,17 +91,19 @@ struct Token*carving(void)
     struct Token *token = NULL;
     while(fgets(str,4095,stdin))
     {
+        token = NULL;
         ret = 0;
         if (strncmp(str,"exit",4) == 0)
             exit(0);
         token = parse_path(token,str);
         struct Token *tmp = token;
-        while(tmp)
+        while (tmp)
         {
             ret = 1;
             printf("->%s",tmp->type);
             tmp = tmp->next;
         }
+        DestroyToken(tmp);
         if (ret == 1)
         {
             lexer(token);
@@ -103,6 +111,7 @@ struct Token*carving(void)
         }
         if (isatty(0))
             printf("42sh$ ");
+        DestroyToken(token);
     }
     if (!isatty(0))
     {
