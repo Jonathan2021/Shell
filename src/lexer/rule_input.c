@@ -8,7 +8,7 @@ struct AST *input(struct Token **t)
 {
     struct AST *node;
     struct Token *tmp = *t;
-    if ((node = list(&tmp)) == 1)
+    if ((node = list(&tmp)) != NULL)
     {
         if (tmp == NULL)
         {

@@ -16,6 +16,7 @@ struct AST *AST_init(int nb_child)
     new->res = 0;
     return new;
 }
+/*
 void AST_print_prefix(const struct AST *tree)
 {
     if (tree != NULL)
@@ -26,7 +27,7 @@ void AST_print_prefix(const struct AST *tree)
             AST_print_infix(tree->child[i]);
         }
     }
-}
+}*/
 
 void AST_destroy(struct AST *s)
 {
