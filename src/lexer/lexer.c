@@ -361,4 +361,84 @@ int simple_command(struct Token **t)
     return 0;
 }
 
+int prefix(struct Token **t)
+{
+    if (strcmp(t[0]->type,"ASSIGMENT_WORD") == 0)
+    {
+        *t = t[0]->next;
+        return 1;
+    }
+    else if (redirection(t) == 1)
+        return 1;
+    else
+        return 0;
+}
 
+int element(struct Token **t)
+{
+    if (strcmp(t[0]->type,"WORD") == 0)
+    {
+        *t = t[0]->next;
+        return 1;
+    }
+    else if (redirection(t) == 1)
+        return 1;
+    else
+        return 0;
+}
+
+int compound_list(struct Token **t)
+{
+    struct Token *tmp = *t;
+    while(strcmp(tmp->name,"\n") == 0)
+    {
+        tmp = tmp->next;
+        if (tmp == NULL)
+            return 0;
+    }
+    if (and_or(&tmp) == 0)
+        return 0;
+    if (tmp == NULL)
+    {
+        *t = tmp;
+        return 1;
+    }
+    while(1)
+    {
+        *t = tmp;
+        if (strcmp(tmp->name,";") == 0 ||
+            strcmp(tmp->name,"&") == 0 ||
+            strcmp(tmp->name,"\n") == 0)
+            {
+                while(strcmp(tmp->name,"\n") == 0)
+                {
+                    tmp = tmp->next;
+                    if (tmp == NULL)
+                        break;
+                }
+                if (tmp == NULL)
+                    break;
+                if (and_or(&tmp) == 0)
+                    break;
+            }
+        else
+            break;
+    }
+    if (tmp == NULL)
+        return 1;
+    *t = tmp;
+    if (strcmp(tmp->name,"&") == 0 ||
+        strcmp(tmp->name,";") == 0 ||
+        strcmp(tmp->name,"\n") == 0)
+        {
+            tmp = tmp->next;
+            while(strcmp(tmp->name,"\n") == 0)
+            {
+                tmp = tmp->next;
+                if (tmp == NULL)
+                    break;
+            }
+            *t = tmp;
+        }
+    return 1;
+}
