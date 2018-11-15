@@ -26,6 +26,7 @@ char *color(struct AST *cur)
         {"LOOP","[color=magenta]"},
         {"BRACE","[color=paleturquoise4]"},
         {"WORD","[color=blue2]"},
+        {"LIST","[color=blue4]"},
         {"IN","[color=black]"}};
     char *color = malloc(60);
     for(int i = 0; i < 13; i++)

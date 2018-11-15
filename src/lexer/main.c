@@ -16,7 +16,7 @@ struct Token *exemple()
 {
     struct Token *res = init("if", "IF");
     res->next = init("pwd", "WORD");
-    res->next->next = init("&&", "LOGICAL_AND");
+    res->next->next = init("&&", "OP_LOGIQUE");
     res->next->next->next = init("ls", "WORD");
     res->next->next->next->next = init(";", "SEMICOLON");
     res->next->next->next->next->next = init("then", "THEN");
