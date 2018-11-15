@@ -2,6 +2,8 @@
 #include <string.h>
 #include "include/lexer_struct.h"
 
+
+
 int input(struct Token **t)
 {
     struct Token *tmp = *t;
@@ -360,7 +362,7 @@ int simple_command(struct Token **t)
     }
     return 0;
 }
-
+// Julie part
 int prefix(struct Token **t)
 {
     if (strcmp(t[0]->type,"ASSIGMENT_WORD") == 0)
