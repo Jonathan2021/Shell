@@ -3,7 +3,7 @@
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
-
+#include "../print_ast/include/print_ast.h"
 struct Token* init(char *name, char *type)
 {
     struct Token *l = malloc(sizeof(struct Token));
@@ -44,4 +44,6 @@ int main()
     struct AST *tree = input(&t);
     if (tree == NULL)
         printf("null");
+    else
+        create_dot(tree, "output.gv");
 }

@@ -1,0 +1,20 @@
+digraph G {
+"if"[color=khaki1]
+"list"(null)
+"list" -> "if"
+"list"(null)
+"if"[color=khaki1]
+"if" -> "list"
+"&&"(null)
+"list"(null)
+"list" -> "&&"
+"pwd"[color=blue2]
+"&&"(null)
+"&&" -> "pwd"
+"ls"[color=blue2]
+"&&"(null)
+"&&" -> "ls"
+"list"(null)
+"if"[color=khaki1]
+"if" -> "list"
+}

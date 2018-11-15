@@ -28,7 +28,7 @@ char *color(struct AST *cur)
         {"WORD","[color=blue2]"},
         {"IN","[color=black]"}};
     char *color = malloc(60);
-    for(int i = 0; i < 14; i++)
+    for(int i = 0; i < 13; i++)
     {
         if (strcmp(grammar[i][0],cur->self->type) == 0)
         {
@@ -41,7 +41,6 @@ char *color(struct AST *cur)
 
 void print_ast(struct AST *cur, FILE *file)
 {
-    
     if (cur->nb_child >= 1 && cur->child[0])
     {
         char *type = color(cur);
@@ -83,10 +82,10 @@ void print_ast(struct AST *cur, FILE *file)
     fprintf(file,"}");
  }
 
-
+/*
 int main(void)
 {
-    /*struct Token *tok_cur = malloc(sizeof(struct AST));
+    struct Token *tok_cur = malloc(sizeof(struct AST));
     tok_cur->name = "ls";
     tok_cur->type = "WORD";
     struct AST *cur = malloc(sizeof(struct AST));
@@ -117,8 +116,8 @@ int main(void)
 
     cur->child[0] = child1;
     cur->child[1] = child2;
-    cur->child[2] = child3;*/
+    cur->child[2] = child3;
 
     // dot -Tps ast.gv -o outfile.ps
     create_dot(cur,"ast.gv");
-}
+}*/
