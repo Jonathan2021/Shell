@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "my_tree.h"
+#include "include/my_tree.h"
 
 struct AST *operator_init(struct Token *token)
 {
