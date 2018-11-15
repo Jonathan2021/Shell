@@ -43,7 +43,7 @@ struct AST *rule_if(struct Token **t)
     }
     name = tmp;
     tmp = tmp->next;
-    if (tmp == NULL || (condition = list(&tmp)) == 0)
+    if (tmp == NULL || (condition = list(&tmp)) == NULL)
     {
         return NULL;
     }
@@ -51,10 +51,10 @@ struct AST *rule_if(struct Token **t)
         return NULL;
     if (strcmp("then", tmp->name) != 0)
     {
-        return 0;
+        return NULL;
     }
     tmp = tmp->next;
-    if (tmp == NULL || (if_body = list(&tmp)) == 0)
+    if (tmp == NULL || (if_body = list(&tmp)) == NULL)
         return NULL;
     else_body = else_clause(&tmp);
     if (tmp == NULL || strcmp("fi", tmp->name) != 0)
