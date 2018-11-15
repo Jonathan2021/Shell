@@ -3,6 +3,7 @@
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
+
 struct Token* init(char *name, char *type)
 {
     struct Token *l = malloc(sizeof(struct Token));
@@ -23,9 +24,9 @@ struct Token *exemple()
     a->next = init("cd", "WORD");
     a->next->next = init(";", "SEMICOLON");
     a->next->next->next = init("fi", "FI");
-    a->next->next->next->next = init("alias", "WORD");
-    a->next->next->next->next->next = init(";", "SEMICOLON");
-    a->next->next->next->next->next->next = init("fi", "FI");
+ //   a->next->next->next->next = init("alias", "WORD");
+   // a->next->next->next->next->next = init(";", "SEMICOLON");
+   // a->next->next->next->next->next->next = init("fi", "FI");
     return res;
 }
 
