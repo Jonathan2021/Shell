@@ -40,6 +40,12 @@ void add_token(struct Token **token, char *str)
             }
         }
     }
+    if (next->name != str)
+    {
+        next->name = str;
+        next->type = "WORD";
+        next->next = NULL;
+    }
     if (!*token)
     {
         *token = next;
