@@ -233,7 +233,7 @@ int shell_command(struct Token **t)
 }
 
 // nouvelle partie
-
+/*
 int pipeline(struct Token **t)
 {
     struct Token *tmp = *t;
@@ -360,4 +360,4 @@ int simple_command(struct Token **t)
         }
     }
     return 0;
-}
+}*/
