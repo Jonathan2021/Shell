@@ -28,6 +28,7 @@ void add_token(struct Token **token, char *str)
         {"BRACE","{","}","!","\0"},
         {"IN","in","\0"}};
     struct Token *next = malloc(sizeof(struct Token));
+    next->name = NULL;
     for(int i = 0; i < 12; i++)
     {
         for (int j = 0; grammar[i][j][0] != '\0'; j++ )
@@ -40,7 +41,7 @@ void add_token(struct Token **token, char *str)
             }
         }
     }
-    if (next->name != str)
+    if (!next->name)
     {
         next->name = str;
         next->type = "WORD";
