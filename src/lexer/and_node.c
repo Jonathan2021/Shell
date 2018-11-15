@@ -32,8 +32,8 @@ struct AST *and_or(struct Token **t)
     struct Token *name;
 
     struct Token *cpy = *t;
-    int check = 2;
-    if ((left_body = shell_command(&cpy)) == 0)
+    //int check = 2;
+    if ((left_body = shell_command(&cpy)) == NULL)
         return NULL;
     *t = cpy;
     if (cpy == NULL)
@@ -56,7 +56,7 @@ struct AST *and_or(struct Token **t)
                 return left_body;
             }
         }
-        if ((right_body = and_or(&cpy)) == 0)
+        if ((right_body = and_or(&cpy)) == NULL)
             return left_body;
         else
         {

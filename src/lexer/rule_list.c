@@ -8,10 +8,10 @@ struct AST *list_init(void)
     struct AST *node = AST_init(0);
     if (!node)
         return NULL;
-    struct Token t;
-    t.name ="list";
-    t.type = "LIST";
-    node->self = &t;
+    struct Token *t = malloc(sizeof(struct Token));
+    t->name ="list";
+    t->type = "LIST";
+    node->self = t;
     return node;
 }
 
