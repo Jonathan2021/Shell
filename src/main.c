@@ -98,19 +98,67 @@ void DestroyToken(struct Token *t)
         DestroyToken(t->next);
     free(t);
 }
+
+void read_isatty(void)
+{
+    char str[4095];
+    int ret = 0;
+    struct Token *token = NULL;
+    while(fgets(str,4095,stdin))
+    {
+        char *cpy = malloc(4095);
+        strcpy(cpy,str);
+        ret = 0;
+        if (strncmp(str,"exit",4) == 0)
+        {
+            free(cpy);
+            exit(0);
+        }
+        token = parse_path(token,str);
+        if (check_option(str))
+            ret = 1;
+        free(cpy);
+    }
+    struct Token *tmp = token;
+    while (tmp)
+    {
+        printf("->%s",tmp->type);
+        tmp = tmp->next;
+    }
+    lexer(token);
+    if (ret == 1)
+    {
+        char chaine[100] = "";
+        FILE *file = fopen("output.gv","r");
+        if (!file)
+            return;
+        printf("\n");
+        while (fgets(chaine,100,file) != NULL)
+        {
+            printf("%s", chaine);
+        }
+        fclose(file);
+    }
+}
+
 struct Token *carving(void)
 {
     char str[4095];
     int ret = 0;
     if (isatty(0))
         printf("42sh$ ");
+    else
+        {
+            read_isatty();
+            return 0;
+        }
     struct Token *token = NULL;
     while(fgets(str,4095,stdin))
     {
         char *cpy = malloc(4095);
         strcpy(cpy,str);
-        token = NULL;
         ret = 0;
+        token = NULL;
         if (strncmp(str,"exit",4) == 0)
         {
             free(cpy);
@@ -132,8 +180,7 @@ struct Token *carving(void)
             printf("\n");
         }
         free(cpy);
-        if (isatty(0))
-            printf("42sh$ ");
+        printf("42sh$ ");
         DestroyToken(token);
     }
     return 0;
