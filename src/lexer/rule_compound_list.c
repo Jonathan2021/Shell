@@ -95,15 +95,16 @@ struct AST *compound_list(struct Token **t)
     struct AST *and_or_ast;
     struct AST *separator;
     struct AST *compound = NULL;
+    struct Token *cpy;
     while(strcmp(tmp->name,"\n") == 0)
     {
         tmp = tmp->next;
         if (tmp == NULL)
             return 0;
     }
-    *t = tmp;
     if (!tmp || !(and_or_ast = and_or(&tmp)))
         return NULL;
+    *t = tmp;
     if(!(compound = compound_init()))
     {
         AST_destroy(and_or_ast);
@@ -113,18 +114,20 @@ struct AST *compound_list(struct Token **t)
     *t = tmp;
     while(1)
     {
-        if (tmp && (!strcmp(tmp->name,";") ||
-            !strcmp(tmp->name,"&") ||
-            !strcmp(tmp->name,"\n")))
+        cpy = tmp;
+        if (cpy && (!strcmp(cpy->name,";") ||
+            !strcmp(cpy->name,"&") ||
+            !strcmp(cpy->name,"\n")))
         {
-            separator = word_init(tmp);
-            tmp = tmp->next;
-            while (tmp && !strcmp(tmp->name,"\n"))
-                tmp = tmp->next;
-            if (!tmp || !(and_or_ast = and_or(&tmp)))
+            separator = word_init(cpy);
+            cpy = cpy->next;
+            while (cpy && !strcmp(cpy->name,"\n"))
+                cpy = cpy->next;
+            if (!cpy || !(and_or_ast = and_or(&cpy)))
                 break;
             add_compound(compound, separator);
             add_compound(compound, and_or_ast);
+            tmp = cpy;
             *t = tmp;
         }
     }
@@ -140,6 +143,11 @@ struct AST *compound_list(struct Token **t)
         }
         *t = tmp;
     }
-    compound->foo = foo_compound;
+    if (compound->nb_child == 1)
+    {
+        and_or_ast = compound->child[0];
+        free_l(compound);
+        return and_or_ast;
+    }
     return compound;
 }

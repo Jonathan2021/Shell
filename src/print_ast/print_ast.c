@@ -27,9 +27,13 @@ char *color(struct AST *cur)
         {"BRACE","[color=paleturquoise4]"},
         {"WORD","[color=blue2]"},
         {"LIST","[color=green]"},
+        {"COMPOUND","[color=green2]"},
+        {"COMMAND","[color=green3]"},
+        {"CASE_CLAUSE","[color=green4]"},
+        {" ","[color=orange4]"},
         {"IN","[color=black]"}};
     char *color = malloc(60);
-    for(int i = 0; i < 13; i++)
+    for(int i = 0; i < 17; i++)
     {
         if (strcmp(grammar[i][0],cur->self->type) == 0)
         {
