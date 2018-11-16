@@ -34,5 +34,6 @@ struct AST *rule_while(struct token **t)
     struct AST *node = while_init(name);
     node->child[0] = condition;
     node->child[1] = do_body;
+    *t = tmp;
     return node;
 } 

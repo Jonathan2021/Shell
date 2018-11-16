@@ -57,5 +57,6 @@ struct AST *case_clause(struct Token **t)
         tmp = tmp->next;
     while(tmp && !strcmp("\n", tmp->name))
         tmp = tmp->next;
+    *t = tmp;
     return origin;
 }
