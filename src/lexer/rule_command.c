@@ -13,6 +13,7 @@ struct AST *command_init()
         return NULL;
     token->name = "command";
     token->type = "COMMAND";
+    node->self = token;
     return node;
 }
 
