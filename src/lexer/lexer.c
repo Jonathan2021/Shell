@@ -4,7 +4,7 @@
 
 
 
-int input(struct Token **t)
+/* int input(struct Token **t)
 {
     struct Token *tmp = *t;
     if (list(&tmp) == 1)
@@ -25,9 +25,9 @@ int input(struct Token **t)
     }
     else
         return 0;
-}
+} */
 
-int list(struct Token **t)
+/* int list(struct Token **t)
 {
     int check = 0;
     struct Token *t2 = *t;
@@ -68,9 +68,9 @@ int list(struct Token **t)
         t2 = t2->next;
     *t = t2;
     return 1;
-}
+} */
 
-int and_or(struct Token **t)
+/* int and_or(struct Token **t)
 {
     struct Token *cpy = *t;
     int check = 1;
@@ -127,8 +127,8 @@ int and_or(struct Token **t)
             break;
     }
     return 1;
-}
-int rule_if(struct Token **t)
+} */
+/* int rule_if(struct Token **t)
 {
     struct Token *tmp = *t;
     if (strcmp("if", tmp->name) != 0)
@@ -157,9 +157,9 @@ int rule_if(struct Token **t)
     tmp = tmp->next;
     *t = tmp;
     return 1;
-}
+} */
 
-int else_clause(struct Token **t)
+/* int else_clause(struct Token **t)
 {
     struct Token *tmp = *t;
     if (strcmp(tmp->name, "else") == 0)
@@ -195,8 +195,8 @@ int else_clause(struct Token **t)
     }
     else
         return 0;
-}
-int shell_command(struct Token **t)
+} */
+/* int shell_command(struct Token **t)
 {
     struct Token *t1 = *t;
     struct Token *t2 = *t;
@@ -232,11 +232,11 @@ int shell_command(struct Token **t)
         return 1;
     }
     return 0;
-}
+} */
 
 // nouvelle partie
 
-int funcdec(struct Token **t)
+/* int funcdec(struct Token **t)
 {
     struct Token *tmp = *t;
     if (strcmp("function", tmp->name) == 0)
@@ -276,7 +276,7 @@ int funcdec(struct Token **t)
         return 1;
     }
     return 0;
-}
+} */
 
 int redirection(struct Token **t)
 {
