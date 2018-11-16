@@ -15,7 +15,8 @@ bin_PROGRAMS = 42sh
 	src/lexer/rule_for.c \
 	src/lexer/dlessdash_node.c \
 	src/main.c \
-	src/tool.c \
+	src/file/tool.c \
+	src/print_ast/print_ast.c \
 	src/lexer/rule_funcdec.c \
 	src/lexer/dless_node.c \
 	src/lexer/my_tree.c \
@@ -33,7 +34,6 @@ bin_PROGRAMS = 42sh
 	src/lexer/if_node.c \
 	src/lexer/rule_case.c \
 	src/lexer/rule_shell_command.c \
-	src/lexer/rule_simple_command.c \
-	src/print_ast/print_ast.c
+	src/lexer/rule_simple_command.c
 
 42sh_CFLAGS = -Wall -Wextra -Werror -std=c99 -pedantic

@@ -7,7 +7,7 @@
 #include <err.h>
 #include <stdlib.h>
 #include <sys/stat.h>
-#include "include/shell.h"
+#include "../include/shell.h"
 
 char *get_value(char *name)
 {
@@ -136,7 +136,7 @@ void read_isatty(void)
         //argc = str_to_argv(argv,str);
         //token = parse_path(token,argv,argc);
         char *parse;
-        char *delim = get_value("IFS");
+        char *delim = {"\t \n"};
         parse = strtok(str,delim);
         while (parse)
         {
