@@ -16,7 +16,7 @@ struct AST *while_init(struct Token *token)
     return node;
 }
 
-struct AST *rule_while(struct token **t)
+struct AST *rule_while(struct Token **t)
 {
     struct AST *condition;
     struct AST *do_body;

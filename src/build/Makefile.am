@@ -31,6 +31,7 @@ bin_PROGRAMS = 42sh
 	src/lexer/while_node.c \
 	src/lexer/if_node.c \
 	src/lexer/rule_case.c \
-	src/lexer/word_node.c
+	src/lexer/rule_shell_command.c \
+	src/lexer/rule_simple_command.c
 
 42sh_CFLAGS = -Wall -Wextra -Werror -std=c99 -pedantic

@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include <stdlib.h>
-=======
-#include <stdlib.h>
-#include "lexer_struct.h"
-#include "my_tree.h"
-#include "rule.h"
->>>>>>> parser
 
 struct AST *command_init()
 {
@@ -18,8 +11,9 @@ struct AST *command_init()
     struct AST *node = AST_init(0);
     if (!node)
         return NULL;
-    token->name = "command"
-    token->type = "COMMAND"
+    token->name = "command";
+    token->type = "COMMAND";
+    return node;
 }
 
 void add_cmd(struct AST *cmd, struct AST *new)
@@ -46,39 +40,12 @@ struct AST *command(struct Token **t)
         *t = tmp;
         while (tmp && (to_add = redirection(&tmp)))
         {
-            struct AST *red = command_init(*t);
-            if ((red = redirection(&tmp)) != NULL)
-            {
-                add_cmd(cmd, red);
-                *t = tmp;
-            }
-            else
-                return cmd;
-            if (tmp == NULL)
-                return cmd;
-        }
-    }
-    tmp = *t;
-    if ((cmd = funcdec(&tmp)) != NULL)
-    {
-        *t = tmp;
-        if (tmp == NULL)
-            return cmd;
-        while (1)
-        {
-            struct AST *red = command_init(*t);
-            if ((red = redirection(&tmp)) != NULL)
-            {
-                add_cmd(cmd, red);
-                *t = tmp;
-            }
-            else
-                return cmd;
-            if (tmp == NULL)
-                return cmd;
+            add_cmd(res, to_add);
+            *t = tmp;
         }
         return res;
     }
     AST_destroy(res);
     return NULL;
 }
+

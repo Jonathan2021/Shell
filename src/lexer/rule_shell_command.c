@@ -21,7 +21,6 @@ struct AST *shell_command(struct Token **t)
 {
     struct Token *t1 = *t;
     struct Token *t2 = *t;
-    struct Token *t3 = *t;
     struct AST *shell = NULL;
     if (strcmp("{", t1->name) == 0 || strcmp("(", t1->name) == 0)
     {

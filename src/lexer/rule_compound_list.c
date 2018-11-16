@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "include/lexer_struct.h"
-#include "my_tree.h"
-#include "rule.h"
+#include "include/my_tree.h"
+#include "include/rule.h"
 
 struct AST *compound_init()
 {
@@ -20,12 +20,12 @@ struct AST *compound_init()
     return node;
 }
 
-void add_coumpond(struct AST *compound, struct AST *new)
+void add_compound(struct AST *compound, struct AST *new)
 {
     compound->nb_child++;
     compound->child = realloc(compound->child, \
     compound->nb_child * sizeof(struct AST));
-    compound->child[compound->>nb_child-1] = new;
+    compound->child[compound->nb_child-1] = new;
 }
 
 struct AST *compound_list(struct Token **t)
@@ -45,7 +45,7 @@ struct AST *compound_list(struct Token **t)
         return NULL;
     if(!(compound = compound_init()))
     {
-        free_ast(and_or_ast);
+        AST_destroy(and_or_ast);
         return NULL;
     }
     add_compound(compound, and_or_ast);
@@ -56,7 +56,7 @@ struct AST *compound_list(struct Token **t)
             !strcmp(tmp->name,"&") ||
             !strcmp(tmp->name,"\n")))
         {
-            separator = word_inti(tmp);
+            separator = word_init(tmp);
             tmp = tmp->next;
             while (tmp && !strcmp(tmp->name,"\n"))
                 tmp = tmp->next;
@@ -71,7 +71,7 @@ struct AST *compound_list(struct Token **t)
         !strcmp(tmp->name,";") ||
         !strcmp(tmp->name,"\n")))
     {
-        add_compund(compund, word_init(tmp));
+        add_compound(compound, word_init(tmp));
         tmp = tmp->next;
         while(tmp && !strcmp(tmp->name,"\n"))
         {

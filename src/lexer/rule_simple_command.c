@@ -68,7 +68,7 @@ struct AST *simple_command(struct Token **t)
                 return list;
             }
         }
-        while ((node = element(&tmp)) == 1)
+        while ((node = element(&tmp)) != NULL)
         {
             *t = tmp;
             add_list(list, node);
@@ -101,5 +101,5 @@ struct AST *simple_command(struct Token **t)
         }
     }
     free_l(list);
-    return 0;
+    return NULL;
 }
