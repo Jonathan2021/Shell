@@ -25,7 +25,6 @@ void add_list(struct AST *l, struct AST *a)
 struct AST *list(struct Token **t)
 {
     struct AST *node = NULL;
-
     int check = 0;
     struct Token *t2 = *t;
     if ((node = and_or(&t2)) == 0)
