@@ -39,6 +39,7 @@ struct AST *case_clause(struct Token **t)
     if (!tmp || !(cur_case_item = case_item(&tmp)))
         return NULL;
     add_case(origin, cur_case_item);
+    *t = tmp;
     while (1)
     {
         if(!tmp || strcmp(";;", tmp->name))
@@ -52,11 +53,17 @@ struct AST *case_clause(struct Token **t)
         if(!tmp || !(cur_case_item = case_item(&tmp)))
             break;
         add_case(origin, cur_case_item);
+        *t = tmp;
     }
     if(tmp && !strcmp(";;", tmp->name))
+    {
         tmp = tmp->next;
+        *t = tmp;
+    }
     while(tmp && !strcmp("\n", tmp->name))
+    {
         tmp = tmp->next;
-    *t = tmp;
+        *t = tmp;
+    }
     return origin;
 }
