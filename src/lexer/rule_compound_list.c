@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <sys/wait.h>
 #include "include/rule.h"
 
 struct AST *compound_init()
@@ -18,6 +22,63 @@ struct AST *compound_init()
     }
     node->self = token;
     return node;
+}
+
+int my_exec(char *cmd[])
+{
+    int res = 0;
+    pid_t pid = fork();
+    if (pid == -1)
+        fprintf(stderr, "fork failed in compound\n");
+    if(!pid)
+    {
+        if(execvp(cmd[0], cmd) < 0)
+        {
+            fprintf(stderr, "execvp failed\n");
+        }
+    }
+    else
+    {
+        int wstatus;
+        waitpid(pid, &wstatus, 0);
+        res = WIFEXITED(wstatus);
+        if (res)
+            res = !WEXITSTATUS(wstatus);
+    }
+    return res;
+}
+
+int exec_init(struct AST *node, int *index)
+{
+    char *my_cmd[512];
+    int i = 0;
+    char *cur_name;
+    for(; *index < node->nb_child && i < 511; (*index)++, ++i)
+    {
+        cur_name = node->child[*index]->self->name;
+        my_cmd[i] = cur_name;
+        if(!strcmp(cur_name, ";") || !strcmp(cur_name, "&") 
+            || !strcmp(cur_name, "\n"))
+            break;
+    }
+    (*index)++;
+    i++;
+    my_cmd[i] = NULL;
+    return my_exec(my_cmd);
+
+}
+
+void foo_compound(struct AST *node)
+{
+    if(!node || !node->child[0])
+        return;
+    int index = 0;
+    int res = 0;
+    while(index < node->nb_child)
+    {
+        res = exec_init(node, &index);
+    }
+    node->res = res;
 }
 
 void add_compound(struct AST *compound, struct AST *new)

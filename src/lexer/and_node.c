@@ -69,6 +69,10 @@ struct AST *and_or(struct Token **t)
         {
             *t = cpy;
             struct AST *node = operator_init(name);
+            if(!strcmp(name->name, "&&"))
+                node->foo = foo_and;
+            else
+                node->foo = foo_or;
             node->child[0] = left_body;
             node->child[1] = right_body;
             return node;
