@@ -35,7 +35,6 @@ struct AST *rule_if(struct Token **t)
     struct AST *else_body;
     struct Token *name;
 
-
     struct Token *tmp = *t;
     if (strcmp("if", tmp->name) != 0)
     {
@@ -43,7 +42,7 @@ struct AST *rule_if(struct Token **t)
     }
     name = tmp;
     tmp = tmp->next;
-    if (tmp == NULL || (condition = list(&tmp)) == NULL)
+    if (tmp == NULL || (condition = compound_list(&tmp)) == NULL)
     {
         return NULL;
     }
@@ -58,9 +57,7 @@ struct AST *rule_if(struct Token **t)
         return NULL;
     }
     tmp = tmp->next;
-    if (tmp == NULL || (if_body = list(&tmp)) == NULL)
-    {
-        AST_destroy(condition);
+    if (tmp == NULL || (if_body = compound_list(&tmp)) == NULL)
         return NULL;
     }
     else_body = else_clause(&tmp);
