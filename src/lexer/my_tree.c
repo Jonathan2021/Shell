@@ -43,3 +43,17 @@ void AST_destroy(struct AST *s)
     free(s->child);
     free(s);
 }
+
+void add_list(struct AST *l, struct AST *a)
+{
+    l->nb_child++;
+    l->child = realloc(l->child, l->nb_child * sizeof(struct AST *));
+    l->child[l->nb_child - 1] = a;
+}
+
+void free_l(struct AST *ast)
+{
+    free(ast->self);
+    free(ast->child);
+    free(ast);
+}
