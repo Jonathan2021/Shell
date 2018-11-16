@@ -7,7 +7,7 @@ struct AST *AST_init(int nb_child)
     struct AST *new = malloc(sizeof(struct AST));
     if (new == NULL)
         return NULL;
-    new->child = malloc(sizeof(struct AST) * nb_child);
+    new->child = malloc(sizeof(struct AST *) * nb_child);
     new->nb_child = nb_child;
     for (int i = 0; i < nb_child; i++)
     {
@@ -16,6 +16,7 @@ struct AST *AST_init(int nb_child)
     new->res = 0;
     return new;
 }
+/*
 void AST_print_prefix(const struct AST *tree)
 {
     if (tree != NULL)
@@ -26,7 +27,7 @@ void AST_print_prefix(const struct AST *tree)
             AST_print_infix(tree->child[i]);
         }
     }
-}
+}*/
 
 void AST_destroy(struct AST *s)
 {

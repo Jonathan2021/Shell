@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/lexer_struct.h"
-
+#include "include/my_tree.h"
+#include "include/rule.h"
+#include "../print_ast/include/print_ast.h"
 struct Token* init(char *name, char *type)
 {
     struct Token *l = malloc(sizeof(struct Token));
@@ -12,19 +14,19 @@ struct Token* init(char *name, char *type)
 
 struct Token *exemple()
 {
-    struct Token *res = init("q", "rien");
-    /*res->next = init("pwd", "WORD");
-    res->next->next = init("&&", "LOGICAL_AND");
+    struct Token *res = init("if", "IF");
+    res->next = init("pwd", "WORD");
+    res->next->next = init("&&", "OP_LOGIQUE");
     res->next->next->next = init("ls", "WORD");
     res->next->next->next->next = init(";", "SEMICOLON");
     res->next->next->next->next->next = init("then", "THEN");
     struct Token *a = res->next->next->next->next->next;
     a->next = init("cd", "WORD");
     a->next->next = init(";", "SEMICOLON");
-    a->next->next->next = init("fi", "FI");*/
-    //a->next->next->next->next = init("alias", "WORD");
-    //a->next->next->next->next->next = init(";", "SEMICOLON");
-    //a->next->next->next->next->next->next = init("fi", "FI");
+    a->next->next->next = init("fi", "FI");
+ //   a->next->next->next->next = init("alias", "WORD");
+   // a->next->next->next->next->next = init(";", "SEMICOLON");
+   // a->next->next->next->next->next->next = init("fi", "FI");
     return res;
 }
 
@@ -39,5 +41,9 @@ int main()
 {
     struct Token *t = exemple();
     print_t(t);
-    printf("%d", input(&t));
+    struct AST *tree = input(&t);
+    if (tree == NULL)
+        printf("null");
+    else
+        create_dot(tree, "output.gv");
 }

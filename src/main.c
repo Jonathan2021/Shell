@@ -9,6 +9,9 @@
 #include <sys/stat.h>
 #include "include/shell.h"
 #include "lexer/include/lexer_struct.h"
+#include "lexer/include/my_tree.h"
+#include "lexer/include/rule.h"
+#include "print_ast/include/print_ast.h"
 
 
 void add_token(struct Token **token, char *str)
@@ -79,7 +82,11 @@ void print_t(struct Token *t)
 }
 struct Token *lexer(struct Token *t)
 {
-    printf("\nResult: %d", input(&t));
+    struct AST *ast = input(&t);
+    if (ast == NULL)
+        printf("null");
+    else
+        create_dot(ast, "output.gv");
     return t;
 }
 void DestroyToken(struct Token *t)
@@ -88,7 +95,7 @@ void DestroyToken(struct Token *t)
         DestroyToken(t->next);
     free(t);
 }
-struct Token*carving(void)
+struct Token *carving(void)
 {
     char str[4095];
     int ret = 0;
