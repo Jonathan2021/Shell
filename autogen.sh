@@ -15,6 +15,9 @@ else
     if [ -f "output.gv" ] ; then
         rm output.gv
     fi
+    if [ -f "outfile.ps" ] ; then
+        rm outfile.ps
+    fi
     rm -rf autom4te.cache/ compile config.h.in Makefile missing \
     aclocal.m4 install-sh depcomp Makefile.in
 fi

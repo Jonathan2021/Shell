@@ -115,8 +115,8 @@ void read_isatty(void)
             exit(0);
         }
         token = parse_path(token,str);
-        if (check_option(str))
-            ret = 1;
+ /*       if (check_option(str))
+            ret = 1;*/
         free(cpy);
     }
     struct Token *tmp = token;

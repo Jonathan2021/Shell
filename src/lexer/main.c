@@ -55,6 +55,8 @@ int main()
     struct AST *tree = input(&t);
     if (tree == NULL)
         printf("null");
+    else
+        create_dot(tree, "output.gv");
     AST_destroy(tree);
     f_tt(c);
 }
