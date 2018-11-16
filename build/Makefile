@@ -102,9 +102,19 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_42sh_OBJECTS = ../src/main.$(OBJEXT) ../src/lexer/lexer.$(OBJEXT)
+am_42sh_OBJECTS = src/42sh-main.$(OBJEXT) \
+	./src/lexer/42sh-and_node.$(OBJEXT) \
+	./src/lexer/42sh-if_node.$(OBJEXT) \
+	./src/lexer/42sh-rule_list.$(OBJEXT) \
+	./src/lexer/42sh-rule_input.$(OBJEXT) \
+	./src/lexer/42sh-else_node.$(OBJEXT) \
+	./src/lexer/42sh-word_node.$(OBJEXT) \
+	./src/lexer/42sh-my_tree.$(OBJEXT) \
+	./src/print_ast/42sh-print_ast.$(OBJEXT)
 42sh_OBJECTS = $(am_42sh_OBJECTS)
 42sh_LDADD = $(LDADD)
+42sh_LINK = $(CCLD) $(42sh_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+	-o $@
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
 am__v_P_0 = false
@@ -121,6 +131,10 @@ DEFAULT_INCLUDES = -I.
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+am__v_lt_1 = 
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 AM_V_CC = $(am__v_CC_$(V))
@@ -180,13 +194,13 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/julie/Documents/42sh/42SH/build/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/chemla/Documents/42SH/build/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
-AUTOCONF = ${SHELL} /home/julie/Documents/42sh/42SH/build/missing autoconf
-AUTOHEADER = ${SHELL} /home/julie/Documents/42sh/42SH/build/missing autoheader
-AUTOMAKE = ${SHELL} /home/julie/Documents/42sh/42SH/build/missing automake-1.15
-AWK = gawk
+AUTOCONF = ${SHELL} /home/chemla/Documents/42SH/build/missing autoconf
+AUTOHEADER = ${SHELL} /home/chemla/Documents/42SH/build/missing autoheader
+AUTOMAKE = ${SHELL} /home/chemla/Documents/42SH/build/missing automake-1.15
+AWK = mawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
@@ -207,7 +221,7 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/julie/Documents/42sh/42SH/build/missing makeinfo
+MAKEINFO = ${SHELL} /home/chemla/Documents/42SH/build/missing makeinfo
 MKDIR_P = /bin/mkdir -p
 OBJEXT = o
 PACKAGE = 42sh
@@ -222,10 +236,10 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = 
 VERSION = 0.0.1
-abs_builddir = /home/julie/Documents/42sh/42SH/build
-abs_srcdir = /home/julie/Documents/42sh/42SH/build
-abs_top_builddir = /home/julie/Documents/42sh/42SH/build
-abs_top_srcdir = /home/julie/Documents/42sh/42SH/build
+abs_builddir = /home/chemla/Documents/42SH/build
+abs_srcdir = /home/chemla/Documents/42SH/build
+abs_top_builddir = /home/chemla/Documents/42SH/build
+abs_top_srcdir = /home/chemla/Documents/42SH/build
 ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
@@ -244,7 +258,7 @@ host_alias =
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/julie/Documents/42sh/42SH/build/install-sh
+install_sh = ${SHELL} /home/chemla/Documents/42SH/build/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -266,10 +280,17 @@ top_build_prefix =
 top_builddir = .
 top_srcdir = .
 AUTOMAKE_OPTIONS = subdir-objects
-42sh_SOURCES = \
-	../src/main.c \
-	../src/lexer/lexer.c
+42sh_SOURCES = src/main.c \
+	./src/lexer/and_node.c \
+	./src/lexer/if_node.c \
+	./src/lexer/rule_list.c \
+	./src/lexer/rule_input.c \
+	./src/lexer/else_node.c \
+	./src/lexer/word_node.c \
+	./src/lexer/my_tree.c \
+	./src/print_ast/print_ast.c
 
+42sh_CFLAGS = -Wall -Wextra -Werror -std=c99 -peantic
 all: all-am
 
 .SUFFIXES:
@@ -349,37 +370,66 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-../src/$(am__dirstamp):
-	@$(MKDIR_P) ../src
-	@: > ../src/$(am__dirstamp)
-../src/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) ../src/$(DEPDIR)
-	@: > ../src/$(DEPDIR)/$(am__dirstamp)
-../src/main.$(OBJEXT): ../src/$(am__dirstamp) \
-	../src/$(DEPDIR)/$(am__dirstamp)
-../src/lexer/$(am__dirstamp):
-	@$(MKDIR_P) ../src/lexer
-	@: > ../src/lexer/$(am__dirstamp)
-../src/lexer/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) ../src/lexer/$(DEPDIR)
-	@: > ../src/lexer/$(DEPDIR)/$(am__dirstamp)
-../src/lexer/lexer.$(OBJEXT): ../src/lexer/$(am__dirstamp) \
-	../src/lexer/$(DEPDIR)/$(am__dirstamp)
+src/$(am__dirstamp):
+	@$(MKDIR_P) src
+	@: > src/$(am__dirstamp)
+src/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) src/$(DEPDIR)
+	@: > src/$(DEPDIR)/$(am__dirstamp)
+src/42sh-main.$(OBJEXT): src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/lexer/$(am__dirstamp):
+	@$(MKDIR_P) ./src/lexer
+	@: > src/lexer/$(am__dirstamp)
+src/lexer/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) ./src/lexer/$(DEPDIR)
+	@: > src/lexer/$(DEPDIR)/$(am__dirstamp)
+./src/lexer/42sh-and_node.$(OBJEXT): src/lexer/$(am__dirstamp) \
+	src/lexer/$(DEPDIR)/$(am__dirstamp)
+./src/lexer/42sh-if_node.$(OBJEXT): src/lexer/$(am__dirstamp) \
+	src/lexer/$(DEPDIR)/$(am__dirstamp)
+./src/lexer/42sh-rule_list.$(OBJEXT): src/lexer/$(am__dirstamp) \
+	src/lexer/$(DEPDIR)/$(am__dirstamp)
+./src/lexer/42sh-rule_input.$(OBJEXT): src/lexer/$(am__dirstamp) \
+	src/lexer/$(DEPDIR)/$(am__dirstamp)
+./src/lexer/42sh-else_node.$(OBJEXT): src/lexer/$(am__dirstamp) \
+	src/lexer/$(DEPDIR)/$(am__dirstamp)
+./src/lexer/42sh-word_node.$(OBJEXT): src/lexer/$(am__dirstamp) \
+	src/lexer/$(DEPDIR)/$(am__dirstamp)
+./src/lexer/42sh-my_tree.$(OBJEXT): src/lexer/$(am__dirstamp) \
+	src/lexer/$(DEPDIR)/$(am__dirstamp)
+src/print_ast/$(am__dirstamp):
+	@$(MKDIR_P) ./src/print_ast
+	@: > src/print_ast/$(am__dirstamp)
+src/print_ast/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) ./src/print_ast/$(DEPDIR)
+	@: > src/print_ast/$(DEPDIR)/$(am__dirstamp)
+./src/print_ast/42sh-print_ast.$(OBJEXT):  \
+	src/print_ast/$(am__dirstamp) \
+	src/print_ast/$(DEPDIR)/$(am__dirstamp)
 
 42sh$(EXEEXT): $(42sh_OBJECTS) $(42sh_DEPENDENCIES) $(EXTRA_42sh_DEPENDENCIES) 
 	@rm -f 42sh$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(42sh_OBJECTS) $(42sh_LDADD) $(LIBS)
+	$(AM_V_CCLD)$(42sh_LINK) $(42sh_OBJECTS) $(42sh_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
-	-rm -f ../src/*.$(OBJEXT)
-	-rm -f ../src/lexer/*.$(OBJEXT)
+	-rm -f ./src/lexer/*.$(OBJEXT)
+	-rm -f ./src/print_ast/*.$(OBJEXT)
+	-rm -f src/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
-include ../src/$(DEPDIR)/main.Po
-include ../src/lexer/$(DEPDIR)/lexer.Po
+include ./src/lexer/$(DEPDIR)/42sh-and_node.Po
+include ./src/lexer/$(DEPDIR)/42sh-else_node.Po
+include ./src/lexer/$(DEPDIR)/42sh-if_node.Po
+include ./src/lexer/$(DEPDIR)/42sh-my_tree.Po
+include ./src/lexer/$(DEPDIR)/42sh-rule_input.Po
+include ./src/lexer/$(DEPDIR)/42sh-rule_list.Po
+include ./src/lexer/$(DEPDIR)/42sh-word_node.Po
+include ./src/print_ast/$(DEPDIR)/42sh-print_ast.Po
+include src/$(DEPDIR)/42sh-main.Po
 
 .c.o:
 	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -396,6 +446,132 @@ include ../src/lexer/$(DEPDIR)/lexer.Po
 #	$(AM_V_CC)source='$<' object='$@' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+src/42sh-main.o: src/main.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT src/42sh-main.o -MD -MP -MF src/$(DEPDIR)/42sh-main.Tpo -c -o src/42sh-main.o `test -f 'src/main.c' || echo '$(srcdir)/'`src/main.c
+	$(AM_V_at)$(am__mv) src/$(DEPDIR)/42sh-main.Tpo src/$(DEPDIR)/42sh-main.Po
+#	$(AM_V_CC)source='src/main.c' object='src/42sh-main.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o src/42sh-main.o `test -f 'src/main.c' || echo '$(srcdir)/'`src/main.c
+
+src/42sh-main.obj: src/main.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT src/42sh-main.obj -MD -MP -MF src/$(DEPDIR)/42sh-main.Tpo -c -o src/42sh-main.obj `if test -f 'src/main.c'; then $(CYGPATH_W) 'src/main.c'; else $(CYGPATH_W) '$(srcdir)/src/main.c'; fi`
+	$(AM_V_at)$(am__mv) src/$(DEPDIR)/42sh-main.Tpo src/$(DEPDIR)/42sh-main.Po
+#	$(AM_V_CC)source='src/main.c' object='src/42sh-main.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o src/42sh-main.obj `if test -f 'src/main.c'; then $(CYGPATH_W) 'src/main.c'; else $(CYGPATH_W) '$(srcdir)/src/main.c'; fi`
+
+./src/lexer/42sh-and_node.o: ./src/lexer/and_node.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-and_node.o -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-and_node.Tpo -c -o ./src/lexer/42sh-and_node.o `test -f './src/lexer/and_node.c' || echo '$(srcdir)/'`./src/lexer/and_node.c
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-and_node.Tpo ./src/lexer/$(DEPDIR)/42sh-and_node.Po
+#	$(AM_V_CC)source='./src/lexer/and_node.c' object='./src/lexer/42sh-and_node.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-and_node.o `test -f './src/lexer/and_node.c' || echo '$(srcdir)/'`./src/lexer/and_node.c
+
+./src/lexer/42sh-and_node.obj: ./src/lexer/and_node.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-and_node.obj -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-and_node.Tpo -c -o ./src/lexer/42sh-and_node.obj `if test -f './src/lexer/and_node.c'; then $(CYGPATH_W) './src/lexer/and_node.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/and_node.c'; fi`
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-and_node.Tpo ./src/lexer/$(DEPDIR)/42sh-and_node.Po
+#	$(AM_V_CC)source='./src/lexer/and_node.c' object='./src/lexer/42sh-and_node.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-and_node.obj `if test -f './src/lexer/and_node.c'; then $(CYGPATH_W) './src/lexer/and_node.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/and_node.c'; fi`
+
+./src/lexer/42sh-if_node.o: ./src/lexer/if_node.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-if_node.o -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-if_node.Tpo -c -o ./src/lexer/42sh-if_node.o `test -f './src/lexer/if_node.c' || echo '$(srcdir)/'`./src/lexer/if_node.c
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-if_node.Tpo ./src/lexer/$(DEPDIR)/42sh-if_node.Po
+#	$(AM_V_CC)source='./src/lexer/if_node.c' object='./src/lexer/42sh-if_node.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-if_node.o `test -f './src/lexer/if_node.c' || echo '$(srcdir)/'`./src/lexer/if_node.c
+
+./src/lexer/42sh-if_node.obj: ./src/lexer/if_node.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-if_node.obj -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-if_node.Tpo -c -o ./src/lexer/42sh-if_node.obj `if test -f './src/lexer/if_node.c'; then $(CYGPATH_W) './src/lexer/if_node.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/if_node.c'; fi`
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-if_node.Tpo ./src/lexer/$(DEPDIR)/42sh-if_node.Po
+#	$(AM_V_CC)source='./src/lexer/if_node.c' object='./src/lexer/42sh-if_node.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-if_node.obj `if test -f './src/lexer/if_node.c'; then $(CYGPATH_W) './src/lexer/if_node.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/if_node.c'; fi`
+
+./src/lexer/42sh-rule_list.o: ./src/lexer/rule_list.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-rule_list.o -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-rule_list.Tpo -c -o ./src/lexer/42sh-rule_list.o `test -f './src/lexer/rule_list.c' || echo '$(srcdir)/'`./src/lexer/rule_list.c
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-rule_list.Tpo ./src/lexer/$(DEPDIR)/42sh-rule_list.Po
+#	$(AM_V_CC)source='./src/lexer/rule_list.c' object='./src/lexer/42sh-rule_list.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-rule_list.o `test -f './src/lexer/rule_list.c' || echo '$(srcdir)/'`./src/lexer/rule_list.c
+
+./src/lexer/42sh-rule_list.obj: ./src/lexer/rule_list.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-rule_list.obj -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-rule_list.Tpo -c -o ./src/lexer/42sh-rule_list.obj `if test -f './src/lexer/rule_list.c'; then $(CYGPATH_W) './src/lexer/rule_list.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/rule_list.c'; fi`
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-rule_list.Tpo ./src/lexer/$(DEPDIR)/42sh-rule_list.Po
+#	$(AM_V_CC)source='./src/lexer/rule_list.c' object='./src/lexer/42sh-rule_list.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-rule_list.obj `if test -f './src/lexer/rule_list.c'; then $(CYGPATH_W) './src/lexer/rule_list.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/rule_list.c'; fi`
+
+./src/lexer/42sh-rule_input.o: ./src/lexer/rule_input.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-rule_input.o -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-rule_input.Tpo -c -o ./src/lexer/42sh-rule_input.o `test -f './src/lexer/rule_input.c' || echo '$(srcdir)/'`./src/lexer/rule_input.c
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-rule_input.Tpo ./src/lexer/$(DEPDIR)/42sh-rule_input.Po
+#	$(AM_V_CC)source='./src/lexer/rule_input.c' object='./src/lexer/42sh-rule_input.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-rule_input.o `test -f './src/lexer/rule_input.c' || echo '$(srcdir)/'`./src/lexer/rule_input.c
+
+./src/lexer/42sh-rule_input.obj: ./src/lexer/rule_input.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-rule_input.obj -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-rule_input.Tpo -c -o ./src/lexer/42sh-rule_input.obj `if test -f './src/lexer/rule_input.c'; then $(CYGPATH_W) './src/lexer/rule_input.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/rule_input.c'; fi`
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-rule_input.Tpo ./src/lexer/$(DEPDIR)/42sh-rule_input.Po
+#	$(AM_V_CC)source='./src/lexer/rule_input.c' object='./src/lexer/42sh-rule_input.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-rule_input.obj `if test -f './src/lexer/rule_input.c'; then $(CYGPATH_W) './src/lexer/rule_input.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/rule_input.c'; fi`
+
+./src/lexer/42sh-else_node.o: ./src/lexer/else_node.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-else_node.o -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-else_node.Tpo -c -o ./src/lexer/42sh-else_node.o `test -f './src/lexer/else_node.c' || echo '$(srcdir)/'`./src/lexer/else_node.c
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-else_node.Tpo ./src/lexer/$(DEPDIR)/42sh-else_node.Po
+#	$(AM_V_CC)source='./src/lexer/else_node.c' object='./src/lexer/42sh-else_node.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-else_node.o `test -f './src/lexer/else_node.c' || echo '$(srcdir)/'`./src/lexer/else_node.c
+
+./src/lexer/42sh-else_node.obj: ./src/lexer/else_node.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-else_node.obj -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-else_node.Tpo -c -o ./src/lexer/42sh-else_node.obj `if test -f './src/lexer/else_node.c'; then $(CYGPATH_W) './src/lexer/else_node.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/else_node.c'; fi`
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-else_node.Tpo ./src/lexer/$(DEPDIR)/42sh-else_node.Po
+#	$(AM_V_CC)source='./src/lexer/else_node.c' object='./src/lexer/42sh-else_node.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-else_node.obj `if test -f './src/lexer/else_node.c'; then $(CYGPATH_W) './src/lexer/else_node.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/else_node.c'; fi`
+
+./src/lexer/42sh-word_node.o: ./src/lexer/word_node.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-word_node.o -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-word_node.Tpo -c -o ./src/lexer/42sh-word_node.o `test -f './src/lexer/word_node.c' || echo '$(srcdir)/'`./src/lexer/word_node.c
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-word_node.Tpo ./src/lexer/$(DEPDIR)/42sh-word_node.Po
+#	$(AM_V_CC)source='./src/lexer/word_node.c' object='./src/lexer/42sh-word_node.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-word_node.o `test -f './src/lexer/word_node.c' || echo '$(srcdir)/'`./src/lexer/word_node.c
+
+./src/lexer/42sh-word_node.obj: ./src/lexer/word_node.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-word_node.obj -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-word_node.Tpo -c -o ./src/lexer/42sh-word_node.obj `if test -f './src/lexer/word_node.c'; then $(CYGPATH_W) './src/lexer/word_node.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/word_node.c'; fi`
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-word_node.Tpo ./src/lexer/$(DEPDIR)/42sh-word_node.Po
+#	$(AM_V_CC)source='./src/lexer/word_node.c' object='./src/lexer/42sh-word_node.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-word_node.obj `if test -f './src/lexer/word_node.c'; then $(CYGPATH_W) './src/lexer/word_node.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/word_node.c'; fi`
+
+./src/lexer/42sh-my_tree.o: ./src/lexer/my_tree.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-my_tree.o -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-my_tree.Tpo -c -o ./src/lexer/42sh-my_tree.o `test -f './src/lexer/my_tree.c' || echo '$(srcdir)/'`./src/lexer/my_tree.c
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-my_tree.Tpo ./src/lexer/$(DEPDIR)/42sh-my_tree.Po
+#	$(AM_V_CC)source='./src/lexer/my_tree.c' object='./src/lexer/42sh-my_tree.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-my_tree.o `test -f './src/lexer/my_tree.c' || echo '$(srcdir)/'`./src/lexer/my_tree.c
+
+./src/lexer/42sh-my_tree.obj: ./src/lexer/my_tree.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/lexer/42sh-my_tree.obj -MD -MP -MF ./src/lexer/$(DEPDIR)/42sh-my_tree.Tpo -c -o ./src/lexer/42sh-my_tree.obj `if test -f './src/lexer/my_tree.c'; then $(CYGPATH_W) './src/lexer/my_tree.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/my_tree.c'; fi`
+	$(AM_V_at)$(am__mv) ./src/lexer/$(DEPDIR)/42sh-my_tree.Tpo ./src/lexer/$(DEPDIR)/42sh-my_tree.Po
+#	$(AM_V_CC)source='./src/lexer/my_tree.c' object='./src/lexer/42sh-my_tree.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/lexer/42sh-my_tree.obj `if test -f './src/lexer/my_tree.c'; then $(CYGPATH_W) './src/lexer/my_tree.c'; else $(CYGPATH_W) '$(srcdir)/./src/lexer/my_tree.c'; fi`
+
+./src/print_ast/42sh-print_ast.o: ./src/print_ast/print_ast.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/print_ast/42sh-print_ast.o -MD -MP -MF ./src/print_ast/$(DEPDIR)/42sh-print_ast.Tpo -c -o ./src/print_ast/42sh-print_ast.o `test -f './src/print_ast/print_ast.c' || echo '$(srcdir)/'`./src/print_ast/print_ast.c
+	$(AM_V_at)$(am__mv) ./src/print_ast/$(DEPDIR)/42sh-print_ast.Tpo ./src/print_ast/$(DEPDIR)/42sh-print_ast.Po
+#	$(AM_V_CC)source='./src/print_ast/print_ast.c' object='./src/print_ast/42sh-print_ast.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/print_ast/42sh-print_ast.o `test -f './src/print_ast/print_ast.c' || echo '$(srcdir)/'`./src/print_ast/print_ast.c
+
+./src/print_ast/42sh-print_ast.obj: ./src/print_ast/print_ast.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -MT ./src/print_ast/42sh-print_ast.obj -MD -MP -MF ./src/print_ast/$(DEPDIR)/42sh-print_ast.Tpo -c -o ./src/print_ast/42sh-print_ast.obj `if test -f './src/print_ast/print_ast.c'; then $(CYGPATH_W) './src/print_ast/print_ast.c'; else $(CYGPATH_W) '$(srcdir)/./src/print_ast/print_ast.c'; fi`
+	$(AM_V_at)$(am__mv) ./src/print_ast/$(DEPDIR)/42sh-print_ast.Tpo ./src/print_ast/$(DEPDIR)/42sh-print_ast.Po
+#	$(AM_V_CC)source='./src/print_ast/print_ast.c' object='./src/print_ast/42sh-print_ast.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(42sh_CFLAGS) $(CFLAGS) -c -o ./src/print_ast/42sh-print_ast.obj `if test -f './src/print_ast/print_ast.c'; then $(CYGPATH_W) './src/print_ast/print_ast.c'; else $(CYGPATH_W) '$(srcdir)/./src/print_ast/print_ast.c'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -652,10 +828,12 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-rm -f ../src/$(DEPDIR)/$(am__dirstamp)
-	-rm -f ../src/$(am__dirstamp)
-	-rm -f ../src/lexer/$(DEPDIR)/$(am__dirstamp)
-	-rm -f ../src/lexer/$(am__dirstamp)
+	-rm -f src/$(DEPDIR)/$(am__dirstamp)
+	-rm -f src/$(am__dirstamp)
+	-rm -f src/lexer/$(DEPDIR)/$(am__dirstamp)
+	-rm -f src/lexer/$(am__dirstamp)
+	-rm -f src/print_ast/$(DEPDIR)/$(am__dirstamp)
+	-rm -f src/print_ast/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -666,7 +844,7 @@ clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-	-rm -rf ../src/$(DEPDIR) ../src/lexer/$(DEPDIR)
+	-rm -rf ./src/lexer/$(DEPDIR) ./src/print_ast/$(DEPDIR) src/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -714,7 +892,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-	-rm -rf ../src/$(DEPDIR) ../src/lexer/$(DEPDIR)
+	-rm -rf ./src/lexer/$(DEPDIR) ./src/print_ast/$(DEPDIR) src/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
