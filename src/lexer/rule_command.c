@@ -31,9 +31,9 @@ struct AST *command(struct Token **t)
     struct AST *to_add;
     if (tmp && (to_add = simple_command(&tmp)))
     {
+        free_l(res);
         *t = tmp;
-        add_cmd(res, to_add);
-        return res;
+        return to_add;
     }
     if (tmp && ((to_add = shell_command(&tmp)) || (to_add = funcdec(&tmp))))
     {
@@ -43,6 +43,12 @@ struct AST *command(struct Token **t)
         {
             add_cmd(res, to_add);
             *t = tmp;
+        }
+        if (res->nb_child == 1)
+        {
+            to_add = res->child[0];
+            free_l(res);
+            return to_add;
         }
         return res;
     }
