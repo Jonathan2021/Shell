@@ -10,13 +10,7 @@ struct AST *case_init(struct Token *token)
     node->self = token;
     return node;
 }
-void add_case(struct AST *case_ast, struct AST *new)
-{
-    case_ast->nb_child++;
-    case_ast->child = realloc(case_ast->child, \
-    case_ast->nb_child * sizeof(struct AST *));
-    case_ast->child[case_ast->nb_child -1] = new;
-}
+
 
 struct AST *case_item(struct Token **t)
 {

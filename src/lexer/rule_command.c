@@ -13,6 +13,7 @@ struct AST *command_init()
         return NULL;
     token->name = "command";
     token->type = "COMMAND";
+    return node;
 }
 
 void add_cmd(struct AST *cmd, struct AST *new)
@@ -39,39 +40,12 @@ struct AST *command(struct Token **t)
         *t = tmp;
         while (tmp && (to_add = redirection(&tmp)))
         {
-            struct AST *red = command_init(*t);
-            if ((red = redirection(&tmp)) != NULL)
-            {
-                add_cmd(res, red);
-                *t = tmp;
-            }
-            else
-                return res;
-            if (tmp == NULL)
-                return res;
-        }
-    }
-    tmp = *t;
-    if ((cmd = funcdec(&tmp)) != NULL)
-    {
-        *t = tmp;
-        if (tmp == NULL)
-            return cmd;
-        while (1)
-        {
-            struct AST *red = command_init(*t);
-            if ((red = redirection(&tmp)) != NULL)
-            {
-                add_cmd(cmd, red);
-                *t = tmp;
-            }
-            else
-                return cmd;
-            if (tmp == NULL)
-                return cmd;
+            add_cmd(res, to_add);
+            *t = tmp;
         }
         return res;
     }
     AST_destroy(res);
     return NULL;
 }
+
