@@ -34,11 +34,8 @@ struct AST *rule_if(struct Token **t)
     struct AST *if_body;
     struct AST *else_body;
     struct Token *name;
-    name = name;
-    else_body = else_body;
 
     struct Token *tmp = *t;
-    
     if (strcmp("if", tmp->name) != 0)
     {
         return NULL;
@@ -62,7 +59,6 @@ struct AST *rule_if(struct Token **t)
     tmp = tmp->next;
     if (tmp == NULL || (if_body = compound_list(&tmp)) == NULL)
         return NULL;
-    }
     else_body = else_clause(&tmp);
     if (tmp == NULL || strcmp("fi", tmp->name) != 0)
     {

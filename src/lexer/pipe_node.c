@@ -12,32 +12,7 @@ struct AST *pipe_init(struct Token *token)
     return node;
 }
 
-struct AST *pipeline(struct Token **t)
-{
-    struct AST *origin = NULL;
-    struct Token *tmp = *t;
-    if (tmp && !strcmp("!", tmp->name))
-    {
-        origin = bang_init(tmp);
-        tmp = tmp->next;
-        if ((origin->child[0] = r_pipeline(tmp)) == NULL)
-        {
-            AST_destroy(origin);
-            return NULL;
-        }
-        else
-        {
-            *t = tmp;
-            return origin;
-        }
-    }
-    if ((origin = r_pipeline(tmp)) == NULL)
-    {
-        return NULL;
-    }
-    *t = tmp;
-    return origin;
-}
+
 
 /* struct AST *pipeline(struct Token **t)
 {
@@ -88,7 +63,6 @@ struct AST *pipeline(struct Token **t)
 
 struct AST *r_pipeline(struct Token **t)
 {
-    struct AST *origin = NULL;
     struct AST *left_child;
     struct AST *right_child;
     struct Token *name;
@@ -122,4 +96,30 @@ struct AST *r_pipeline(struct Token **t)
     node->child[0] = left_child;
     node->child[1] = right_child;
     return node;
+}
+struct AST *pipeline(struct Token **t)
+{
+    struct AST *origin = NULL;
+    struct Token *tmp = *t;
+    if (tmp && !strcmp("!", tmp->name))
+    {
+        origin = bang_init(tmp);
+        tmp = tmp->next;
+        if ((origin->child[0] = r_pipeline(&tmp)) == NULL)
+        {
+            AST_destroy(origin);
+            return NULL;
+        }
+        else
+        {
+            *t = tmp;
+            return origin;
+        }
+    }
+    if ((origin = r_pipeline(&tmp)) == NULL)
+    {
+        return NULL;
+    }
+    *t = tmp;
+    return origin;
 }
