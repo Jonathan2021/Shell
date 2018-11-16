@@ -15,13 +15,15 @@ struct AST *AST_init(int nb_child);
 void AST_print_infix(const struct AST *tree);
 void AST_destroy(struct AST *s);
 
-struct AST *and_init();
+struct AST *and_init(struct Token *token);
 int foo_and(struct AST *node);
 
-struct AST *or_init();
+struct AST *or_init(struct Token *token);
 int foo_or(struct AST *node);
 
 //un else if est un if qui est mis dans le else_body
-struct AST *if_init();
+struct AST *if_init(struct Token *token);
 int foo_if(struct AST *node);
+
+struct AST *bang_init(struct Token *token);
 #endif /* ! MY_TREE_H */
