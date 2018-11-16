@@ -16,7 +16,10 @@ struct AST *input(struct Token **t)
             return node;
         }
         else
+        {
+            AST_destroy(node);
             return NULL;
+        }
     }
     return NULL;
 }

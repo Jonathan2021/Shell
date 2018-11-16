@@ -23,10 +23,10 @@ struct Token *exemple()
     struct Token *a = res->next->next->next->next->next;
     a->next = init("cd", "WORD");
     a->next->next = init(";", "SEMICOLON");
-    a->next->next->next = init("fi", "FI");
- //   a->next->next->next->next = init("alias", "WORD");
-   // a->next->next->next->next->next = init(";", "SEMICOLON");
-   // a->next->next->next->next->next->next = init("fi", "FI");
+    a->next->next->next = init("else", "ELSE");
+    a->next->next->next->next = init("alias", "WORD");
+    a->next->next->next->next->next = init(";", "SEMICOLON");
+    a->next->next->next->next->next->next = init("fi", "FI");
     return res;
 }
 
@@ -37,13 +37,24 @@ void print_t(struct Token *t)
         printf("%s ",t->name);
     }
 }
+
+void f_tt(struct Token *t)
+{
+    if (t->next != NULL)
+    {
+        f_tt(t->next);
+    }
+    free(t);
+}
+
 int main()
 {
     struct Token *t = exemple();
     print_t(t);
+    struct Token *c = t;
     struct AST *tree = input(&t);
     if (tree == NULL)
         printf("null");
-    else
-        create_dot(tree, "output.gv");
+    AST_destroy(tree);
+    f_tt(c);
 }
