@@ -3,8 +3,8 @@
 
 AC_PREREQ([2.69])
 AC_INIT([42sh], [0.0.1], [])
+AM_INIT_AUTOMAKE([foreign])
 AC_PROG_CC
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 # Checks for programs.
 
 # Checks for libraries.
