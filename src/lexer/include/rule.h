@@ -1,5 +1,5 @@
 #pragma once
-
+#include <string.h>
 struct AST *and_or(struct Token **t);
 struct AST *else_clause(struct Token **t);
 struct AST *rule_if(struct Token **t);
