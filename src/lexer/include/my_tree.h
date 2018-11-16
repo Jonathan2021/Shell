@@ -9,6 +9,7 @@ struct AST
     int nb_child;
     struct AST** child;
     struct Token *self;
+    void (foo*)(struct AST *);
     int res;
 };
 struct AST *AST_init(int nb_child);
