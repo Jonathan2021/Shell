@@ -7,6 +7,7 @@
 #include <err.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <getopt.h>
 #include "include/shell.h"
 #include "lexer/include/lexer_struct.h"
 #include "lexer/include/my_tree.h"
@@ -16,8 +17,6 @@
 
 void add_token(struct Token **token, char *str)
 {
-    if (strcmp(str,"--ast-print") == 0)
-        return;
     char *grammar[20][20] =
     {{"SEMICOLON",";","\0"},
         {"OP_LOGIQUE","&&","||",";;","\0"},
@@ -64,15 +63,43 @@ void add_token(struct Token **token, char *str)
     copy->next = next;
 }
 
-struct Token *parse_path(struct Token *token,char * str)
+struct Token *parse_path(struct Token *token, char **argv, long argc)
 {
-    char *parse;
-    char *delim = {"\n\t "};
-    parse = strtok(str,delim);
-    while (parse)
+    int c = 0;
+    static struct option long_options[] =
+        { {"version",no_argument,0,'v'},
+          {"ver",no_argument,0,'v'},
+          {"norc",  no_argument, 0,'n'},
+          {"ast-print",  no_argument, 0, 'a'},
+          {"type-print",  no_argument, 0, 't'},
+          {0, 0, 0, 0},
+        };
+    int option_index = 0;
+    optind = 0;
+    while ((c = getopt_long (argc,argv, "c:vnat",
+        long_options, &option_index)) != -1)
     {
-        add_token(&token,parse);
-        parse = strtok(NULL,delim);
+        if (c == 'c')
+        {
+            char *parse;
+            char *delim = get_value("IFS");
+            parse = strtok(optarg,delim);
+            while (parse)
+            {
+                add_token(&token,parse);
+                parse = strtok(NULL,delim);
+            }
+        }
+        else if (c == 'a')
+            set_value("--ast-print", "1");
+        else if (c == 'n')
+            reset_value();
+        else if (c == 'v')
+            set_value("version", "1");
+        else if (c == 't')
+            set_value("--type-print", "1");
+        else
+            fprintf(stderr,"[GNU long options] [options] [file]\n");
     }
     return token;
 }
@@ -86,7 +113,7 @@ struct Token *lexer(struct Token *t)
 {
     struct AST *ast = input(&t);
     if (ast == NULL)
-        printf("null");
+        return t;
     else
         create_dot(ast, "output.gv");
     AST_destroy(ast);
@@ -99,94 +126,47 @@ void DestroyToken(struct Token *t)
     free(t);
 }
 
-void read_isatty(void)
-{
-    char str[4095];
-    int ret = 0;
-    struct Token *token = NULL;
-    while(fgets(str,4095,stdin))
-    {
-        char *cpy = malloc(4095);
-        strcpy(cpy,str);
-        ret = 0;
-        if (strncmp(str,"exit",4) == 0)
-        {
-            free(cpy);
-            exit(0);
-        }
-        token = parse_path(token,str);
- /*       if (check_option(str))
-            ret = 1;*/
-        free(cpy);
-    }
-    struct Token *tmp = token;
-    while (tmp)
-    {
-        printf("->%s",tmp->type);
-        tmp = tmp->next;
-    }
-    lexer(token);
-    if (ret == 1)
-    {
-        char chaine[100] = "";
-        FILE *file = fopen("output.gv","r");
-        if (!file)
-            return;
-        printf("\n");
-        while (fgets(chaine,100,file) != NULL)
-        {
-            printf("%s", chaine);
-        }
-        fclose(file);
-    }
-}
 
-struct Token *carving(void)
+struct Token *carving(long argc, char **argv)
 {
     char str[4095];
-    int ret = 0;
-    if (isatty(0))
-        printf("42sh$ ");
-    else
-        {
-            read_isatty();
-            return 0;
-        }
+    printf("42sh$ ");
     struct Token *token = NULL;
     while(fgets(str,4095,stdin))
     {
-        char *cpy = malloc(4095);
-        strcpy(cpy,str);
-        ret = 0;
         token = NULL;
         if (strncmp(str,"exit",4) == 0)
         {
-            free(cpy);
-            exit(0);
+            return 0;
         }
-        token = parse_path(token,str);
+        argc = str_to_argv(argv,str);
+        token = parse_path(token,argv,argc);
         struct Token *tmp = token;
         while (tmp)
         {
-            ret = 1;
             printf("->%s",tmp->type);
             tmp = tmp->next;
         }
-        DestroyToken(tmp);
-        if (ret == 1)
-        {
-            lexer(token);
-            ast_print(cpy);
-            printf("\n");
-        }
-        free(cpy);
-        printf("42sh$ ");
+        lexer(token);
         DestroyToken(token);
+        if (check_option(token))
+        {
+            reset_value();
+            exit(0);
+        }
+        printf("42sh$ ");
     }
     return 0;
 }
-int main(void)
+int main(int argc, char *argv[])
 {
-    carving();
+    FILE *file = fopen("src/file/variable.txt","w+");
+    fprintf(file,"IFS \"\\t \\n\"\n--ast-print \"0\"\nversion \"0\"\n--type-print \"0\"\n");
+    fclose(file);
+    if (isatty(0))
+        carving(argc,argv);
+    else
+        read_isatty();
+    reset_value();
     return 0;
 } 
