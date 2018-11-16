@@ -84,10 +84,10 @@ struct AST *list(struct Token **t)
     {
         t2 = t2->next;
     }
+    *t = t2;
     if (list->nb_child == 1)
     {
         return list->child[0];
     }
-    *t = t2;
     return list;
 }
