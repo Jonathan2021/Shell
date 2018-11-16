@@ -33,7 +33,7 @@ struct AST *and_or(struct Token **t)
 
     struct Token *cpy = *t;
     //int check = 2;
-    if ((left_body = shell_command(&cpy)) == NULL)
+    if ((left_body = pipeline(&cpy)) == NULL)
         return NULL;
     *t = cpy;
     if (cpy == NULL)
