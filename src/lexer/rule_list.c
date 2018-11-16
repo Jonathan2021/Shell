@@ -15,6 +15,12 @@ struct AST *list_init(void)
     return node;
 }
 
+void free_l(struct AST *ast)
+{
+    free(ast->self);
+    free(ast);
+}
+
 void add_list(struct AST *l, struct AST *a)
 {
     l->nb_child++;
@@ -31,13 +37,12 @@ struct AST *list(struct Token **t)
     if ((node = and_or(&t2)) == 0)
         return NULL;
     *t = t2;
-    struct AST *list = list_init();
-    add_list(list, node);
     if (t2 == NULL)
     {
-        // free list;
-        return list->child[0];
+        return node;
     }
+    struct AST *list = list_init();
+    add_list(list, node);
     while (1)
     {
         check = 0;
@@ -49,12 +54,15 @@ struct AST *list(struct Token **t)
             {
                 if (list->nb_child == 1)
                 {
-                    return list->child[0];
+                    node = list->child[0];
+                    free_l(list);
+                    return node;
                 }
                 return list;
             }
             if ((node = and_or(&t2)) == 0)
             {
+                AST_destroy(node);
                 break;
             }
             if (t2 == NULL)
@@ -63,7 +71,9 @@ struct AST *list(struct Token **t)
                 *t = t2;
                 if (list->nb_child == 1)
                 {
-                    return list->child[0];
+                    node = list->child[0];
+                    free_l(list);
+                    return node;
                 }
                 return list;
             }
@@ -76,7 +86,9 @@ struct AST *list(struct Token **t)
         *t = t2;
         if (list->nb_child == 1)
         {
-            return list->child[0];
+            node = list->child[0];
+            free_l(list);
+            return node;
         }
         return list;
     }
@@ -87,7 +99,9 @@ struct AST *list(struct Token **t)
     *t = t2;
     if (list->nb_child == 1)
     {
-        return list->child[0];
+        node = list->child[0];
+        free_l(list);
+        return node;
     }
     return list;
 }
