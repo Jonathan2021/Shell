@@ -3,30 +3,22 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-
-struct AST *input_init()
-{
-    struct Token *token = malloc(sizeof(struct Token));
-    if(!token)
-        return NULL;
-    struct AST *node = AST_init(1);
-    if(!node)
-    {
-        free(token);
-        return NULL;
-    }
-    token->type = "INPUT";
-    token->name = "input";
-    node->self = token;
-    return node;
-}
 struct AST *input(struct Token **t)
 {
-    struct AST *node = input_init();
+    struct AST *node;
     struct Token *tmp = *t;
-    node->child[0] = list(&tmp);
-    if(!tmp || !strcmp(tmp->name, "\n")
-        return node;
-    AST_destroy(node);
+    if ((node = list(&tmp)) != NULL)
+    {
+        if (tmp == NULL)
+        {
+            *t = tmp;
+            return node;
+        }
+        else
+        {
+            AST_destroy(node);
+            return NULL;
+        }
+    }
     return NULL;
 }

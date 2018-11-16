@@ -14,11 +14,10 @@ struct AST *element_init(struct Token *token)
 
 struct AST *element(struct Token **t)
 {
-    struct AST *word;
     struct AST *redir;
     if (strcmp(t[0]->type,"WORD") == 0)
     {
-        struct AST *word = element_init(t);
+        struct AST *word = element_init(*t);
         *t = t[0]->next;
         return word;
     }
