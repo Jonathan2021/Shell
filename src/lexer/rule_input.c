@@ -3,7 +3,6 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-
 struct AST *input(struct Token **t)
 {
     struct AST *node;
@@ -13,11 +12,6 @@ struct AST *input(struct Token **t)
         if (tmp == NULL)
         {
             *t = tmp;
-            return node;
-        }
-        else if (strcmp(tmp->name, "\n") == 0)
-        {
-            *t = t[0]->next;
             return node;
         }
         else
