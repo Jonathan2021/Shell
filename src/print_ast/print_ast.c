@@ -63,15 +63,17 @@ void ast_print(char *str)
     char chaine[100] = "";
     while(option)
     {
-        if (strcmp(option,"--ast-print") == 0)
+        if (strncmp(option,"--ast-print",11) == 0)
         {
             FILE *file = fopen("output.gv","r");
             if (!file)
                 return;
+            printf("\n");
             while (fgets(chaine,100,file) != NULL)
             {
                 printf("%s", chaine);
-            }   
+            }
+            fclose(file);
         }
         option = strtok(NULL," ");
     }
@@ -83,4 +85,5 @@ void ast_print(char *str)
     fprintf(file,"digraph G {\n");
     print_ast(cur,file,0);
     fprintf(file,"}");
+    fclose(file);
  }
