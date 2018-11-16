@@ -1,13 +1,14 @@
 TODO
 
-actualisé:
+DONE:
     - input
     - and_or
     - shell_command
     - rule_if
     - else_clause
+    - print_ast
 
-faire:
+TODO:
     - redirection
     - prefix
     - element-
