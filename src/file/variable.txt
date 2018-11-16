@@ -1,4 +1,4 @@
-IFS "cerise"
-name ""
-epita "super"
-lol "mdr"
+IFS "\t \n"
+--ast-print "0"
+version "0"
+--type-print "0"
