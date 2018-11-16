@@ -290,7 +290,7 @@ AUTOMAKE_OPTIONS = subdir-objects
 	./src/lexer/my_tree.c \
 	./src/print_ast/print_ast.c
 
-42sh_CFLAGS = -Wall -Wextra -Werror -std=c99 -peantic
+42sh_CFLAGS = -Wall -Wextra -Werror -std=c99 -pedantic
 all: all-am
 
 .SUFFIXES:
