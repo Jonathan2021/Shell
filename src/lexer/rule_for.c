@@ -25,7 +25,7 @@ void add_in(struct AST *in, struct Token *token)
 {
     struct AST *new = word_init(token);
     in->nb_child++;
-    in->child = realloc(in->child, in->nb_child * sizeof(struct AST));
+    in->child = realloc(in->child, in->nb_child * sizeof(struct AST *));
     in->child[in->nb_child - 1] = new;
 }
 
