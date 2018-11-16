@@ -121,6 +121,7 @@ struct Token *carving(void)
         if (ret == 1)
         {
             lexer(token);
+            ast_print(str);
             printf("\n");
         }
         if (isatty(0))
