@@ -112,7 +112,10 @@ struct Token *carving(void)
         token = NULL;
         ret = 0;
         if (strncmp(str,"exit",4) == 0)
+        {
+            free(cpy);
             exit(0);
+        }
         token = parse_path(token,str);
         struct Token *tmp = token;
         while (tmp)
