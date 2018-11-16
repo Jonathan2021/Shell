@@ -50,11 +50,33 @@ int print_ast(struct AST *cur, FILE *file, int j)
         char *type_child = color(cur->child[i]);
         fprintf(file,"\"(%d)%s\"%s\n",cpy+1,cur->child[i]->self->name,type_child);
         fprintf(file,"\"(%d)%s\" -> \"(%d)%s\"\n",j,cur->self->name,cpy+1,cur->child[i]->self->name);
-        free(type);
         free(type_child);
         cpy = print_ast(cur->child[i],file, cpy+1);
     }
+    free(type);
     return cpy;
+}
+
+void ast_print(char *str)
+{
+    char *option = strtok(str," ");
+    char chaine[100] = "";
+    while(option)
+    {
+        if (strncmp(option,"--ast-print",11) == 0)
+        {
+            FILE *file = fopen("output.gv","r");
+            if (!file)
+                return;
+            printf("\n");
+            while (fgets(chaine,100,file) != NULL)
+            {
+                printf("%s", chaine);
+            }
+            fclose(file);
+        }
+        option = strtok(NULL," ");
+    }
 }
 
  void create_dot(struct AST *cur, const char *filename)
@@ -63,4 +85,5 @@ int print_ast(struct AST *cur, FILE *file, int j)
     fprintf(file,"digraph G {\n");
     print_ast(cur,file,0);
     fprintf(file,"}");
+    fclose(file);
  }

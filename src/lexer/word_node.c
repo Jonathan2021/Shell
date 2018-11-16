@@ -31,7 +31,10 @@ struct AST *shell_command(struct Token **t)
         if ((shell = list(&t1)) != NULL)
         {
             if (t1 == NULL)
+            {
+                AST_destroy(shell);
                 return NULL;
+            }
             if (strcmp("}", t1->name) == 0)
             {
                 if (t1 != NULL)
@@ -39,6 +42,8 @@ struct AST *shell_command(struct Token **t)
                 t = &t1;
                 return shell;
             }
+            else
+                AST_destroy(shell);
         }
     }
     else if ((shell = rule_if(&t2)) != NULL)

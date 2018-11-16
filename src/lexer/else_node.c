@@ -48,12 +48,17 @@ struct AST *else_clause(struct Token **t)
             return NULL;
 
         if (tmp == NULL || strcmp("then", tmp->name) != 0)
+        {
+            AST_destroy(condition);
             return NULL;
+        }
         tmp = tmp->next;
 
         if (tmp == NULL || (elif_body = list(&tmp)) == NULL)
+        {
+            AST_destroy(condition);
             return NULL;
-
+        }
         else_body = else_clause(&tmp);
         *t = tmp;
         struct AST *elif = elif_init(*t);

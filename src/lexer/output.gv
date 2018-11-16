@@ -3,16 +3,13 @@ digraph G {
 "(1)&&"[color=antiquewhite4]
 "(0)if" -> "(1)&&"
 "(1)&&"[color=antiquewhite4]
-"(2)pwd"[color=blue2]
-"(1)&&" -> "(2)pwd"
-"(2)pwd"[color=blue2]
-"(3)ls"[color=blue2]
-"(1)&&" -> "(3)ls"
-"(3)ls"[color=blue2]
-"(4)pwd"[color=blue2]
-"(0)if" -> "(4)pwd"
-"(4)pwd"[color=blue2]
-"(5)ls"[color=blue2]
-"(0)if" -> "(5)ls"
-"(5)ls"[color=blue2]
+"(2)ls"[color=blue2]
+"(1)&&" -> "(2)ls"
+"(2)ls"[color=blue2]
+"(3)pwd"[color=blue2]
+"(1)&&" -> "(3)pwd"
+"(3)pwd"[color=blue2]
+"(4)ls"[color=blue2]
+"(0)if" -> "(4)ls"
+"(4)ls"[color=blue2]
 }

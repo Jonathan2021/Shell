@@ -16,6 +16,8 @@
 
 void add_token(struct Token **token, char *str)
 {
+    if (strcmp(str,"--ast-print") == 0)
+        return;
     char *grammar[20][20] =
     {{"SEMICOLON",";","\0"},
         {"OP_LOGIQUE","&&","||",";;","\0"},
@@ -87,6 +89,7 @@ struct Token *lexer(struct Token *t)
         printf("null");
     else
         create_dot(ast, "output.gv");
+    AST_destroy(ast);
     return t;
 }
 void DestroyToken(struct Token *t)
@@ -104,6 +107,8 @@ struct Token *carving(void)
     struct Token *token = NULL;
     while(fgets(str,4095,stdin))
     {
+        char *cpy = malloc(4095);
+        strcpy(cpy,str);
         token = NULL;
         ret = 0;
         if (strncmp(str,"exit",4) == 0)
@@ -120,8 +125,10 @@ struct Token *carving(void)
         if (ret == 1)
         {
             lexer(token);
+            ast_print(cpy);
             printf("\n");
         }
+        free(cpy);
         if (isatty(0))
             printf("42sh$ ");
         DestroyToken(token);

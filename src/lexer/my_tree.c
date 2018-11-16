@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
+#include "include/rule.h"
 
 struct AST *AST_init(int nb_child)
 {
@@ -33,7 +34,8 @@ void AST_destroy(struct AST *s)
 {
     if (s == NULL)
         return;
-
+    if(strcmp(s->self->name, "list") == 0)
+        free(s->self);
     for (int i = 0; i < s->nb_child; i++)
     {
         AST_destroy(s->child[i]);
