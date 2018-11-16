@@ -15,7 +15,7 @@ struct AST *until_init(struct Token *token)
     return node;
 }
 
-struct AST *rule_until(struct token **t)
+struct AST *rule_until(struct Token **t)
 {
     struct AST *condition;
     struct AST *do_body;

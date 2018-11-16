@@ -2,16 +2,6 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
-
-struct AST *case_init(struct Token *token)
-{
-    struct AST *node = AST_init(2);
-    if(!node)
-        return NULL;
-    node->self = token;
-    return node;
-}
-
 struct AST *rule_case(struct Token **t)
 {
     struct AST *condition;
