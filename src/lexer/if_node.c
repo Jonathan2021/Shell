@@ -34,8 +34,11 @@ struct AST *rule_if(struct Token **t)
     struct AST *if_body;
     struct AST *else_body;
     struct Token *name;
+    name = name;
+    else_body = else_body;
 
     struct Token *tmp = *t;
+    
     if (strcmp("if", tmp->name) != 0)
     {
         return NULL;

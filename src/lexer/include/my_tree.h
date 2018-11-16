@@ -14,6 +14,8 @@ struct AST
 };
 struct AST *AST_init(int nb_child);
 void AST_print_infix(const struct AST *tree);
+void add_list(struct AST *l, struct AST *a);
+void free_l(struct AST *ast);
 void AST_destroy(struct AST *s);
 
 struct AST *and_init(struct Token *token);
