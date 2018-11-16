@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 #include "lexer_struct.h"
-
+#include <string.h>
 struct AST
 {
     int nb_child;
