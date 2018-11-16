@@ -13,8 +13,6 @@ struct AST *command_init()
         return NULL;
     token->name = "command"
     token->type = "COMMAND"
-    node->self = token;
-    return node;
 }
 
 void add_cmd(struct AST *cmd, struct AST *new)
@@ -24,7 +22,7 @@ void add_cmd(struct AST *cmd, struct AST *new)
     cmd->child[cmd->nb_child - 1] = new;
 }
 
-int command(struct Token **t)
+struct AST *command(struct Token **t)
 {
     struct Token *tmp = *t;
     struct AST *res = command_init();
