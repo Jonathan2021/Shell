@@ -14,7 +14,7 @@ struct AST *add_case(struct AST *case_ast, struct AST *new)
 {
     case_ast->nb_child++;
     case_ast->child = realloc(case_ast->child, \
-    case_ast * sizeof(struct AST));
+    case_ast * sizeof(struct AST *));
     case_ast->child[case_ast->child -1] = new;
 }
 
