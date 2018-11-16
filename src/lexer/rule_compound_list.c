@@ -23,7 +23,7 @@ struct AST *compound_init()
 void add_coumpond(struct AST *compound, struct AST *new)
 {
     compound->nb_child++;
-    compound->childe = realloc(compound->child, \
+    compound->child = realloc(compound->child, \
     compound->nb_child * sizeof(struct AST));
     compound->child[compound->>nb_child-1] = new;
 }
