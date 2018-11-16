@@ -12,9 +12,9 @@ struct AST *func_init(struct Token *token)
     return node;
 }
 
-struct ATS *funcdec(struct Token **t)
+struct AST *funcdec(struct Token **t)
 {
-    struct ATS *foo;
+    struct AST *foo;
     struct Token *name;
     struct Token *tmp = *t;
     if (strcmp("function", tmp->name) == 0)
@@ -48,12 +48,12 @@ struct ATS *funcdec(struct Token **t)
         if (tmp == NULL)
             return NULL;
     }
-    if ((foo = shell_command(&tmp)) == 1)
+    if ((foo = shell_command(&tmp)) != NULL)
     {
         *t = tmp;
-        struct ATS *node = func_init(name);
+        struct AST *node = func_init(name);
         node->child[0] = foo;
-        return 1;
+        return node;
     }
-    return 0;
+    return NULL;
 }

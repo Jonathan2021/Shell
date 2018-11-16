@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
+#include "include/rule.h"
 
 struct AST *pipe_init(struct Token *token)
 {
@@ -19,7 +20,7 @@ struct AST *pipeline(struct Token **t)
     struct AST *rattach;
     struct AST *first_cmd;
 
-    struct token *tmp = *t;
+    struct Token *tmp = *t;
     if (tmp && !strcmp("!", tmp->name))
     {
         origin = bang_init(tmp);
@@ -27,7 +28,7 @@ struct AST *pipeline(struct Token **t)
     }
     if (!tmp || !(rattach = command(&tmp)))
     {
-        free_ast(origin);
+        AST_destroy(origin);
         return NULL;
     }
     first_cmd = rattach;
@@ -45,7 +46,7 @@ struct AST *pipeline(struct Token **t)
         if(!tmp || !(tmp_ast = command(&tmp)))
         {
             tmp_ast = rattach->child[0];
-            free_node(rattach);
+            AST_destroy(rattach);
             rattach = tmp_ast;
             break;
         }
