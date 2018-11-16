@@ -82,5 +82,11 @@ struct AST *compound_list(struct Token **t)
         }
         *t = tmp;
     }
+    if (compound->nb_child == 1)
+    {
+        and_or_ast = compound->child[0];
+        free_l(compound);
+        return and_or_ast;
+    }
     return compound;
 }
