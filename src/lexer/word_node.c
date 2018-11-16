@@ -8,7 +8,7 @@
 
 struct AST *word_init(struct Token *token)
 {
-    struct AST *node = AST_init(1);
+    struct AST *node = AST_init(0);
     if(!node)
         return NULL;
     node->self = token;
