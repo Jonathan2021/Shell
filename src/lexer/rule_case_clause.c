@@ -34,9 +34,9 @@ struct AST *case_clause(struct Token **t)
     if (!origin)
         return NULL;
     struct AST *cur_case_item;
-    struct Token *tmp = *t;
+    struct Token *tmp = *t = NULL;
 
-    if (tmp == NULL || (cur_case_item = case_item(&tmp)) == NULL)
+    if  (tmp == NULL || (cur_case_item = case_item(&tmp)) == NULL)
         return NULL;
     add_case(origin, cur_case_item);
     *t = tmp;

@@ -1,6 +1,6 @@
 #include "include/lexer_struct.h"
-#include "my_tree.h"
-#include "rule.h"
+#include "include/my_tree.h"
+#include "include/rule.h"
 #include <stdlib.h>
 
 struct AST *command_init(struct Token *token)
@@ -12,9 +12,8 @@ struct AST *command_init(struct Token *token)
     return node;
 }
 
-void add_cmd(struct AST *in, struct Token *token)
+void add_cmd(struct AST *in, struct AST *new)
 {
-    struct AST *new = command_init(token);
     in->nb_child++;
     in->child = realloc(in->child, in->nb_child * sizeof(struct AST));
     in->child[in->nb_child - 1] = new;
@@ -37,7 +36,7 @@ struct AST *command(struct Token **t)
             return cmd;
         while (1)
         {
-            struct AST *red = command_init(t);
+            struct AST *red = command_init(*t);
             if ((red = redirection(&tmp)) != NULL)
             {
                 add_cmd(cmd, red);
@@ -57,7 +56,7 @@ struct AST *command(struct Token **t)
             return cmd;
         while (1)
         {
-            struct AST *red = command_init(t);
+            struct AST *red = command_init(*t);
             if ((red = redirection(&tmp)) != NULL)
             {
                 add_cmd(cmd, red);
