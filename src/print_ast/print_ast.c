@@ -87,8 +87,9 @@ int check_option(struct Token *token)
         {
             printf("->%s",tmp->type);
             tmp = tmp->next;
+            if (!tmp)
+                printf("\n");
         }
-        printf("\n");
     }
     print = get_value("--ast-print");
     if (token && strcmp(print,"1") == 0)

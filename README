@@ -18,7 +18,12 @@ To build doxygen:
     4- make refman.tex
 
 HOW TO USE 42SH:
-    to print AST:
-        ******
+    --ast-print do a print of a DOT file
+    --type-print do a print of linked token
+    --version print actual version
+    --norc desactivate all resource reader
+    -c "command" follow the bash behavior
+    cat "file" | ./42sh read file 
+    ./42sh < file read file
 
 *******************************************************************

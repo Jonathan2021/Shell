@@ -82,7 +82,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
         if (c == 'c')
         {
             char *parse;
-            char *delim = get_value("IFS");
+            char *delim = {"\t \n"};
             parse = strtok(optarg,delim);
             while (parse)
             {
@@ -141,12 +141,6 @@ struct Token *carving(long argc, char **argv)
         }
         argc = str_to_argv(argv,str);
         token = parse_path(token,argv,argc);
-        struct Token *tmp = token;
-        while (tmp)
-        {
-            printf("->%s",tmp->type);
-            tmp = tmp->next;
-        }
         lexer(token);
         DestroyToken(token);
         if (check_option(token))
