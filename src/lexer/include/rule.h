@@ -24,4 +24,4 @@ struct AST *rule_case(struct Token **t);
 struct AST *do_group(struct Token **t);
 struct AST *case_clause(struct Token **t);
 struct AST *case_item(struct Token **t);
-
+struct AST *word_init(struct Token *token);
