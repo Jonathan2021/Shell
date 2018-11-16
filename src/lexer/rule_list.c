@@ -18,6 +18,7 @@ struct AST *list_init(void)
 void free_l(struct AST *ast)
 {
     free(ast->self);
+    free(ast->child);
     free(ast);
 }
 
@@ -33,7 +34,7 @@ struct AST *list(struct Token **t)
     struct AST *node = NULL;
     int check = 0;
     struct Token *t2 = *t;
-    if ((node = and_or(&t2)) == 0)
+    if ((node = and_or(&t2)) == NULL)
         return NULL;
     *t = t2;
     if (t2 == NULL)
