@@ -30,16 +30,3 @@ struct AST *input(struct Token **t)
     AST_destroy(node);
     return NULL;
 }
-
-int foo_input(struct AST *node)
-{
-    if(!node)
-        return 0;
-    if(node->child[0])
-        node->res = node->child[0]->res;
-    else
-        node->res = 1;
-    return node->res;
-}
-
-
