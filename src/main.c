@@ -87,6 +87,7 @@ struct Token *lexer(struct Token *t)
         printf("null");
     else
         create_dot(ast, "output.gv");
+    AST_destroy(ast);
     return t;
 }
 void DestroyToken(struct Token *t)
