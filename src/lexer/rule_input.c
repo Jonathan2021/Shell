@@ -15,6 +15,11 @@ struct AST *input(struct Token **t)
             *t = tmp;
             return node;
         }
+        else if (strcmp(tmp->name, "\n") == 0)
+        {
+            *t = t[0]->next;
+            return node;
+        }
         else
         {
             AST_destroy(node);

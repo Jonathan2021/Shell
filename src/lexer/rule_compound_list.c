@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "include/lexer_struct.h"
-#include "my_tree.h"
-#include "rule.h"
+#include "include/my_tree.h"
+#include "include/rule.h"
 
 struct AST *compound_init()
 {
@@ -20,12 +20,12 @@ struct AST *compound_init()
     return node;
 }
 
-void add_coumpond(struct AST *compound, struct AST *new)
+void add_compound(struct AST *compound, struct AST *new)
 {
     compound->nb_child++;
-    compound->childe = realloc(compound->child, \
+    compound->child = realloc(compound->child, \
     compound->nb_child * sizeof(struct AST));
-    compound->child[compound->>nb_child-1] = new;
+    compound->child[compound->nb_child-1] = new;
 }
 
 struct AST *compound_list(struct Token **t)
@@ -71,7 +71,7 @@ struct AST *compound_list(struct Token **t)
         !strcmp(tmp->name,";") ||
         !strcmp(tmp->name,"\n")))
         {
-            add_compund(compund, tmp);
+            add_compund(compound, tmp);
             tmp = tmp->next;
             while(tmp && !strcmp(tmp->name,"\n"))
             {

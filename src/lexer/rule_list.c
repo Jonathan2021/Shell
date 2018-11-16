@@ -15,20 +15,6 @@ struct AST *list_init(void)
     return node;
 }
 
-void free_l(struct AST *ast)
-{
-    free(ast->self);
-    free(ast->child);
-    free(ast);
-}
-
-void add_list(struct AST *l, struct AST *a)
-{
-    l->nb_child++;
-    l->child = realloc(l->child, l->nb_child * sizeof(struct AST *));
-    l->child[l->nb_child - 1] = a;
-}
-
 struct AST *list(struct Token **t)
 {
     struct AST *node = NULL;
