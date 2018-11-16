@@ -16,6 +16,14 @@ struct AST *while_init(struct Token *token)
     return node;
 }
 
+void foo_while(struct AST *node)
+{
+    if (!node || !node->child[0])
+        return;
+    node->child[0]->foo(node->child[0]);
+    node->res = node->child[0]->res;
+}
+
 struct AST *rule_while(struct Token **t)
 {
     struct AST *condition;
@@ -36,5 +44,6 @@ struct AST *rule_while(struct Token **t)
     node->child[0] = condition;
     node->child[1] = do_body;
     *t = tmp;
+    node->foo = foo_while;
     return node;
 }

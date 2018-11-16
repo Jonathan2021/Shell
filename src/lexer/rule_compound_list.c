@@ -140,5 +140,6 @@ struct AST *compound_list(struct Token **t)
         }
         *t = tmp;
     }
+    compound->foo = foo_compound;
     return compound;
 }
