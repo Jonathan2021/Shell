@@ -76,7 +76,10 @@ void foo_compound(struct AST *node)
     int res = 0;
     while(index < node->nb_child)
     {
-        res = exec_init(node, &index);
+        if(!strcmp(node->child[0]->self->type, "WORD"))
+            res = exec_init(node, &index);
+        else
+            res = node->child[0]->res;
     }
     node->res = res;
 }
