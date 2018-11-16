@@ -31,7 +31,7 @@ struct AST *else_clause(struct Token **t)
         {
             return NULL;
         }
-        if ((elif = list(&tmp)) != NULL)
+        if ((elif = compound_list(&tmp)) != NULL)
         {
             *t = tmp;
             return elif;
@@ -44,14 +44,14 @@ struct AST *else_clause(struct Token **t)
         struct AST *condition = NULL;
         struct AST *elif_body = NULL;
         struct AST *else_body = NULL;
-        if (tmp == NULL || (condition = list(&tmp)) == NULL)
+        if (tmp == NULL || (condition = compound_list(&tmp)) == NULL)
             return NULL;
 
         if (tmp == NULL || strcmp("then", tmp->name) != 0)
             return NULL;
         tmp = tmp->next;
 
-        if (tmp == NULL || (elif_body = list(&tmp)) == NULL)
+        if (tmp == NULL || (elif_body = compound_list(&tmp)) == NULL)
             return NULL;
 
         else_body = else_clause(&tmp);
