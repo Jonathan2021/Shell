@@ -412,6 +412,7 @@ int compound_list(struct Token **t)
             strcmp(tmp->name,"&") == 0 ||
             strcmp(tmp->name,"\n") == 0)
             {
+                tmp = tmp->next;
                 while(strcmp(tmp->name,"\n") == 0)
                 {
                     tmp = tmp->next;
