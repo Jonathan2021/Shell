@@ -25,7 +25,7 @@ void add_case(struct AST *case_clause, struct AST *case_item)
     case_clause->nb_child++;
     case_clause->child = realloc(case_clause->child, \
     case_clause->nb_child*sizeof(struct AST));
-    case_clause->child[case_clause->nb_child-1] = a;
+    case_clause->child[case_clause->nb_child-1] = case_item;
 }
 
 struct AST *case_clause(struct Token **t)
