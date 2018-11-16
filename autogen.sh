@@ -1,8 +1,8 @@
 #!/bin/sh
 
 if [ "$1" != "clean" ] ; then
-    cp build/configure.ac .
-    cp build/Makefile.am .
+    cp src/build/configure.ac .
+    cp src/build/Makefile.am .
     autoreconf -vi
 else
     make distclean
