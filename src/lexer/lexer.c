@@ -235,6 +235,89 @@ int shell_command(struct Token **t)
 }
 
 // nouvelle partie
+
+int funcdec(struct Token **t)
+{
+    struct Token *tmp = *t;
+    if (strcmp("function", tmp->name) == 0)
+    {
+        tmp = tmp->next;
+        if (tmp == NULL)
+            return 0;
+    }
+    if (strcmp("WORD", tmp->type) == 0)
+    {
+        tmp = tmp->next;
+        if (tmp == NULL)
+            return 0;
+    }
+    else
+        return 0;
+    if (strcmp("(", tmp->name) != 0)
+        return 0;
+    tmp = tmp->next;
+    if (tmp == NULL)
+        return 0;
+    if (strcmp(")", tmp->name) != 0)
+        return 0;
+    tmp = tmp->next;
+    if (tmp == NULL)
+        return 0;
+
+    while (strcmp("\n", tmp->name) == 0)
+    {
+        tmp = tmp->next;
+        if (tmp == NULL)
+            return 0;
+    }
+    if (shell_command(&tmp) == 1)
+    {
+        *t = tmp;
+        return 1;
+    }
+    return 0;
+}
+
+int redirection(struct Token **t)
+{
+    char *list[9][2] =
+        {
+            {">", "WORD"},
+            {"<", "WORD"},
+            {">>", "WORD"},
+            {"<<", "HEREDOC"},
+            {"<<-", "HEREDOC"},
+            {">&", "WORD"},
+            {"<&", "WORD"},
+            {">|", "WORD"},
+            {"<>", "WORD"},
+        };
+    struct Token *tmp = *t;
+    if (strcmp("IONUMBER", tmp->type) == 0)
+    {
+        tmp = tmp->next;
+        if (tmp == NULL)
+            return 0;
+    }
+    struct Token *cpy = tmp;    
+    for (int i = 0; i < 9; i++)
+    {
+        tmp = cpy;
+        if (strcmp(list[i][0], tmp->name) == 0)
+        {
+            tmp = tmp->next;
+            if (tmp == NULL)
+                return 0;
+            if (strcmp(list[i][1], tmp->type) == 0)
+            {
+                *t = tmp;
+                return 1;
+            }
+        }    
+    }
+    return 0;
+}
+
 int pipeline(struct Token **t)
 {
     struct Token *tmp = *t;

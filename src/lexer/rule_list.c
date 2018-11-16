@@ -60,7 +60,7 @@ struct AST *list(struct Token **t)
                 }
                 return list;
             }
-            if ((node = and_or(&t2)) == 0)
+            if ((node = and_or(&t2)) == NULL)
             {
                 AST_destroy(node);
                 break;
