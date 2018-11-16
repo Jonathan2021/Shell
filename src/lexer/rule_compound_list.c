@@ -56,7 +56,7 @@ struct AST *compound_list(struct Token **t)
             !strcmp(tmp->name,"&") ||
             !strcmp(tmp->name,"\n")))
         {
-            separator = tmp;
+            separator = word_inti(tmp);
             tmp = tmp->next;
             while (tmp && !strcmp(tmp->name,"\n"))
                 tmp = tmp->next;
@@ -70,14 +70,14 @@ struct AST *compound_list(struct Token **t)
     if (tmp && (!strcmp(tmp->name,"&") ||
         !strcmp(tmp->name,";") ||
         !strcmp(tmp->name,"\n")))
+    {
+        add_compund(compund, word_init(tmp));
+        tmp = tmp->next;
+        while(tmp && !strcmp(tmp->name,"\n"))
         {
-            add_compund(compund, tmp);
             tmp = tmp->next;
-            while(tmp && !strcmp(tmp->name,"\n"))
-            {
-                tmp = tmp->next;
-            }
-            *t = tmp;
         }
+        *t = tmp;
+    }
     return compound;
 }
