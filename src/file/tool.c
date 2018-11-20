@@ -119,8 +119,6 @@ void read_isatty(void)
         {
             exit(0);
         }
-        //argc = str_to_argv(argv,str);
-        //token = parse_path(token,argv,argc);
         char *parse;
         char *delim = {"\t \n"};
         parse = strtok(str,delim);
@@ -143,4 +141,26 @@ void read_isatty(void)
     }
     check_option(token,ps);
     reset_value(ps);
+}
+
+struct Token *read_file(char *f, struct Token *token)
+{
+    FILE *file = fopen(f,"r+");
+    if (!file)
+        return NULL;
+    char str[4095];
+    while(fgets(str,4095,file))
+    {
+        char *parse;
+        char *delim = {"\t \n"};
+        parse = strtok(str,delim);
+        while (parse)
+        {
+            char *tok = malloc(strlen(str)*2);
+            strcpy(tok,parse);
+            add_token(&token,tok);
+            parse = strtok(NULL,delim);
+        }
+    }
+    return token;
 }
