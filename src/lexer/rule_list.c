@@ -5,6 +5,8 @@
 
 void foo_list(struct AST *node)
 {
+    if(!node || ! node->child[0])
+        return;
     int index = 0;
     while (index < node->nb_child && node->child[index])
     {
@@ -34,7 +36,7 @@ struct AST *list_init(void)
 }
 
 struct AST *list(struct Token **t)
-{
+{ 
     struct AST *node = NULL;
     int check = 0;
     struct Token *t2 = *t;
