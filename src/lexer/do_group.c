@@ -30,4 +30,4 @@ struct AST *do_group(struct Token **t)
     tmp = tmp->next;
     *t = tmp;
     return do_grp;
-} 
+}

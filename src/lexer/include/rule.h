@@ -1,5 +1,8 @@
 #pragma once
 #include <string.h>
+#include "my_tree.h"
+#include "lexer_struct.h"
+
 struct AST *and_or(struct Token **t);
 struct AST *else_clause(struct Token **t);
 struct AST *rule_if(struct Token **t);
@@ -21,4 +24,7 @@ struct AST *rule_case(struct Token **t);
 struct AST *do_group(struct Token **t);
 struct AST *case_clause(struct Token **t);
 struct AST *case_item(struct Token **t);
-
+struct AST *word_init(struct Token *token);
+struct AST *while_init(struct Token *token);
+void add_case(struct AST *case_clause, struct AST *case_item);
+struct AST *case_init(struct Token *token);

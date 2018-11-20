@@ -14,11 +14,10 @@ struct AST *prefix_init(struct Token *token)
 
 struct AST *prefix(struct Token **t)
 {
-    struct AST *assigment_word;
     struct AST *redir;
     if (strcmp(t[0]->type,"ASSIGMENT_WORD") == 0)
     {
-        struct AST *assigment_word = prefix_init(t);
+        struct AST *assigment_word = prefix_init(*t);
         *t = t[0]->next;
         return assigment_word;
     }

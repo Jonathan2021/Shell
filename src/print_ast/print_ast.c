@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include "../lexer/include/lexer_struct.h"
 #include "../lexer/include/my_tree.h"
+#include "../include/shell.h"
 // dot -Tps ast.gv -o outfile.ps
 
 char *color(struct AST *cur)
@@ -27,9 +28,13 @@ char *color(struct AST *cur)
         {"BRACE","[color=paleturquoise4]"},
         {"WORD","[color=blue2]"},
         {"LIST","[color=green]"},
+        {"COMPOUND","[color=green2]"},
+        {"COMMAND","[color=green3]"},
+        {"CASE_CLAUSE","[color=green4]"},
+        {" ","[color=orange4]"},
         {"IN","[color=black]"}};
     char *color = malloc(60);
-    for(int i = 0; i < 13; i++)
+    for(int i = 0; i < 17; i++)
     {
         if (strcmp(grammar[i][0],cur->self->type) == 0)
         {
@@ -57,26 +62,45 @@ int print_ast(struct AST *cur, FILE *file, int j)
     return cpy;
 }
 
-void ast_print(char *str)
+void ast_print(void)
 {
-    char *option = strtok(str," ");
     char chaine[100] = "";
-    while(option)
+    FILE *file = fopen("output.gv","r");
+    if (!file)
+        return;
+    printf("\n");
+    while (fgets(chaine,100,file) != NULL)
     {
-        if (strncmp(option,"--ast-print",11) == 0)
-        {
-            FILE *file = fopen("output.gv","r");
-            if (!file)
-                return;
-            printf("\n");
-            while (fgets(chaine,100,file) != NULL)
-            {
-                printf("%s", chaine);
-            }
-            fclose(file);
-        }
-        option = strtok(NULL," ");
+        printf("%s", chaine);
     }
+    printf("\n");
+    fclose(file);
+}
+
+int check_option(struct Token *token)
+{
+    char *print = get_value("--type-print");
+    if (strcmp(print,"1") == 0)
+    {
+        struct Token *tmp = token;
+        while (tmp)
+        {
+            printf("->%s",tmp->type);
+            tmp = tmp->next;
+            if (!tmp)
+                printf("\n");
+        }
+    }
+    print = get_value("--ast-print");
+    if (token && strcmp(print,"1") == 0)
+        ast_print();
+    print = get_value("version");
+    if (strcmp(print,"1") == 0)
+    {
+        printf("Version 0.3\n");
+        return 1;
+    }
+    return 0;
 }
 
  void create_dot(struct AST *cur, const char *filename)

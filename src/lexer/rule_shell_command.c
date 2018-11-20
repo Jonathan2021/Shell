@@ -21,9 +21,8 @@ struct AST *shell_command(struct Token **t)
 {
     struct Token *t1 = *t;
     struct Token *t2 = *t;
-    struct Token *t3 = *t;
     struct AST *shell = NULL;
-    if (strcmp("{", t1->name) == 0)
+    if (strcmp("{", t1->name) == 0 || strcmp("(", t1->name) == 0)
     {
         t1 = t1->next;
         if (t1 == NULL)
@@ -35,7 +34,7 @@ struct AST *shell_command(struct Token **t)
                 AST_destroy(shell);
                 return NULL;
             }
-            if (strcmp("}", t1->name) == 0)
+            if (strcmp("}", t1->name) == 0 || strcmp(")", t1->name) == 0)
             {
                 if (t1 != NULL)
                     t1 = t1->next;
@@ -46,17 +45,29 @@ struct AST *shell_command(struct Token **t)
                 AST_destroy(shell);
         }
     }
-    else if ((shell = rule_if(&t2)) != NULL)
+    else if ((shell = rule_for(&t2)) != NULL)
     {
         *t = t2;
         return shell;
     }
-    else if (strcmp("WORD", t3->type) == 0)
+    else if ((shell = rule_while(&t2)) != NULL)
     {
-        shell = word_init(t3);
-        if (t3 != NULL)
-            t3 = t3->next;
-        *t = t3;
+        *t = t2;
+        return shell;
+    }
+    else if ((shell = rule_until(&t2)) != NULL)
+    {
+        *t = t2;
+        return shell;
+    }
+    else if ((shell = rule_case(&t2)) != NULL)
+    {
+        *t = t2;
+        return shell;
+    }
+    else if ((shell = rule_if(&t2)) != NULL)
+    {
+        *t = t2;
         return shell;
     }
     return NULL;
