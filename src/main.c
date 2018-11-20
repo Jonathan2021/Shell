@@ -105,10 +105,13 @@ struct Token *parse_path(struct Token *token, char **argv, long argc,
         else
             fprintf(stderr,"[GNU long options] [options] [file]\n");
     }
-    if (!check && argc >= option_index)
+    if (!check && (argc >= option_index || !isatty(0)))
     {
         token = NULL;
-        token = read_file(argv[argc-1],token);
+        if (isatty(0))
+            token = read_file(argv[argc-1],token);
+        else
+            token = read_file(NULL,token);
     }
     return token;
 }
@@ -171,6 +174,8 @@ struct Token *carving(long argc, char **argv)
         }
         DestroyToken(token);
         i = 1;
+        if (!isatty(0))
+            exit(0);
     }
     reset_value(ps);
     return 0;
@@ -180,9 +185,6 @@ int main(int argc, char *argv[])
     FILE *file = fopen("src/file/variable.txt","w+");
     fprintf(file,"IFS \"\\t \\n\"\n--ast-print \"0\"\nversion \"0\"\n--type-print \"0\"\n");
     fclose(file);
-    if (isatty(0))
-        carving(argc,argv);
-    else
-        read_isatty();
+    carving(argc,argv);
     return 0;
 } 
