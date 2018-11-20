@@ -77,10 +77,10 @@ void ast_print(void)
     fclose(file);
 }
 
-int check_option(struct Token *token)
+int check_option(struct Token *token, struct PS *ps)
 {
-    char *print = get_value("--type-print");
-    if (strcmp(print,"1") == 0)
+    char *print = get_value("--type-print",ps);
+    if (print && strcmp(print,"1") == 0)
     {
         struct Token *tmp = token;
         while (tmp)
@@ -91,11 +91,11 @@ int check_option(struct Token *token)
                 printf("\n");
         }
     }
-    print = get_value("--ast-print");
-    if (token && strcmp(print,"1") == 0)
+    print = get_value("--ast-print",ps);
+    if (print && token && strcmp(print,"1") == 0)
         ast_print();
-    print = get_value("version");
-    if (strcmp(print,"1") == 0)
+    print = get_value("version",ps);
+    if (print && strcmp(print,"1") == 0)
     {
         printf("Version 0.3\n");
         return 1;

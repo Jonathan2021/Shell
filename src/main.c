@@ -63,7 +63,8 @@ void add_token(struct Token **token, char *str)
     copy->next = next;
 }
 
-struct Token *parse_path(struct Token *token, char **argv, long argc)
+struct Token *parse_path(struct Token *token, char **argv, long argc, 
+    struct PS *ps)
 {
     int c = 0;
     static struct option long_options[] =
@@ -91,13 +92,13 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
             }
         }
         else if (c == 'a')
-            set_value("--ast-print", "1");
+            set_value("--ast-print", "1",&ps);
         else if (c == 'n')
-            reset_value();
+            reset_value(ps);
         else if (c == 'v')
-            set_value("version", "1");
+            set_value("version", "1",&ps);
         else if (c == 't')
-            set_value("--type-print", "1");
+            set_value("--type-print", "1",&ps);
         else
             fprintf(stderr,"[GNU long options] [options] [file]\n");
     }
@@ -126,12 +127,20 @@ void DestroyToken(struct Token *t)
     free(t);
 }
 
+struct PS *init_ps(void)
+{
+    struct PS *ps = malloc(sizeof(struct PS));
+    ps->name = NULL;
+    ps->value = NULL;
+    return ps;
+}
 
 struct Token *carving(long argc, char **argv)
 {
     char str[4095];
     printf("42sh$ ");
     struct Token *token = NULL;
+    struct PS *ps = init_ps();
     while(fgets(str,4095,stdin))
     {
         token = NULL;
@@ -140,16 +149,17 @@ struct Token *carving(long argc, char **argv)
             return 0;
         }
         argc = str_to_argv(argv,str);
-        token = parse_path(token,argv,argc);
+        token = parse_path(token,argv,argc,ps);
         lexer(token);
         DestroyToken(token);
-        if (check_option(token))
+        if (check_option(token,ps))
         {
-            reset_value();
+            reset_value(ps);
             exit(0);
         }
         printf("42sh$ ");
     }
+    reset_value(ps);
     return 0;
 }
 int main(int argc, char *argv[])
@@ -161,6 +171,5 @@ int main(int argc, char *argv[])
         carving(argc,argv);
     else
         read_isatty();
-    reset_value();
     return 0;
 } 
