@@ -19,11 +19,7 @@ while read args; do
     fi
 done <<EOF
 
-if pwd && ls; then 
-    cd 
-else 
-    alias
-fi
+if pwd && ls ; then cd ; else alias ; fi
 EOF
 
 rm $T1 $T2
