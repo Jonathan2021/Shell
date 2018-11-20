@@ -7,22 +7,7 @@
 #include <sys/wait.h>
 #include "include/rule.h"
 
-struct AST *compound_init()
-{
-    struct Token *token = malloc(sizeof(struct Token));
-    if (!token)
-        return NULL;
-    token->type = "COMPOUND";
-    token->name = "compound";
-    struct AST *node = AST_init(0);
-    if(!node)
-    {
-        free(token);
-        return NULL;
-    }
-    node->self = token;
-    return node;
-}
+
 
 int my_exec(char *cmd[])
 {
@@ -53,9 +38,19 @@ int exec_init(struct AST *node, int *index)
     char *my_cmd[512];
     int i = 0;
     char *cur_name;
-    for(; *index < node->nb_child && i < 511; (*index)++, ++i)
+    char *cur_type;
+    int special = 0;
+    int res;
+    for(; *index < node->nb_child && node->child[*index] && i < 511; (*index)++, ++i)
     {
         cur_name = node->child[*index]->self->name;
+        cur_type = node->child[*index]->self->type;
+        if (strcmp(cur_type, "WORD"))
+        {
+            node->child[*index]->foo(node->child[*index]);
+            res =  node->child[*index]->res;
+            special = 1;
+        }
         my_cmd[i] = cur_name;
         if(!strcmp(cur_name, ";") || !strcmp(cur_name, "&") 
             || !strcmp(cur_name, "\n"))
@@ -64,7 +59,9 @@ int exec_init(struct AST *node, int *index)
     (*index)++;
     i++;
     my_cmd[i] = NULL;
-    return my_exec(my_cmd);
+    if (!special)
+        res = my_exec(my_cmd);
+    return res;
 
 }
 
@@ -75,12 +72,7 @@ void foo_compound(struct AST *node)
     int index = 0;
     int res = 0;
     while(index < node->nb_child)
-    {
-        if(!strcmp(node->child[0]->self->type, "WORD"))
-            res = exec_init(node, &index);
-        else
-            res = node->child[0]->res;
-    }
+        res = exec_init(node, &index);
     node->res = res;
 }
 
@@ -90,6 +82,24 @@ void add_compound(struct AST *compound, struct AST *new)
     compound->child = realloc(compound->child, \
     compound->nb_child * sizeof(struct AST));
     compound->child[compound->nb_child-1] = new;
+}
+
+struct AST *compound_init()
+{
+    struct Token *token = malloc(sizeof(struct Token));
+    if (!token)
+        return NULL;
+    token->type = "COMPOUND";
+    token->name = "compound";
+    struct AST *node = AST_init(0);
+    if(!node)
+    {
+        free(token);
+        return NULL;
+    }
+    node->self = token;
+    node->foo = foo_compound;
+    return node;
 }
 
 struct AST *compound_list(struct Token **t)
