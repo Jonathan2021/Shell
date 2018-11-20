@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+
+
+
 struct AST *rule_case(struct Token **t)
 {
     struct AST *condition;
@@ -59,7 +62,7 @@ struct AST *rule_case(struct Token **t)
     }
     tmp = tmp->next;
     *t = tmp;
-    struct AST *node = if_init(name);
+    struct AST *node = if_init(name); //FIXME create case_init because if_init has foo_if inside
     node->child[0] = condition;
     node->child[1] = case_body;
     return node;
