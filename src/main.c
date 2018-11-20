@@ -154,7 +154,9 @@ struct Token *carving(long argc, char **argv)
         if (i == 1)
         {
             printf("42sh$ ");
-            fgets(str,4095,stdin);
+            char *check = fgets(str,4095,stdin);
+            if (!check)
+                continue;
             if (strncmp(str,"exit",4) == 0)
                 return 0;
             argc = str_to_argv(argv,str);
