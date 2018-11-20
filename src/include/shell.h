@@ -19,5 +19,6 @@ struct Token *lexer(struct Token *t);
 int check_option(struct Token *token, struct PS *ps);
 void read_isatty(void);
 struct PS *init_ps(void);
+struct Token *read_file(char *file, struct Token *token);
 
 #endif /* !SHELL_H */

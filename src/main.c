@@ -78,6 +78,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc,
         };
     int option_index = 0;
     optind = 0;
+    int check = 0;
     while ((c = getopt_long (argc,argv, "c:vnat",
         long_options, &option_index)) != -1)
     {
@@ -91,6 +92,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc,
                 add_token(&token,parse);
                 parse = strtok(NULL,delim);
             }
+            check = 1;
         }
         else if (c == 'a')
             set_value("--ast-print", "1",&ps);
@@ -102,6 +104,11 @@ struct Token *parse_path(struct Token *token, char **argv, long argc,
             set_value("--type-print", "1",&ps);
         else
             fprintf(stderr,"[GNU long options] [options] [file]\n");
+    }
+    if (!check && argc >= option_index)
+    {
+        token = NULL;
+        token = read_file(argv[argc-1],token);
     }
     return token;
 }
@@ -138,27 +145,30 @@ struct PS *init_ps(void)
 
 struct Token *carving(long argc, char **argv)
 {
-    char str[4095];
-    printf("42sh$ ");
+    char str[4095] = {0};
     struct Token *token = NULL;
     struct PS *ps = init_ps();
-    while(fgets(str,4095,stdin))
+    int i = 0;
+    while(1)
     {
-        token = NULL;
-        if (strncmp(str,"exit",4) == 0)
+        if (i == 1)
         {
-            return 0;
+            printf("42sh$ ");
+            fgets(str,4095,stdin);
+            if (strncmp(str,"exit",4) == 0)
+                return 0;
+            argc = str_to_argv(argv,str);
         }
-        argc = str_to_argv(argv,str);
+        token = NULL;
         token = parse_path(token,argv,argc,ps);
         lexer(token);
-        DestroyToken(token);
         if (check_option(token,ps))
         {
             reset_value(ps);
             exit(0);
         }
-        printf("42sh$ ");
+        DestroyToken(token);
+        i = 1;
     }
     reset_value(ps);
     return 0;
