@@ -6,12 +6,12 @@
 struct AST *if_init(struct Token *token)
 {
     struct AST *node = AST_init(3);
-    if(!node)
+    if (!node)
         return NULL;
     node->self = token;
-    //node->child[0] = condition
-    //node->child[1] = ifbody
-    //node->child[2] = else body
+    // node->child[0] = condition
+    // node->child[1] = ifbody
+    // node->child[2] = else body
     return node;
 }
 

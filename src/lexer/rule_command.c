@@ -1,7 +1,7 @@
+#include <stdlib.h>
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include <stdlib.h>
 
 struct AST *command_init()
 {
@@ -55,4 +55,3 @@ struct AST *command(struct Token **t)
     AST_destroy(res);
     return NULL;
 }
-

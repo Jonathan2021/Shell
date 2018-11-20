@@ -3,16 +3,14 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-
-
 struct AST *while_init(struct Token *token)
 {
     struct AST *node = AST_init(2);
-    if(!node)
+    if (!node)
         return NULL;
     node->self = token;
-    //node->child[0] = left_body
-    //node->child[1] = right_body
+    // node->child[0] = left_body
+    // node->child[1] = right_body
     return node;
 }
 
@@ -39,7 +37,7 @@ struct AST *rule_while(struct Token **t)
         return NULL;
     if (!tmp || !(do_body = do_group(&tmp)))
         return NULL;
-    //Pas besoin  de tmp->next?
+    // Pas besoin  de tmp->next?
     struct AST *node = while_init(name);
     node->child[0] = condition;
     node->child[1] = do_body;

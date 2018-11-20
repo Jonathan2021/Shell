@@ -11,19 +11,17 @@ struct AST *case_init(struct Token *token)
     return node;
 }
 
-
 struct AST *case_item(struct Token **t)
 {
     struct AST *part1 = NULL;
     struct AST *part2 = NULL;
     struct Token *tmp = *t;
-    if (strcmp(tmp->name,"(") == 0)
+    if (strcmp(tmp->name, "(") == 0)
         tmp = tmp->next;
-    if (tmp == NULL || strcmp(tmp->type,"WORD"))
+    if (tmp == NULL || strcmp(tmp->type, "WORD"))
         return NULL;
     part1 = case_init(tmp);
-    while(strcmp(tmp->name,"|") == 0 ||
-            strcmp(tmp->type,"WORD") == 0)
+    while (strcmp(tmp->name, "|") == 0 || strcmp(tmp->type, "WORD") == 0)
     {
         part2 = case_init(tmp);
         add_case(part1, part2);
@@ -34,7 +32,7 @@ struct AST *case_item(struct Token **t)
             return NULL;
         }
     }
-    if (strcmp(tmp->name,")"))
+    if (strcmp(tmp->name, ")"))
         return NULL;
     *t = tmp;
     if (tmp == NULL)
@@ -42,7 +40,7 @@ struct AST *case_item(struct Token **t)
         AST_destroy(part1);
         return NULL;
     }
-    while(strcmp(tmp->name,"\n") == 0)
+    while (strcmp(tmp->name, "\n") == 0)
     {
         tmp = tmp->next;
         if (tmp == NULL)

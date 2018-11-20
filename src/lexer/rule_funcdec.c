@@ -25,7 +25,7 @@ struct AST *funcdec(struct Token **t)
     }
     if (strcmp("WORD", tmp->type) == 0)
     {
-        //a verifier avec regex
+        // a verifier avec regex
         name = tmp;
         tmp = tmp->next;
         if (tmp == NULL)

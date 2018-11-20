@@ -1,10 +1,10 @@
+#include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
-#include <unistd.h>
-#include <sys/types.h>
-#include <stdio.h>
-#include <sys/wait.h>
 #include "include/rule.h"
 
 struct AST *compound_init()
@@ -15,7 +15,7 @@ struct AST *compound_init()
     token->type = "COMPOUND";
     token->name = "compound";
     struct AST *node = AST_init(0);
-    if(!node)
+    if (!node)
     {
         free(token);
         return NULL;
@@ -30,9 +30,9 @@ int my_exec(char *cmd[])
     pid_t pid = fork();
     if (pid == -1)
         fprintf(stderr, "fork failed in compound\n");
-    if(!pid)
+    if (!pid)
     {
-        if(execvp(cmd[0], cmd) < 0)
+        if (execvp(cmd[0], cmd) < 0)
         {
             fprintf(stderr, "execvp failed\n");
         }
@@ -53,11 +53,11 @@ int exec_init(struct AST *node, int *index)
     char *my_cmd[512];
     int i = 0;
     char *cur_name;
-    for(; *index < node->nb_child && i < 511; (*index)++, ++i)
+    for (; *index < node->nb_child && i < 511; (*index)++, ++i)
     {
         cur_name = node->child[*index]->self->name;
         my_cmd[i] = cur_name;
-        if(!strcmp(cur_name, ";") || !strcmp(cur_name, "&") 
+        if (!strcmp(cur_name, ";") || !strcmp(cur_name, "&")
             || !strcmp(cur_name, "\n"))
             break;
     }
@@ -65,18 +65,17 @@ int exec_init(struct AST *node, int *index)
     i++;
     my_cmd[i] = NULL;
     return my_exec(my_cmd);
-
 }
 
 void foo_compound(struct AST *node)
 {
-    if(!node || !node->child[0])
+    if (!node || !node->child[0])
         return;
     int index = 0;
     int res = 0;
-    while(index < node->nb_child)
+    while (index < node->nb_child)
     {
-        if(!strcmp(node->child[0]->self->type, "WORD"))
+        if (!strcmp(node->child[0]->self->type, "WORD"))
             res = exec_init(node, &index);
         else
             res = node->child[0]->res;
@@ -87,9 +86,9 @@ void foo_compound(struct AST *node)
 void add_compound(struct AST *compound, struct AST *new)
 {
     compound->nb_child++;
-    compound->child = realloc(compound->child, \
-    compound->nb_child * sizeof(struct AST));
-    compound->child[compound->nb_child-1] = new;
+    compound->child
+        = realloc(compound->child, compound->nb_child * sizeof(struct AST));
+    compound->child[compound->nb_child - 1] = new;
 }
 
 struct AST *compound_list(struct Token **t)
@@ -99,7 +98,7 @@ struct AST *compound_list(struct Token **t)
     struct AST *separator;
     struct AST *compound = NULL;
     struct Token *cpy;
-    while(strcmp(tmp->name,"\n") == 0)
+    while (strcmp(tmp->name, "\n") == 0)
     {
         tmp = tmp->next;
         if (tmp == NULL)
@@ -108,23 +107,23 @@ struct AST *compound_list(struct Token **t)
     if (!tmp || !(and_or_ast = and_or(&tmp)))
         return NULL;
     *t = tmp;
-    if(!(compound = compound_init()))
+    if (!(compound = compound_init()))
     {
         AST_destroy(and_or_ast);
         return NULL;
     }
     add_compound(compound, and_or_ast);
     *t = tmp;
-    while(1)
+    while (1)
     {
         cpy = tmp;
-        if (cpy && (!strcmp(cpy->name,";") ||
-            !strcmp(cpy->name,"&") ||
-            !strcmp(cpy->name,"\n")))
+        if (cpy
+            && (!strcmp(cpy->name, ";") || !strcmp(cpy->name, "&")
+                   || !strcmp(cpy->name, "\n")))
         {
             separator = word_init(cpy);
             cpy = cpy->next;
-            while (cpy && !strcmp(cpy->name,"\n"))
+            while (cpy && !strcmp(cpy->name, "\n"))
                 cpy = cpy->next;
             if (!cpy || !(and_or_ast = and_or(&cpy)))
                 break;
@@ -134,13 +133,13 @@ struct AST *compound_list(struct Token **t)
             *t = tmp;
         }
     }
-    if (tmp && (!strcmp(tmp->name,"&") ||
-        !strcmp(tmp->name,";") ||
-        !strcmp(tmp->name,"\n")))
+    if (tmp
+        && (!strcmp(tmp->name, "&") || !strcmp(tmp->name, ";")
+               || !strcmp(tmp->name, "\n")))
     {
         add_compound(compound, word_init(tmp));
         tmp = tmp->next;
-        while(tmp && !strcmp(tmp->name,"\n"))
+        while (tmp && !strcmp(tmp->name, "\n"))
         {
             tmp = tmp->next;
         }

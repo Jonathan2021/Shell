@@ -8,30 +8,30 @@ struct AST *rule_case(struct Token **t)
     struct AST *case_body = NULL;
     struct Token *name;
     struct Token *tmp = *t;
-    if (strcmp(tmp->name,"case"))
+    if (strcmp(tmp->name, "case"))
         return NULL;
     name = tmp;
     tmp = tmp->next;
-    if (tmp == NULL || strcmp(tmp->type,"WORD"))
+    if (tmp == NULL || strcmp(tmp->type, "WORD"))
         return NULL;
     condition = case_init(tmp);
     tmp = tmp->next;
     if (tmp == NULL)
-    if (tmp == NULL)
-    {
-        AST_destroy(condition);
-        return NULL;
-    }
-    while(strcmp(tmp->name,"\n") == 0)
+        if (tmp == NULL)
+        {
+            AST_destroy(condition);
+            return NULL;
+        }
+    while (strcmp(tmp->name, "\n") == 0)
     {
         tmp = tmp->next;
         if (tmp == NULL)
             break;
     }
-    if (tmp == NULL || strcmp(tmp->name,"in"))
+    if (tmp == NULL || strcmp(tmp->name, "in"))
     {
-            AST_destroy(condition);
-            return NULL;
+        AST_destroy(condition);
+        return NULL;
     }
     tmp = tmp->next;
     if (tmp == NULL)
@@ -39,7 +39,7 @@ struct AST *rule_case(struct Token **t)
         AST_destroy(condition);
         return NULL;
     }
-    while(strcmp(tmp->name,"\n") == 0)
+    while (strcmp(tmp->name, "\n") == 0)
     {
         tmp = tmp->next;
         if (tmp == NULL)
@@ -50,7 +50,7 @@ struct AST *rule_case(struct Token **t)
     }
     if ((case_body = case_clause(&tmp)) != NULL)
         tmp = tmp->next;
-    if (tmp == NULL || strcmp(tmp->name,"esac"))
+    if (tmp == NULL || strcmp(tmp->name, "esac"))
     {
         if (case_body)
             AST_destroy(case_body);

@@ -23,9 +23,9 @@ struct AST *case_clause_init()
 void add_case(struct AST *case_clause, struct AST *case_item)
 {
     case_clause->nb_child++;
-    case_clause->child = realloc(case_clause->child, \
-    case_clause->nb_child*sizeof(struct AST));
-    case_clause->child[case_clause->nb_child-1] = case_item;
+    case_clause->child = realloc(
+        case_clause->child, case_clause->nb_child * sizeof(struct AST));
+    case_clause->child[case_clause->nb_child - 1] = case_item;
 }
 
 struct AST *case_clause(struct Token **t)
@@ -36,31 +36,31 @@ struct AST *case_clause(struct Token **t)
     struct AST *cur_case_item;
     struct Token *tmp = *t = NULL;
 
-    if  (tmp == NULL || (cur_case_item = case_item(&tmp)) == NULL)
+    if (tmp == NULL || (cur_case_item = case_item(&tmp)) == NULL)
         return NULL;
     add_case(origin, cur_case_item);
     *t = tmp;
     while (1)
     {
-        if(!tmp || strcmp(";;", tmp->name))
+        if (!tmp || strcmp(";;", tmp->name))
             break;
         else
             tmp = tmp->next;
-        while(tmp && !strcmp("\n", tmp->name))
+        while (tmp && !strcmp("\n", tmp->name))
         {
             tmp = tmp->next;
         }
-        if(!tmp || !(cur_case_item = case_item(&tmp)))
+        if (!tmp || !(cur_case_item = case_item(&tmp)))
             break;
         add_case(origin, cur_case_item);
         *t = tmp;
     }
-    if(tmp && !strcmp(";;", tmp->name))
+    if (tmp && !strcmp(";;", tmp->name))
     {
         tmp = tmp->next;
         *t = tmp;
     }
-    while(tmp && !strcmp("\n", tmp->name))
+    while (tmp && !strcmp("\n", tmp->name))
     {
         tmp = tmp->next;
         *t = tmp;

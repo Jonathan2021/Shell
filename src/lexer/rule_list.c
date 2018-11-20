@@ -79,7 +79,8 @@ struct AST *list(struct Token **t)
         }
         return list;
     }
-    if (check == 0 && ((strcmp(";", t2->name) == 0 || strcmp("&", t2->name) == 0)))
+    if (check == 0
+        && ((strcmp(";", t2->name) == 0 || strcmp("&", t2->name) == 0)))
     {
         add_list(list, word_init(t2));
         t2 = t2->next;

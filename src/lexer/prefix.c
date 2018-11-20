@@ -6,7 +6,7 @@
 struct AST *prefix_init(struct Token *token)
 {
     struct AST *node = AST_init(1);
-    if(!node)
+    if (!node)
         return NULL;
     node->self = token;
     return node;
@@ -15,7 +15,7 @@ struct AST *prefix_init(struct Token *token)
 struct AST *prefix(struct Token **t)
 {
     struct AST *redir;
-    if (strcmp(t[0]->type,"ASSIGMENT_WORD") == 0)
+    if (strcmp(t[0]->type, "ASSIGMENT_WORD") == 0)
     {
         struct AST *assigment_word = prefix_init(*t);
         *t = t[0]->next;

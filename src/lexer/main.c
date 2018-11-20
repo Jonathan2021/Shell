@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../print_ast/include/print_ast.h"
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include "../print_ast/include/print_ast.h"
-struct Token* init(char *name, char *type)
+struct Token *init(char *name, char *type)
 {
     struct Token *l = malloc(sizeof(struct Token));
     l->name = name;
@@ -32,9 +32,9 @@ struct Token *exemple()
 
 void print_t(struct Token *t)
 {
-    for (;t != NULL ; t = t->next)
+    for (; t != NULL; t = t->next)
     {
-        printf("%s ",t->name);
+        printf("%s ", t->name);
     }
 }
 

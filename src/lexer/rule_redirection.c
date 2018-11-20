@@ -15,25 +15,24 @@ struct AST *redirection_init(struct Token *token)
 
 struct AST *redirection(struct Token **t)
 {
-    //struct Token *ionum;
+    // struct Token *ionum;
     struct Token *pipe;
     struct Token *type;
-    char *list[9][2] =
-        {
-            {">", "WORD"},
-            {"<", "WORD"},
-            {">>", "WORD"},
-            {"<<", "HEREDOC"},
-            {"<<-", "HEREDOC"},
-            {">&", "WORD"},
-            {"<&", "WORD"},
-            {">|", "WORD"},
-            {"<>", "WORD"},
-        };
+    char *list[9][2] = {
+        {">", "WORD"},
+        {"<", "WORD"},
+        {">>", "WORD"},
+        {"<<", "HEREDOC"},
+        {"<<-", "HEREDOC"},
+        {">&", "WORD"},
+        {"<&", "WORD"},
+        {">|", "WORD"},
+        {"<>", "WORD"},
+    };
     struct Token *tmp = *t;
     if (strcmp("IONUMBER", tmp->type) == 0)
     {
-      //  ionum = tmp;
+        //  ionum = tmp;
         tmp = tmp->next;
         if (tmp == NULL)
             return NULL;
@@ -57,7 +56,7 @@ struct AST *redirection(struct Token **t)
                 *t = tmp;
                 return node;
             }
-        }    
+        }
     }
     return NULL;
 }

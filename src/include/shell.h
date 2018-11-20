@@ -1,5 +1,5 @@
 #ifndef SHELL_H
-# define SHELL_H
+#define SHELL_H
 /*
 struct Token
 {
