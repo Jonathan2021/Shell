@@ -9,35 +9,59 @@
 #include <sys/stat.h>
 #include "../include/shell.h"
 
-char *get_value(char *name, struct PS *ps)
+char *get_value(char *name)
 {
-    struct PS *tmp = ps;
-    while(tmp->name)
+    FILE *file = fopen("src/file/variable.txt","r+");
+    if (!file)
+        return NULL;
+    char *check = malloc(60);
+    char *value = malloc(60);
+    int nb;
+    while((nb = fscanf(file,"%s %[^\n\t]s",check,value)) >= 0)
     {
-        if (strcmp(tmp->name,name) == 0)
+        if (strcmp(check,name) == 0)
         {
-            return tmp->value;
+            fclose(file);
+            free(check);
+            value[strlen(value)-1] = '\0';
+            char *cpy = malloc(60);
+            strcpy(cpy,value+1);
+            free(value);
+            return cpy;
         }
-        tmp = tmp->next;
     }
+    fclose(file);
+    free(value);
+    free(check);
     return NULL;
 }
 
-void set_value(char *name, char *value, struct PS **ps)
+void set_value(char *name, char *value)
 {
-    struct PS *tmp = *ps;
-    while(tmp->name)
+    FILE *file = fopen("src/file/variable.txt","r");
+    if (!file)
+        return;
+    FILE *copy = fopen("src/file/copy.txt","w+");
+    char *check = malloc(60);
+    char *data = malloc(60);
+    int nb;
+    while((nb = fscanf(file,"%s %[^\n\t]s",check,data)) >= 0)
     {
-        if (strcmp(tmp->name,name) == 0)
+        if (strcmp(check,name) == 0)
         {
-            tmp->value = value;
-            return;
+            fprintf(copy,"%s \"%s\"\n",check,value);
         }
-        tmp = tmp->next;
+        else
+        {
+            fprintf(copy,"%s %s\n",check,data);
+        }
     }
-    tmp->value = value;
-    tmp->name = name;
-    tmp->next = init_ps();
+    remove("src/file/variable.txt");
+    free(check);
+    fclose(file);
+    fclose(copy);
+    rename("src/file/copy.txt","src/file/variable.txt");
+
 }
 
 long str_to_argv(char **argv, char *str)
@@ -88,21 +112,12 @@ long str_to_argv(char **argv, char *str)
     return i;
 }
 
-void reset_value(struct PS *ps)
+void reset_value(void)
 {
-    struct PS *tmp = ps;
-    while(tmp)
-    {
-        if (strcmp(tmp->name,"IFS") == 0)
-        {
-            tmp->value = "\\t \\n";
-        }
-        else
-        {
-            tmp->value = "0";
-        }
-        tmp = tmp->next;
-    }
+    set_value("IFS","\\t \\n");
+    set_value("--ast-print","0");
+    set_value("--type-print","0");
+    set_value("version","0");
 }
 
 
@@ -111,7 +126,6 @@ void read_isatty(void)
     char str[4095];
     int ret = 0;
     struct Token *token = NULL;
-    struct PS *ps = NULL;
     while(fgets(str,4095,stdin))
     {
         token = NULL;
@@ -141,6 +155,5 @@ void read_isatty(void)
         lexer(token);
         printf("\n");
     }
-    check_option(token,ps);
-    reset_value(ps);
+    check_option(token);
 }
