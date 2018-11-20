@@ -1,0 +1,29 @@
+*******************************************************************
+    42SH:
+By: Victor Chemla, Julie Siahou, Thomas Gossin, Jonathan Sands
+
+BUILD ./42SH BINARY:
+    1- ./autogen
+    2- ./configure
+    3- make
+    --> ./42SH is now built
+
+CLEAN:
+    ./autogen clean
+
+To build doxygen:
+    1- go in doc/
+    2- doxygen doxygen.conf
+    3- go in latex/
+    4- make refman.tex
+
+HOW TO USE 42SH:
+    --ast-print do a print of a DOT file
+    --type-print do a print of linked token
+    --version print actual version
+    --norc desactivate all resource reader
+    -c "command" follow the bash behavior
+    cat "file" | ./42sh read file 
+    ./42sh < file read file
+
+*******************************************************************

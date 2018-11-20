@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
+#include "include/rule.h"
 
 
 
@@ -10,8 +11,6 @@ struct AST *bang_init(struct Token *token)
     if(!node)
         return NULL;
     node->self = token;
-    //node->child[0] = left_body
-    //node->child[1] = right_body
     return node;
 }
 

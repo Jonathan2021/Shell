@@ -14,15 +14,22 @@ struct AST *operator_init(struct Token *token)
     return node;
 }
 
-int foo_and(struct AST *node)
+void foo_and(struct AST *node)
 {
-    if (node->child[0]->res && node->child[1]->res)
-    {
-        node->res = 1;
-        return 1;
-    }
-    node->res = 0;
-    return 0;
+    if(!node || !node->child[0] || !node->child[1])
+        return;
+    node->child[0]->foo(node->child[0]);
+    node->child[1]->foo(node->child[1]);
+    node->res = node->child[0]->res && node->child[1]->res;
+}
+
+void foo_or(struct AST *node)
+{
+    if(!node || !node->child[0] || !node->child[1])
+        return;
+    node->child[0]->foo(node->child[0]);
+    node->child[1]->foo(node->child[1]);
+    node->res = node->child[0]->res && node->child[1]->res;
 }
 
 struct AST *and_or(struct Token **t)
@@ -33,7 +40,7 @@ struct AST *and_or(struct Token **t)
 
     struct Token *cpy = *t;
     //int check = 2;
-    if ((left_body = shell_command(&cpy)) == NULL)
+    if ((left_body = pipeline(&cpy)) == NULL)
         return NULL;
     *t = cpy;
     if (cpy == NULL)
@@ -62,11 +69,15 @@ struct AST *and_or(struct Token **t)
         {
             *t = cpy;
             struct AST *node = operator_init(name);
+            if(!strcmp(name->name, "&&"))
+                node->foo = foo_and;
+            else
+                node->foo = foo_or;
             node->child[0] = left_body;
             node->child[1] = right_body;
             return node;
         }
     }
-
     return left_body;
 }
+

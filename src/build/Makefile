@@ -1,9 +1,6 @@
-AUTOMAKE_OPTIONS = subdir-objects
-
-bin_PROGRAMS = 42sh
-
-42sh_SOURCES = \
-	src/lexer/and_node.c \
+CC = gcc
+CFLAGS = -std=c99 -pedantic -Wextra -Wall -g
+SRC = src/lexer/and_node.c \
 	src/lexer/rule_case_clause.c \
 	src/lexer/bang_node.c \
 	src/lexer/lessand_node.c \
@@ -35,5 +32,11 @@ bin_PROGRAMS = 42sh
 	src/lexer/rule_case.c \
 	src/lexer/rule_shell_command.c \
 	src/lexer/rule_simple_command.c
+EXEC = 42SH
 
-42sh_CFLAGS = -Wall -Wextra -Werror -std=c99 -pedantic
+all: 
+	$(CC) $(CFLAGS) -o $(EXEC) $(SRC)
+
+
+clean:
+	rm $(EXEC) 
