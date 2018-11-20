@@ -3,24 +3,29 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-struct AST *if_init(struct Token *token)
-{
-    struct AST *node = AST_init(3);
-    if(!node)
-        return NULL;
-    node->self = token;
-    //node->child[0] = condition
-    //node->child[1] = ifbody
-    //node->child[2] = else body
-    return node;
-}
-
 void foo_if(struct AST *node)
 {
     if (!node || !node->child[0])
         return;
     node->child[0]->foo(node->child[0]);
     node->res = node->child[0]->res;
+    if(node->res && node->nb_child > 1 && node->child[1])
+        node->child[1]->foo(node->child[1]);
+    else if(!node->res && node->nb_child > 2 && node->child[2])
+        node->child[2]->foo(node->child[2]);
+}
+
+struct AST *if_init(struct Token *token)
+{
+    struct AST *node = AST_init(3);
+    if(!node)
+        return NULL;
+    node->self = token;
+    node->foo = foo_if;
+    //node->child[0] = condition
+    //node->child[1] = ifbody
+    //node->child[2] = else body
+    return node;
 }
 
 struct AST *rule_if(struct Token **t)
@@ -67,6 +72,5 @@ struct AST *rule_if(struct Token **t)
     node->child[0] = condition;
     node->child[1] = if_body;
     node->child[2] = else_body;
-    node->foo = foo_if;
     return node;
 }
