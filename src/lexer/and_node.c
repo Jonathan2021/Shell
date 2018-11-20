@@ -3,17 +3,6 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-struct AST *operator_init(struct Token *token)
-{
-    struct AST *node = AST_init(2);
-    if (!node)
-        return NULL;
-    node->self = token;
-    //node->child[0] = left_body
-    //node->child[1] = right_body
-    return node;
-}
-
 void foo_and(struct AST *node)
 {
     if(!node || !node->child[0] || !node->child[1])
@@ -30,6 +19,21 @@ void foo_or(struct AST *node)
     node->child[0]->foo(node->child[0]);
     node->child[1]->foo(node->child[1]);
     node->res = node->child[0]->res && node->child[1]->res;
+}
+
+struct AST *operator_init(struct Token *token)
+{
+    struct AST *node = AST_init(2);
+    if (!node)
+        return NULL;
+    node->self = token;
+    if(!strcmp(token->name, "&&"))
+        node->foo = foo_and;
+    else
+        node->foo = foo_or;
+    //node->child[0] = left_body
+    //node->child[1] = right_body
+    return node;
 }
 
 struct AST *and_or(struct Token **t)
@@ -69,10 +73,6 @@ struct AST *and_or(struct Token **t)
         {
             *t = cpy;
             struct AST *node = operator_init(name);
-            if(!strcmp(name->name, "&&"))
-                node->foo = foo_and;
-            else
-                node->foo = foo_or;
             node->child[0] = left_body;
             node->child[1] = right_body;
             return node;

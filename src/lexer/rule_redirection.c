@@ -5,8 +5,8 @@
 
 struct AST *redirection_init(struct Token *token)
 {
-    struct AST *node = AST_init(2);
-    if (!node)
+    struct AST *node = AST_init(2); //FIXME Dans la fn en dessous seul child[0] est set;
+    if (!node)                      //FIXME et je pense qu il faut init 3 au cas ou y a un IOnumber
         return NULL;
     node->self = token;
     node->child[0] = AST_init(0);
@@ -31,7 +31,7 @@ struct AST *redirection(struct Token **t)
             {"<>", "WORD"},
         };
     struct Token *tmp = *t;
-    if (strcmp("IONUMBER", tmp->type) == 0)
+    if (strcmp("IONUMBER", tmp->type) == 0) //FIXME On doit le retenir ca je pense, la tu sautes juste au prochain
     {
       //  ionum = tmp;
         tmp = tmp->next;
@@ -52,12 +52,12 @@ struct AST *redirection(struct Token **t)
             {
                 type = tmp;
                 struct AST *node = redirection_init(type);
-                node->child[0]->self = pipe;
+                node->child[0]->self = pipe; //FIXME AST_init set les child à nul donc risque de segfault
 
                 *t = tmp;
                 return node;
             }
         }    
-    }
+    }//FIXME reternir list[i][1] aussi
     return NULL;
 }

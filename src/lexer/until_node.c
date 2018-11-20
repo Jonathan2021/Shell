@@ -3,6 +3,18 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
+void foo_until(struct AST *node)
+{
+    if (!node || !node->child[0])
+        return;
+    node->child[0]->foo(node->child[0]);
+    node->res = !node->child[0]->res;
+    if (!node->res && node->nb_child > 1 && node->child[1])
+    {
+        node->child[1]->foo(node->child[1]);
+        node->foo(node);
+    }
+}
 
 struct AST *until_init(struct Token *token)
 {
@@ -10,17 +22,10 @@ struct AST *until_init(struct Token *token)
     if(!node)
         return NULL;
     node->self = token;
+    node->foo = foo_until;
     //node->child[0] = left_body
     //node->child[1] = right_body
     return node;
-}
-
-void foo_until(struct AST *node)
-{
-    if (!node || !node->child[0])
-        return;
-    node->child[0]->foo(node->child[0]);
-    node->res = !node->child[0]->res;
 }
 
 struct AST *rule_until(struct Token **t)
@@ -43,6 +48,5 @@ struct AST *rule_until(struct Token **t)
     node->child[0] = condition;
     node->child[1] = do_body;
     *t = tmp;
-    node->foo = foo_until;
     return node;
 } 

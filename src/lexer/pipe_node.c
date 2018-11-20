@@ -12,8 +12,6 @@ struct AST *pipe_init(struct Token *token)
     return node;
 }
 
-
-
 /* struct AST *pipeline(struct Token **t)
 {
     struct AST *origin = NULL;
