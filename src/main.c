@@ -27,6 +27,7 @@ void add_token(struct Token **token, char *str)
         {"THEN","then","\0"},
         {"ELIF","elif","\0"},
         {"ELSE","else","\0"},
+        {"DO","do","\0"},
         {"LOOP","case","esac","while","until","for","\0"},
         {"BRACE","{","}","!","\0"},
         {"IN","in","\0"}};
