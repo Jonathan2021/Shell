@@ -3,6 +3,23 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
+void foo_list(struct AST *node)
+{
+    int index = 0;
+    while (index < node->nb_child && node->child[index])
+    {
+        if (!strcmp(node->child[index]->self->name, ";")
+            || !strcmp(node->child[index]->self->name, "&"))
+        {
+            index++;
+            continue;
+        }
+        node->child[index]->foo(node->child[index]);
+        index++;
+    }
+}
+
+
 struct AST *list_init(void)
 {
     struct AST *node = AST_init(0);
@@ -12,6 +29,7 @@ struct AST *list_init(void)
     t->name = "list";
     t->type = "LIST";
     node->self = t;
+    node->foo = foo_list;
     return node;
 }
 

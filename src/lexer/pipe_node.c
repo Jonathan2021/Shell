@@ -3,6 +3,11 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
+void foo_pipeline(struct AST *node)
+{
+    
+}
+
 struct AST *pipe_init(struct Token *token)
 {
     struct AST *node = AST_init(2);
@@ -11,8 +16,6 @@ struct AST *pipe_init(struct Token *token)
     node->self = token;
     return node;
 }
-
-
 
 /* struct AST *pipeline(struct Token **t)
 {
