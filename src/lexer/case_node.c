@@ -25,7 +25,7 @@ struct AST *case_item(struct Token **t)
     while(strcmp(tmp->name,"|") == 0 ||
             strcmp(tmp->type,"WORD") == 0)
     {
-        part2 = case_init(tmp);
+        part2 = case_init(tmp); //FIXME Ca risque d etre bizarre puisqu on a un word en parent avec des words en fils et une compound list tout à la fin
         add_case(part1, part2);
         tmp = tmp->next;
         if (tmp == NULL)
