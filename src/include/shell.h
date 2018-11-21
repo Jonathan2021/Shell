@@ -17,7 +17,7 @@ void reset_value(struct PS *ps);
 long str_to_argv(char **argv, char *str);
 struct Token *lexer(struct Token *t);
 int check_option(struct Token *token, struct PS *ps);
-void read_isatty(void);
+struct Token *create_token(struct Token *token, char *str);
 struct PS *init_ps(void);
 struct Token *read_file(char *file, struct Token *token);
 

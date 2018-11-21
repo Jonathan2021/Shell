@@ -154,7 +154,13 @@ struct Token *carving(long argc, char **argv)
     int i = 0;
     while(1)
     {
-        if (i == 1)
+        token = NULL;
+        if (i == 0)
+        {
+            i = 1;
+            token = parse_path(token,argv,argc,ps);
+        }
+        else
         {
             printf("42sh$ ");
             char *check = fgets(str,4095,stdin);
@@ -162,10 +168,8 @@ struct Token *carving(long argc, char **argv)
                 continue;
             if (strncmp(str,"exit",4) == 0)
                 return 0;
-            argc = str_to_argv(argv,str);
+            token = create_token(token,str);
         }
-        token = NULL;
-        token = parse_path(token,argv,argc,ps);
         lexer(token);
         if (check_option(token,ps))
         {
@@ -173,7 +177,6 @@ struct Token *carving(long argc, char **argv)
             exit(0);
         }
         DestroyToken(token);
-        i = 1;
         if (!isatty(0))
             exit(0);
     }
