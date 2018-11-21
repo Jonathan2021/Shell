@@ -105,7 +105,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc,
         else
             fprintf(stderr,"[GNU long options] [options] [file]\n");
     }
-    if (!check && (argc >= option_index || !isatty(0)))
+    if (!check && (argv[argc-1] || !isatty(0)))
     {
         token = NULL;
         if (isatty(0))
