@@ -89,7 +89,14 @@ struct Token *parse_path(struct Token *token, char **argv, long argc,
             parse = strtok(optarg,delim);
             while (parse)
             {
-                add_token(&token,parse);
+                if (strlen(parse) > 1 && parse[strlen(parse)-1] == ';')
+                {
+                    parse[strlen(parse)-1] = '\0';
+                    add_token(&token,parse);
+                    add_token(&token,";");
+                }
+                else
+                    add_token(&token,parse);
                 parse = strtok(NULL,delim);
             }
             check = 1;
@@ -121,6 +128,7 @@ void print_t(struct Token *t)
     for (; t != NULL; t = t->next)
         printf("\n%s", t->name);
 }
+
 struct Token *lexer(struct Token *t)
 {
     struct AST *ast = input(&t);

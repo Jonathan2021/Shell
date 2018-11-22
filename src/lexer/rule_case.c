@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "../include/shell.h"
 
 void foo_rule_case(struct AST *node, struct fds fd)
 {

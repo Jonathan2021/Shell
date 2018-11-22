@@ -108,7 +108,14 @@ struct Token *create_token(struct Token *token, char *str)
     parse = strtok(str,delim);
     while (parse)
     {
-        add_token(&token,parse);
+        if (strlen(parse) > 1 && parse[strlen(parse)-1] == ';')
+        {
+            parse[strlen(parse)-1] = '\0';
+            add_token(&token,parse);
+            add_token(&token,";");
+        }
+        else
+            add_token(&token,parse);
         parse = strtok(NULL,delim);
     }
     return token;
