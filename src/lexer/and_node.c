@@ -3,21 +3,21 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-void foo_and(struct AST *node)
+void foo_and(struct AST *node, struct fds fd)
 {
     if(!node || !node->child[0] || !node->child[1])
         return;
-    node->child[0]->foo(node->child[0]);
-    node->child[1]->foo(node->child[1]);
+    node->child[0]->foo(node->child[0], fd);
+    node->child[1]->foo(node->child[1], fd);
     node->res = node->child[0]->res && node->child[1]->res;
 }
 
-void foo_or(struct AST *node)
+void foo_or(struct AST *node, struct fds fd)
 {
     if(!node || !node->child[0] || !node->child[1])
         return;
-    node->child[0]->foo(node->child[0]);
-    node->child[1]->foo(node->child[1]);
+    node->child[0]->foo(node->child[0], fd);
+    node->child[1]->foo(node->child[1], fd);
     node->res = node->child[0]->res && node->child[1]->res;
 }
 

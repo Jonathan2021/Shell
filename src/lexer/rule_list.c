@@ -3,7 +3,7 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-void foo_list(struct AST *node)
+void foo_list(struct AST *node, struct fds fd)
 {
     if(!node || ! node->child[0])
         return;
@@ -16,7 +16,7 @@ void foo_list(struct AST *node)
             index++;
             continue;
         }
-        node->child[index]->foo(node->child[index]);
+        node->child[index]->foo(node->child[index], fd);
         index++;
     }
 }

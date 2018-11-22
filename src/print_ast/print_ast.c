@@ -97,7 +97,7 @@ int check_option(struct Token *token, struct PS *ps)
     print = get_value("version",ps);
     if (print && strcmp(print,"1") == 0)
     {
-        printf("Version 0.3\n");
+        printf("Version 0.5\n");
         return 1;
     }
     return 0;

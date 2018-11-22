@@ -91,56 +91,34 @@ long str_to_argv(char **argv, char *str)
 void reset_value(struct PS *ps)
 {
     struct PS *tmp = ps;
-    while(tmp)
+    while(ps->name)
     {
-        if (strcmp(tmp->name,"IFS") == 0)
-        {
-            tmp->value = "\\t \\n";
-        }
-        else
-        {
-            tmp->value = "0";
-        }
-        tmp = tmp->next;
+        tmp = ps;
+        ps = ps->next;
+        free(tmp);
     }
+    free(ps);
 }
 
 
-void read_isatty(void)
+struct Token *create_token(struct Token *token, char *str)
 {
-    char str[4095];
-    int ret = 0;
-    struct Token *token = NULL;
-    struct PS *ps = NULL;
-    while(fgets(str,4095,stdin))
+    char *parse;
+    char *delim = {"\t \n"};
+    parse = strtok(str,delim);
+    while (parse)
     {
-        token = NULL;
-        if (strncmp(str,"exit",4) == 0)
+        if (strlen(parse) > 1 && parse[strlen(parse)-1] == ';')
         {
-            exit(0);
-        }
-        char *parse;
-        char *delim = {"\t \n"};
-        parse = strtok(str,delim);
-        while (parse)
-        {
+            parse[strlen(parse)-1] = '\0';
             add_token(&token,parse);
-            parse = strtok(NULL,delim);
+            add_token(&token,";");
         }
-        struct Token *tmp = token;
-        while (tmp)
-        {
-            printf("->%s",tmp->type);
-            tmp = tmp->next;
-        }
+        else
+            add_token(&token,parse);
+        parse = strtok(NULL,delim);
     }
-    if (ret == 1)
-    {
-        lexer(token);
-        printf("\n");
-    }
-    check_option(token,ps);
-    reset_value(ps);
+    return token;
 }
 
 struct Token *read_file(char *f, struct Token *token)

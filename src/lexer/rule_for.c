@@ -1,7 +1,31 @@
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "../include/shell.h"
 #include <stdlib.h>
+#include "include/rule.h"
+void setvalue(__attribute__((unused))char *a, __attribute__((unused))char *b)
+{
+    return;
+}
+
+char *getvalue(__attribute__((unused))char *a)
+{
+    return NULL;
+}
+
+void foo_for(struct AST *node, struct fds fd)
+{
+    if (!node || !node->nb_child || !node->child[0])
+        return;
+    if (node->child[1] && strcmp(node->child[1]->self->name, "in"))
+        return;
+    for (int i = 0; i < node->child[1]->nb_child; ++i)
+    {
+        setvalue(node->child[0]->self->name, getvalue(node->child[1]->child[i]->self->name));
+        node->child[2]->foo(node->child[2], fd);
+    }
+}
 
 struct AST *for_init(struct Token *token)
 {
@@ -9,6 +33,7 @@ struct AST *for_init(struct Token *token)
     if (!node)
         return NULL;
     node->self = token;
+    node->foo = foo_for;
     return node;
 }
 
@@ -89,3 +114,5 @@ struct AST *rule_for(struct Token **t)
     *t = tmp;
     return for_node;
 }
+
+

@@ -89,7 +89,14 @@ struct Token *parse_path(struct Token *token, char **argv, long argc,
             parse = strtok(optarg,delim);
             while (parse)
             {
-                add_token(&token,parse);
+                if (strlen(parse) > 1 && parse[strlen(parse)-1] == ';')
+                {
+                    parse[strlen(parse)-1] = '\0';
+                    add_token(&token,parse);
+                    add_token(&token,";");
+                }
+                else
+                    add_token(&token,parse);
                 parse = strtok(NULL,delim);
             }
             check = 1;
@@ -105,7 +112,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc,
         else
             fprintf(stderr,"[GNU long options] [options] [file]\n");
     }
-    if (!check && (argc >= option_index || !isatty(0)))
+    if (!check && (argv[argc-1] || !isatty(0)))
     {
         token = NULL;
         if (isatty(0))
@@ -121,6 +128,7 @@ void print_t(struct Token *t)
     for (; t != NULL; t = t->next)
         printf("\n%s", t->name);
 }
+
 struct Token *lexer(struct Token *t)
 {
     struct AST *ast = input(&t);
@@ -154,7 +162,13 @@ struct Token *carving(long argc, char **argv)
     int i = 0;
     while(1)
     {
-        if (i == 1)
+        token = NULL;
+        if (i == 0)
+        {
+            i = 1;
+            token = parse_path(token,argv,argc,ps);
+        }
+        else
         {
             printf("42sh$ ");
             char *check = fgets(str,4095,stdin);
@@ -162,10 +176,8 @@ struct Token *carving(long argc, char **argv)
                 continue;
             if (strncmp(str,"exit",4) == 0)
                 return 0;
-            argc = str_to_argv(argv,str);
+            token = create_token(token,str);
         }
-        token = NULL;
-        token = parse_path(token,argv,argc,ps);
         lexer(token);
         if (check_option(token,ps))
         {
@@ -173,7 +185,6 @@ struct Token *carving(long argc, char **argv)
             exit(0);
         }
         DestroyToken(token);
-        i = 1;
         if (!isatty(0))
             exit(0);
     }

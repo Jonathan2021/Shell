@@ -20,11 +20,11 @@ struct AST *elif_init(struct Token *token)
     return node;
 }
 
-void foo_elif(struct AST *node)
+void foo_elif(struct AST *node, struct fds fd)
 {
     if (!node || !node->child)
         return;
-    node->child[0]->foo(node->child[0]);
+    node->child[0]->foo(node->child[0], fd);
     node->res = node->child[0]->res;
 }
 

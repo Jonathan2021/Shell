@@ -3,11 +3,11 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-void foo_bang(struct AST *node)
+void foo_bang(struct AST *node, struct fds fd)
 {
     if(node && node->child[0])
     {
-        node->child[0]->foo(node->child[0]);
+        node->child[0]->foo(node->child[0], fd);
         node->res = node->child[0]->res;
     }
 }
