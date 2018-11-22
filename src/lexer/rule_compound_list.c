@@ -1,15 +1,14 @@
 #include <stdlib.h>
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
+#include "../include/shell.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdio.h>
 #include <sys/wait.h>
 #include "include/rule.h"
 
-
-
-int my_exec(char *cmd[])
+int my_exec(char *cmd[], struct fds fd)
 {
     int res = 0;
     pid_t pid = fork();
@@ -17,6 +16,21 @@ int my_exec(char *cmd[])
         fprintf(stderr, "fork failed in compound\n");
     if(!pid)
     {
+        if (fd.in)
+        {
+            dup2(fd.in, 0);
+            close(fd.in);
+        }
+        if (fd.out != 1)
+        {
+            dup2(fd.out, 1);
+            close(fd.out);
+        }
+        if(fd.err != 2)
+        {
+            dup2(fd.err, 2);
+            close(fd.err);
+        }
         if(execvp(cmd[0], cmd) < 0)
         {
             fprintf(stderr, "execvp failed\n");
@@ -33,7 +47,7 @@ int my_exec(char *cmd[])
     return res;
 }
 
-int exec_init(struct AST *node, int *index)
+int exec_init(struct AST *node, int *index, struct fds fd)
 {
     char *my_cmd[512];
     int i = 0;
@@ -47,12 +61,13 @@ int exec_init(struct AST *node, int *index)
         cur_type = node->child[*index]->self->type;
         if (strcmp(cur_type, "WORD"))
         {
-            node->child[*index]->foo(node->child[*index]);
+            node->child[*index]->foo(node->child[*index], fd);
             res =  node->child[*index]->res;
             special = 1;
         }
-        my_cmd[i] = cur_name;
-        if(!strcmp(cur_name, ";") || !strcmp(cur_name, "&") 
+        else
+            my_cmd[i] = getvalue(cur_name);
+        if (!strcmp(cur_name, ";") || !strcmp(cur_name, "&") 
             || !strcmp(cur_name, "\n"))
             break;
     }
@@ -60,19 +75,19 @@ int exec_init(struct AST *node, int *index)
     i++;
     my_cmd[i] = NULL;
     if (!special)
-        res = my_exec(my_cmd);
+        res = my_exec(my_cmd, fd);
     return res;
 
 }
 
-void foo_compound(struct AST *node)
+void foo_compound(struct AST *node, struct fds fd)
 {
     if(!node || !node->child[0])
         return;
     int index = 0;
     int res = 0;
     while(index < node->nb_child)
-        res = exec_init(node, &index);
+        res = exec_init(node, &index, fd);
     node->res = res;
 }
 

@@ -2,16 +2,24 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
-struct AST *case_init(struct Token *token)
+struct AST *case_init(void)
 {
+    struct Token *token = malloc(sizeof(struct Token));
+    if(!token)
+        return NULL;
     struct AST *node = AST_init(0);
     if (!node)
+    {
+        free(token);
         return NULL;
+    }
+    token->name = "case item";
+    token->type = "CASE ITEM";
     node->self = token;
     return node;
 }
 
-
+//Case_item on top and all words are its children, last child is cmp_list
 struct AST *case_item(struct Token **t)
 {
     struct AST *part1 = NULL;
@@ -21,11 +29,12 @@ struct AST *case_item(struct Token **t)
         tmp = tmp->next;
     if (tmp == NULL || strcmp(tmp->type,"WORD"))
         return NULL;
-    part1 = case_init(tmp);
+    part1 = case_init();
+    add_case(part1, word_init(tmp));
     while(strcmp(tmp->name,"|") == 0 ||
             strcmp(tmp->type,"WORD") == 0)
     {
-        part2 = case_init(tmp); //FIXME Ca risque d etre bizarre puisqu on a un word en parent avec des words en fils et une compound list tout à la fin
+        part2 = word_init(tmp); 
         add_case(part1, part2);
         tmp = tmp->next;
         if (tmp == NULL)

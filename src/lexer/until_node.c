@@ -3,16 +3,16 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-void foo_until(struct AST *node)
+void foo_until(struct AST *node, struct fds fd)
 {
     if (!node || !node->child[0])
         return;
-    node->child[0]->foo(node->child[0]);
+    node->child[0]->foo(node->child[0], fd);
     node->res = !node->child[0]->res;
     if (!node->res && node->nb_child > 1 && node->child[1])
     {
-        node->child[1]->foo(node->child[1]);
-        node->foo(node);
+        node->child[1]->foo(node->child[1], fd);
+        node->foo(node, fd);
     }
 }
 
