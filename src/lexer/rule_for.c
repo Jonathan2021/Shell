@@ -3,6 +3,16 @@
 #include "include/rule.h"
 #include "../include/shell.h"
 #include <stdlib.h>
+#include "include/rule.h"
+void setvalue(__attribute__((unused))char *a, __attribute__((unused))char *b)
+{
+    return;
+}
+
+char *getvalue(__attribute__((unused))char *a)
+{
+    return NULL;
+}
 
 void foo_for(struct AST *node, struct fds fd)
 {
@@ -104,3 +114,5 @@ struct AST *rule_for(struct Token **t)
     *t = tmp;
     return for_node;
 }
+
+
