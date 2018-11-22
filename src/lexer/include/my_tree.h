@@ -7,8 +7,9 @@
 
 
 struct AST;
+struct fds;
 
-typedef void (*foo)(struct AST *node);
+typedef void (*foo)(struct AST *node, __attribute__((unused))struct fds foo);
 
 struct AST
 {
@@ -19,6 +20,14 @@ struct AST
     int res;
 };
 
+struct fds
+{
+    int in;
+    int err;
+    int out;
+    
+};
+
 
 struct AST *AST_init(int nb_child);
 void AST_print_infix(const struct AST *tree);
@@ -27,14 +36,14 @@ void free_l(struct AST *ast);
 void AST_destroy(struct AST *s);
 
 struct AST *and_init(struct Token *token);
-void foo_and(struct AST *node);
+void foo_and(struct AST *node, struct fds fd);
 
 struct AST *or_init(struct Token *token);
-void foo_or(struct AST *node);
+void foo_or(struct AST *node, struct fds fd);
 
 //un else if est un if qui est mis dans le else_body
 struct AST *if_init(struct Token *token);
-void foo_if(struct AST *node);
+void foo_if(struct AST *node, struct fds fd);
 
 struct AST *bang_init(struct Token *token);
 #endif /* ! MY_TREE_H */

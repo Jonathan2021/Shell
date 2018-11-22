@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include <unistd.h>
+#define _GNU_SOURCE
+#include <fcntl.h>
 
-
-void foo_pipe(struct AST *node)
+void foo_pipe(struct AST *node, struct fds fd)
 {
     if(!node || !node->child[0] || !node->child[1])
         return;
