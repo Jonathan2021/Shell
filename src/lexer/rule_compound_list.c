@@ -7,7 +7,7 @@
 #include <sys/wait.h>
 #include "include/rule.h"
 
-int my_exec(char *cmd[])
+int my_exec(char *cmd[], struct fds fd)
 {
     int res = 0;
     pid_t pid = fork();
@@ -15,6 +15,21 @@ int my_exec(char *cmd[])
         fprintf(stderr, "fork failed in compound\n");
     if(!pid)
     {
+        if (fd.in)
+        {
+            dup2(fd.in, 0);
+            close(fd.in);
+        }
+        if (fd.out != 1)
+        {
+            dup2(fd.out, 1);
+            close(fd.out);
+        }
+        if(fd.err != 2)
+        {
+            dup2(fd.err, 2);
+            close(fd.err);
+        }
         if(execvp(cmd[0], cmd) < 0)
         {
             fprintf(stderr, "execvp failed\n");
@@ -58,7 +73,7 @@ int exec_init(struct AST *node, int *index, struct fds fd)
     i++;
     my_cmd[i] = NULL;
     if (!special)
-        res = my_exec(my_cmd);
+        res = my_exec(my_cmd, fd);
     return res;
 
 }
