@@ -3,7 +3,7 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-void foo_rule_case(struct AST *node)
+void foo_rule_case(struct AST *node, struct fds fd)
 {
     if (!node || !node->child[0] || !node->child[1])
         return;
@@ -25,7 +25,7 @@ void foo_rule_case(struct AST *node)
                 if (!strcmp(cur_item->child[nbchild - 1]->self->type,
                         "COMPOUND"))
                 {
-                    cur_item->child[nbchild - 1]->foo(cur_item->child[nbchild]);
+                    cur_item->child[nbchild - 1]->foo(cur_item->child[nbchild], fd);
                     return;
                 }
             }
