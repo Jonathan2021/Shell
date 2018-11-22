@@ -1,7 +1,21 @@
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "../include/shell.h"
 #include <stdlib.h>
+
+void foo_for(struct AST *node)
+{
+    if (!node || !node->nb_child || !node->child[0])
+        return;
+    if (node->child[1] && strcmp(node->child[1]->self->name, "in"))
+        return;
+    for (int i = 0; i < node->child[1]->nb_child; ++i)
+    {
+        setvalue(node->child[0]->self->name, node->child[1]->child[i]->self->name);
+        node->child[2]->foo(node->child[2]);
+    }
+}
 
 struct AST *for_init(struct Token *token)
 {
@@ -9,6 +23,7 @@ struct AST *for_init(struct Token *token)
     if (!node)
         return NULL;
     node->self = token;
+    node->foo = foo_for;
     return node;
 }
 
