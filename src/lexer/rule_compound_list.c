@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
+#include "../include/shell.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdio.h>
