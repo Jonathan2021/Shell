@@ -64,8 +64,9 @@ int exec_init(struct AST *node, int *index, struct fds fd)
             res =  node->child[*index]->res;
             special = 1;
         }
-        my_cmd[i] = cur_name;
-        if(!strcmp(cur_name, ";") || !strcmp(cur_name, "&") 
+        else
+            my_cmd[i] = getvalue(cur_name);
+        if (!strcmp(cur_name, ";") || !strcmp(cur_name, "&") 
             || !strcmp(cur_name, "\n"))
             break;
     }
