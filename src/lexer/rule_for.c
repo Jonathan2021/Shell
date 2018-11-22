@@ -4,7 +4,7 @@
 #include "../include/shell.h"
 #include <stdlib.h>
 
-void foo_for(struct AST *node)
+void foo_for(struct AST *node, struct fds fd)
 {
     if (!node || !node->nb_child || !node->child[0])
         return;
@@ -12,8 +12,8 @@ void foo_for(struct AST *node)
         return;
     for (int i = 0; i < node->child[1]->nb_child; ++i)
     {
-        setvalue(node->child[0]->self->name, node->child[1]->child[i]->self->name);
-        node->child[2]->foo(node->child[2]);
+        setvalue(node->child[0]->self->name, getvalue(node->child[1]->child[i]->self->name));
+        node->child[2]->foo(node->child[2], fd);
     }
 }
 
