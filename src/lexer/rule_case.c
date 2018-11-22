@@ -3,6 +3,36 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
+void foo_rule_case(struct AST *node)
+{
+    if (!node || !node->child[0] || !node->child[1])
+        return;
+    struct AST *cur_item;
+    int nbchild;
+    for (int i = 0; i < node->child[1]->nb_child; ++i)
+    {
+        cur_item = node->child[1]->child[i];
+        if (!cur_item)
+            return;
+        if(cur_item->nb_child < 2)
+            continue;
+        nbchild = cur_item->nb_child;
+        for (int j = 0; j < nbchild - 1; ++j)
+        {
+            if(!strcmp(getvalue(cur_item->child[j]->self->name), 
+                    getvalue(node->child[0]->self->name)))
+            {
+                if (!strcmp(cur_item->child[nbchild - 1]->self->type,
+                        "COMPOUND"))
+                {
+                    cur_item->child[nbchild - 1]->foo(cur_item->child[nbchild]);
+                    return;
+                }
+            }
+        }
+    }
+}
+
 struct AST *rule_case_init()
 {
     struct Token *token = malloc(sizeof(struct Token));
@@ -17,6 +47,7 @@ struct AST *rule_case_init()
     token->type = "CASE";
     token->name = "case";
     node->self = token;
+    node->foo = foo_rule_case;
     return node;
 }
 
