@@ -3,12 +3,21 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
+
+void foo_pipe(struct AST *node)
+{
+    if(!node || !node->child[0] || !node->child[1])
+        return;
+        //FIXME How do I get output from a command??
+}
+
 struct AST *pipe_init(struct Token *token)
 {
     struct AST *node = AST_init(2);
     if (!node)
         return NULL;
     node->self = token;
+    node->foo = foo_pipe;
     return node;
 }
 

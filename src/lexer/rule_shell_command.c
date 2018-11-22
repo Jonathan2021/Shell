@@ -17,6 +17,11 @@ struct AST *word_init(struct Token *token)
     return node;
 }
 
+//struct AST *assignment_word_init(struct Token *token)
+//{
+
+//}
+
 struct AST *shell_command(struct Token **t)
 {
     struct Token *t1 = *t;

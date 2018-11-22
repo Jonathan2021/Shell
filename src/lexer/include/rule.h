@@ -27,4 +27,4 @@ struct AST *case_item(struct Token **t);
 struct AST *word_init(struct Token *token);
 struct AST *while_init(struct Token *token);
 void add_case(struct AST *case_clause, struct AST *case_item);
-struct AST *case_init(struct Token *token);
+struct AST *case_init(void);
