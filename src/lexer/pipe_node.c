@@ -5,12 +5,41 @@
 #include <unistd.h>
 #define _GNU_SOURCE
 #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 void foo_pipe(struct AST *node, struct fds fd)
 {
     if(!node || !node->child[0] || !node->child[1])
         return;
-        //FIXME How do I get output from a command??
+    int pipefd[2];
+    if(pipe(pipefd) == -1)
+    {
+        fprintf(stderr, "pipe went wrong\n");
+        return;
+    }
+    pid_t cpid = fork();
+    if  (cpid == -1)
+    {
+        close(pipefd[0]);
+        close(pipefd[1]);
+        perror("pipe fork went wrong\n");
+        return;
+    }
+    else if (!cpid)
+    {
+        struct fds newfd = { .in = pipefd[1], .err = fd.err, .out = fd.out};
+        close(pipefd[0]);
+        node->child[1]->foo(node->child[1], newfd);
+        close(pipefd[1]);
+    }
+    else
+    {
+        struct fds newfd = { .in = fd.in, .err = fd.err, .out = pipefd[0]};
+        close(pipefd[1]);
+        node->child[0]->foo(node->child[0], newfd);
+        close(pipefd[0]);
+    }
 }
 
 struct AST *pipe_init(struct Token *token)
