@@ -36,9 +36,7 @@ struct AST *redirection(struct Token **t)
     if (strcmp("IONUMBER", tmp->type) == 0)
     {
         io = tmp;
-        tmp = tmp->next;
-        if (tmp == NULL)
-            return NULL;
+        next_token(&tmp);
     }
     struct Token *cpy = tmp;
     for (int i = 0; i < 9; i++)
@@ -47,9 +45,7 @@ struct AST *redirection(struct Token **t)
         if (strcmp(list[i][0], tmp->name) == 0)
         {
             pipe = tmp;
-            tmp = tmp->next;
-            if (tmp == NULL)
-                return NULL;
+            next_token(&tmp);
             if (strcmp(list[i][1], tmp->type) == 0)
             {
                 type = tmp;
@@ -60,7 +56,7 @@ struct AST *redirection(struct Token **t)
                 *t = tmp;
                 return node;
             }
-        }    
+        }
     }
     return NULL;
 }

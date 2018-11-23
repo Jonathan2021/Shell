@@ -30,3 +30,5 @@ void add_case(struct AST *case_clause, struct AST *case_item);
 struct AST *case_init(void);
 void setvalue(char *, char *);
 char *getvalue(char *);
+void next_token(struct Token **tmp);
+void call_ps2(struct Token **t, struct Token **t2);

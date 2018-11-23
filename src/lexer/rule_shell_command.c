@@ -55,18 +55,15 @@ struct AST *shell_command(struct Token **t)
     if (strcmp("{", t1->name) == 0 || strcmp("(", t1->name) == 0)
     {
         ouvre = t1;
-        t1 = t1->next;
-        if (t1 == NULL)
-            return NULL;
+        next_token(&t1);
         if ((shell = compound_list(&t1)) != NULL)
         {
             if (t1 == NULL)
             {
-                //get_token();
-                AST_destroy(shell);
+                call_ps2(t,&t1);
             }
-            if ((!strcmp("}", t1->name) || !strcmp(")", t1->name)) 
-                    && !strcmp(ouvre->name, t1->name))
+            if ((!strcmp("}", t1->name) &&  !strcmp(ouvre->name, "{"))
+                    || (!strcmp(")", t1->name) && !strcmp(ouvre->name, "(")))
             {
                 ferme = t1;
                 t1 = t1->next;
@@ -81,7 +78,6 @@ struct AST *shell_command(struct Token **t)
                 AST_destroy(shell);
         }
     }
-    //C est degeu, deja j ai mis le return shell à la fin plutot que dans chaque else if, et en plus on peut factoriser cette mette en faisant des || et un seul else if et un seul *t = t2 mais flme alors que ca aurait été plus rapide que d ecrire ce message.
     else if ((shell = rule_for(&t2)) != NULL)
     {
         *t = t2;
