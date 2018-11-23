@@ -200,21 +200,18 @@ struct Token *carving(long argc, char **argv)
         }
         else
         {
-            rl_bind_keyseq("\e[A",up_arrow);
+            //rl_bind_keyseq("\e[A",up_arrow);
             printf("42sh$ ");
             char *check = fgets(str,4095,stdin);
             if (!check)
                 continue;
             if (strncmp(str,"exit",4) == 0)
                 return 0;
-<<<<<<< HEAD
-=======
             if (check && (check[0] != '\n' && check[0] != '\0'))
             {
                 add_history(check);
 				append_history(1,".42sh_history");
             }
->>>>>>> history
             token = create_token(token,str);
         }
         lexer(token);
