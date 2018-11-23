@@ -80,24 +80,26 @@ void ast_print(void)
     fclose(file);
 }
 
-int check_option(struct Token *token, struct PS *ps)
+int check_option(struct Token *token)
 {
-    char *print = get_value("--type-print",ps);
+    char *print = get_value("--type-print");
     if (print && strcmp(print,"1") == 0)
     {
         struct Token *tmp = token;
         while (tmp)
         {
             printf("->%s",tmp->type);
+            if (strcmp(tmp->type,"NEW_LINE") == 0)
+                printf("\n");
             tmp = tmp->next;
             if (!tmp)
                 printf("\n");
         }
     }
-    print = get_value("--ast-print",ps);
+    print = get_value("--ast-print");
     if (print && token && strcmp(print,"1") == 0)
         ast_print();
-    print = get_value("version",ps);
+    print = get_value("version");
     if (print && strcmp(print,"1") == 0)
     {
         printf("Version 0.5\n");

@@ -9,7 +9,8 @@
 #include <sys/stat.h>
 #include "../include/shell.h"
 
-char *get_value(char *name, struct PS *ps)
+
+char *get_value(char *name)
 {
     struct PS *tmp = ps;
     while(tmp->name)
@@ -23,9 +24,17 @@ char *get_value(char *name, struct PS *ps)
     return NULL;
 }
 
-void set_value(char *name, char *value, struct PS **ps)
+char *getvalue(char *name)
 {
-    struct PS *tmp = *ps;
+    if (name[0] == '$')
+        return get_value(name);
+    else
+        return name;
+}
+
+void set_value(char *name, char *value)
+{
+    struct PS *tmp = ps;
     while(tmp->name)
     {
         if (strcmp(tmp->name,name) == 0)
@@ -37,7 +46,7 @@ void set_value(char *name, char *value, struct PS **ps)
     }
     tmp->value = value;
     tmp->name = name;
-    tmp->next = init_ps();
+    tmp->next = get_ps();
 }
 
 long str_to_argv(char **argv, char *str)
@@ -88,7 +97,7 @@ long str_to_argv(char **argv, char *str)
     return i;
 }
 
-void reset_value(struct PS *ps)
+void reset_value(void)
 {
     struct PS *tmp = ps;
     while(ps->name)
@@ -118,6 +127,7 @@ struct Token *create_token(struct Token *token, char *str)
             add_token(&token,parse);
         parse = strtok(NULL,delim);
     }
+    add_token(&token,"\n");
     return token;
 }
 
@@ -138,6 +148,7 @@ struct Token *read_file(char *f, struct Token *token)
                 add_token(&token,tok);
                 parse = strtok(NULL,delim);
             }
+            add_token(&token,"\n");
         }
     }
     else
@@ -158,7 +169,9 @@ struct Token *read_file(char *f, struct Token *token)
                 add_token(&token,tok);
                 parse = strtok(NULL,delim);
             }
+            add_token(&token,"\n");
         }
     }
+    add_token(&token,"\n");
     return token;
 }
