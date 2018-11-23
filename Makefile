@@ -32,6 +32,7 @@ SRC = src/lexer/and_node.c \
 	src/lexer/if_node.c \
 	src/lexer/rule_case.c \
 	src/lexer/rule_shell_command.c \
+	src/lexer/foo_token.c \
 	src/lexer/rule_simple_command.c
 EXEC = 42SH
 

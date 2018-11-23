@@ -10,14 +10,22 @@ struct Token *get_Token(struct Token **tmp, struct Token **t)
     {
         char str[4095] = {0};
         printf("> ");
-        char *check = fgets(str,4095,stdin);                                              res = create_token(token,str);
-        struct t2 = *t;
-        for (; t2->next; t2 = t2->next);
-        t2->next = token;
-    } 
-    else
-    {
-        *t = t[0]->next;
+        fgets(str,4095,stdin);
+        res = create_token(res,str);
+        tmp[0]->next = res;
     }
-    return res;
+    *tmp = res;
+}
+
+void call_ps2(struct Token **t, struct Token **t2)
+{
+    struct Token *tmp = *t;
+    for (; tmp->next; tmp = tmp->next);
+    char str[4095] = {0};
+    printf("> ");
+    struct Token *res = NULL;
+    fgets(str,4095,stdin);
+    res = create_token(res,str);
+    tmp->next = res;
+    *t2 = res;
 }
