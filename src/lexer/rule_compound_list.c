@@ -61,10 +61,7 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         cur_type = node->child[*index]->self->type;
         if (!strcmp(cur_name, ";") || !strcmp(cur_name, "&") 
             || !strcmp(cur_name, "\n"))
-        {
-            my_cmd[i] = NULL;
             break;
-        }
         if (strcmp(cur_type, "WORD"))
         {
             node->child[*index]->foo(node->child[*index], fd);
@@ -78,7 +75,7 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         }
     }
     (*index)++;
-    i++;
+    //i++;
     my_cmd[i] = NULL;
     if (!special)
         res = my_exec(my_cmd, fd);
