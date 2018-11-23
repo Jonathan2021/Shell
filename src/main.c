@@ -45,7 +45,7 @@ void add_token(struct Token **token, char *str)
         {"IN","in","\0"}};
     struct Token *next = malloc(sizeof(struct Token));
     next->name = NULL;
-    for(int i = 0; i < 14; i++)
+    for(int i = 0; i < 15; i++)
     {
         for (int j = 0; grammar[i][j][0] != '\0'; j++ )
         {
