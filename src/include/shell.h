@@ -21,5 +21,6 @@ int check_option(struct Token *token);
 struct Token *create_token(struct Token *token, char *str);
 struct PS *get_ps(void);
 struct Token *read_file(char *file, struct Token *token);
+char *getvalue(char *name);
 
 #endif /* !SHELL_H */

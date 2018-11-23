@@ -11,6 +11,14 @@
 
 struct PS *ps;
 
+char *getvalue(char *name)
+{
+    if (name[0] == '$')
+        get_value(name);
+    else
+        return name;
+}
+
 char *get_value(char *name)
 {
     struct PS *tmp = ps;
