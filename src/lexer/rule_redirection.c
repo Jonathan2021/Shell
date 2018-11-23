@@ -2,21 +2,23 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 struct AST *redirection_init(struct Token *token)
 {
-    struct AST *node = AST_init(2); //FIXME Dans la fn en dessous seul child[0] est set;
-    if (!node)                      //FIXME et je pense qu il faut init 3 au cas ou y a un IOnumber
+    struct AST *node = AST_init(2);
+    if (!node)
         return NULL;
     node->self = token;
-    node->child[0] = AST_init(0);
     return node;
 }
 
 struct AST *redirection(struct Token **t)
 {
-    //struct Token *ionum;
     struct Token *pipe;
+    struct Token *io = NULL;
     struct Token *type;
     char *list[9][2] =
         {
@@ -31,9 +33,9 @@ struct AST *redirection(struct Token **t)
             {"<>", "WORD"},
         };
     struct Token *tmp = *t;
-    if (strcmp("IONUMBER", tmp->type) == 0) //FIXME On doit le retenir ca je pense, la tu sautes juste au prochain
+    if (strcmp("IONUMBER", tmp->type) == 0)
     {
-      //  ionum = tmp;
+        io = tmp;
         tmp = tmp->next;
         if (tmp == NULL)
             return NULL;
@@ -51,13 +53,14 @@ struct AST *redirection(struct Token **t)
             if (strcmp(list[i][1], tmp->type) == 0)
             {
                 type = tmp;
-                struct AST *node = redirection_init(type);
-                node->child[0]->self = pipe; //FIXME AST_init set les child à nul donc risque de segfault
-
+                struct AST *node = redirection_init(pipe);
+                if(io)
+                    node->child[0] = word_init(io);
+                node->child[1] = word_init(type);
                 *t = tmp;
                 return node;
             }
         }    
-    }//FIXME reternir list[i][1] aussi
+    }
     return NULL;
 }
