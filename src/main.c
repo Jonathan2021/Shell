@@ -1,3 +1,12 @@
+/**
+ ** \file main.c
+ ** \brief Program for the main
+ *     * \version 0.5
+ ** \date 30 novembre 2018
+ **
+ ** File with the main
+ **
+ **/
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <fcntl.h>
@@ -122,7 +131,13 @@ struct Token *parse_path(struct Token *token, char **argv, long argc,
     }
     return token;
 }
-
+/**
+ ** \fn void print_t(struct Token *t)
+ ** \brief Printing AST function.
+ **
+ ** \param t Adress of the pointer structure to be print.
+ ** \return No return.
+ **/
 void print_t(struct Token *t)
 {
     for (; t != NULL; t = t->next)
