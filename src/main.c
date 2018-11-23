@@ -37,12 +37,13 @@ void add_token(struct Token **token, char *str)
         {"ELIF","elif","\0"},
         {"ELSE","else","\0"},
         {"DO","do","\0"},
+        {"DONE","done","\0"},
         {"LOOP","case","esac","while","until","for","\0"},
         {"BRACE","{","}","!","\0"},
         {"IN","in","\0"}};
     struct Token *next = malloc(sizeof(struct Token));
     next->name = NULL;
-    for(int i = 0; i < 12; i++)
+    for(int i = 0; i < 14; i++)
     {
         for (int j = 0; grammar[i][j][0] != '\0'; j++ )
         {
