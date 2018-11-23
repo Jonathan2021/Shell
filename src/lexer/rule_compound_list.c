@@ -131,7 +131,7 @@ struct AST *compound_list(struct Token **t)
     {
         tmp = tmp->next;
         if (tmp == NULL)
-            return 0;
+            return NULL;
     }
     if (!tmp || !(and_or_ast = and_or(&tmp)))
         return NULL;
