@@ -4,15 +4,6 @@
 #include "../include/shell.h"
 #include <stdlib.h>
 #include "include/rule.h"
-void setvalue(__attribute__((unused))char *a, __attribute__((unused))char *b)
-{
-    return;
-}
-
-char *getvalue(__attribute__((unused))char *a)
-{
-    return NULL;
-}
 
 void foo_for(struct AST *node, struct fds fd)
 {
@@ -22,7 +13,7 @@ void foo_for(struct AST *node, struct fds fd)
         return;
     for (int i = 0; i < node->child[1]->nb_child; ++i)
     {
-        setvalue(node->child[0]->self->name, getvalue(node->child[1]->child[i]->self->name));
+        set_value(node->child[0]->self->name, getvalue(node->child[1]->child[i]->self->name));
         node->child[2]->foo(node->child[2], fd);
     }
 }

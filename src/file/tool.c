@@ -9,15 +9,6 @@
 #include <sys/stat.h>
 #include "../include/shell.h"
 
-struct PS *ps;
-
-char *getvalue(char *name)
-{
-    if (name[0] == '$')
-        get_value(name);
-    else
-        return name;
-}
 
 char *get_value(char *name)
 {
@@ -31,6 +22,14 @@ char *get_value(char *name)
         tmp = tmp->next;
     }
     return NULL;
+}
+
+char *getvalue(char *name)
+{
+    if (name[0] == '$')
+        return get_value(name);
+    else
+        return name;
 }
 
 void set_value(char *name, char *value)
