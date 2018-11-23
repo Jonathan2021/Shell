@@ -22,5 +22,7 @@ struct Token *create_token(struct Token *token, char *str);
 struct PS *get_ps(void);
 struct Token *read_file(char *file, struct Token *token);
 char *getvalue(char *name);
+void delete_history(void);
+void write_history(char *str);
 
 #endif /* !SHELL_H */
