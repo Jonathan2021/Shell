@@ -10,13 +10,14 @@
 #include "../lexer/include/lexer_struct.h"
 #include "../lexer/include/my_tree.h"
 #include "../include/shell.h"
-// dot -Tps ast.gv -o outfile.ps
+// dot -Tps output.gv -o outfile.ps
 
 char *color(struct AST *cur)
 {
     char *grammar[21][20] =
     {{"SEMICOLON","[color=aquamarine]"},
         {"OP_LOGIQUE","[color=antiquewhite4]"},
+        {"NEW_LINE","[color=antiquewhite4]"},
         {"OP_IO","[color=darkgreen]"},
         {"CLOBBER","[color=darkslateblue]"},
         {"IF","[color=khaki1]"},
