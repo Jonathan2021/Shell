@@ -9,7 +9,9 @@
 #include <sys/stat.h>
 #include "../include/shell.h"
 
-char *get_value(char *name, struct PS *ps)
+struct PS *ps;
+
+char *get_value(char *name)
 {
     struct PS *tmp = ps;
     while(tmp->name)
@@ -23,9 +25,9 @@ char *get_value(char *name, struct PS *ps)
     return NULL;
 }
 
-void set_value(char *name, char *value, struct PS **ps)
+void set_value(char *name, char *value)
 {
-    struct PS *tmp = *ps;
+    struct PS *tmp = ps;
     while(tmp->name)
     {
         if (strcmp(tmp->name,name) == 0)
@@ -37,7 +39,7 @@ void set_value(char *name, char *value, struct PS **ps)
     }
     tmp->value = value;
     tmp->name = name;
-    tmp->next = init_ps();
+    tmp->next = get_ps();
 }
 
 long str_to_argv(char **argv, char *str)
@@ -88,7 +90,7 @@ long str_to_argv(char **argv, char *str)
     return i;
 }
 
-void reset_value(struct PS *ps)
+void reset_value(void)
 {
     struct PS *tmp = ps;
     while(ps->name)
