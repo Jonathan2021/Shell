@@ -38,12 +38,14 @@ struct AST *rule_until(struct Token **t)
     if (strcmp("until", tmp->name))
         return NULL;
     name = tmp;
-    tmp = tmp->next;
-    if (!tmp || !(condition = compound_list(&tmp)))
+    next_token(&tmp);
+    if (!(condition = compound_list(&tmp)))
         return NULL;
-    if (!tmp || !(do_body = do_group(&tmp)))
+    if (tmp == NULL)
+        call_ps2(t, &tmp);
+
+    if (!(do_body = do_group(&tmp)))
         return NULL;
-    //Pas besoin  de tmp->next?
     struct AST *node = while_init(name);
     node->child[0] = condition;
     node->child[1] = do_body;
