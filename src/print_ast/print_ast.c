@@ -86,6 +86,8 @@ int check_option(struct Token *token, struct PS *ps)
         while (tmp)
         {
             printf("->%s",tmp->type);
+            if (strcmp(tmp->type,"NEW_LINE") == 0)
+                printf("\n");
             tmp = tmp->next;
             if (!tmp)
                 printf("\n");
