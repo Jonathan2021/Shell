@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c99 -pedantic -Wextra -Wall -g
+CFLAGS = -std=c99 -pedantic -Wextra -Wall -g -lreadline
 SRC = src/lexer/and_node.c \
 	src/lexer/rule_case_clause.c \
 	src/lexer/bang_node.c \

@@ -17,6 +17,11 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <getopt.h>
+#include <sys/wait.h>
+#include <errno.h>
+#include <glob.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include "include/shell.h"
 #include "lexer/include/lexer_struct.h"
 #include "lexer/include/my_tree.h"
@@ -195,12 +200,21 @@ struct Token *carving(long argc, char **argv)
         }
         else
         {
+            rl_bind_keyseq("\e[A",up_arrow);
             printf("42sh$ ");
             char *check = fgets(str,4095,stdin);
             if (!check)
                 continue;
             if (strncmp(str,"exit",4) == 0)
                 return 0;
+<<<<<<< HEAD
+=======
+            if (check && (check[0] != '\n' && check[0] != '\0'))
+            {
+                add_history(check);
+				append_history(1,".42sh_history");
+            }
+>>>>>>> history
             token = create_token(token,str);
         }
         lexer(token);
@@ -221,6 +235,7 @@ int main(int argc, char *argv[])
     FILE *file = fopen("src/file/variable.txt","w+");
     fprintf(file,"IFS \"\\t \\n\"\n--ast-print \"0\"\nversion \"0\"\n--type-print \"0\"\n");
     fclose(file);
+    init_history();
     carving(argc,argv);
     return 0;
 } 
