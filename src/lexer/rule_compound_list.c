@@ -62,7 +62,7 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         if (!strcmp(cur_name, ";") || !strcmp(cur_name, "&") 
             || !strcmp(cur_name, "\n"))
         {
-            my_cmd[i] = cur_name;
+            my_cmd[i] = NULL;
             break;
         }
         if (strcmp(cur_type, "WORD"))
@@ -72,7 +72,10 @@ int exec_init(struct AST *node, int *index, struct fds fd)
             special = 1;
         }
         else
-            my_cmd[i] = cur_name;
+        {
+            my_cmd[i] = getvalue(cur_name);
+            //printf("value of %s is %s\n", cur_name, getvalue(cur_name));
+        }
     }
     (*index)++;
     i++;

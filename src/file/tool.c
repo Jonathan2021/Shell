@@ -28,7 +28,10 @@ char *getvalue(char *name)
 {
     if (name[0] == '$')
     {
-        char *value = get_value(name);
+        char *cpy = malloc(strlen(name)*10);
+        strcpy(cpy,name+1);
+        char *value = get_value(cpy);
+        free(cpy);
         if (value)
             return value;
     }
