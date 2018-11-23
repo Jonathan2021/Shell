@@ -7,7 +7,7 @@
 
 void foo_for(struct AST *node, struct fds fd)
 {
-    if (!node || !node->nb_child || !node->child[0])
+    if (!node || node->nb_child < 3 || !node->child[0])
         return;
     if (node->child[1] && strcmp(node->child[1]->self->name, "in"))
         return;
