@@ -23,6 +23,8 @@ struct PS *get_ps(void);
 struct Token *read_file(char *file, struct Token *token);
 char *getvalue(char *name);
 void delete_history(void);
-void write_history(char *str);
+void writehistory(char *str);
+void init_history(void);
+int up_arrow();
 
 #endif /* !SHELL_H */
