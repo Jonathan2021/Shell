@@ -11,7 +11,7 @@ void next_token(struct Token **tmp)
     {
         char str[4095] = {0};
         printf("> ");
-        char *check = fgets(str,4095,stdin);
+        fgets(str,4095,stdin);
         res = create_token(res,str);
         tmp[0]->next = res;
     }
@@ -25,7 +25,7 @@ void call_ps2(struct Token **t, struct Token **t2)
     char str[4095] = {0};
     printf("> ");
     struct Token *res = NULL;
-    char *check = fgets(str,4095,stdin);
+    fgets(str,4095,stdin);
     res = create_token(res,str);
     tmp->next = res;
     *t2 = res;
