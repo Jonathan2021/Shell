@@ -17,6 +17,7 @@ char *color(struct AST *cur)
     char *grammar[20][20] =
     {{"SEMICOLON","[color=aquamarine]"},
         {"OP_LOGIQUE","[color=antiquewhite4]"},
+        {"NEW_LINE","[color=antiquewhite4]"},
         {"OP_IO","[color=darkgreen]"},
         {"CLOBBER","[color=darkslateblue]"},
         {"IF","[color=khaki1]"},
@@ -34,7 +35,7 @@ char *color(struct AST *cur)
         {" ","[color=orange4]"},
         {"IN","[color=black]"}};
     char *color = malloc(60);
-    for(int i = 0; i < 17; i++)
+    for(int i = 0; i < 18; i++)
     {
         if (strcmp(grammar[i][0],cur->self->type) == 0)
         {
