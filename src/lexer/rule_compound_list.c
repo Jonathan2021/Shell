@@ -133,14 +133,10 @@ struct AST *compound_list(struct Token **t)
         if (tmp == NULL)
             return NULL;
     }
-    if (!tmp || !(and_or_ast = and_or(&tmp)))
+    if (!(and_or_ast = and_or(&tmp)))
         return NULL;
     *t = tmp;
-    if(!(compound = compound_init()))
-    {
-        AST_destroy(and_or_ast);
-        return NULL;
-    }
+    compound = compound_init();
     add_compound(compound, and_or_ast);
     *t = tmp;
     while(1)
@@ -173,12 +169,6 @@ struct AST *compound_list(struct Token **t)
             tmp = tmp->next;
         }
         *t = tmp;
-    }
-    if (compound->nb_child == 1)
-    {
-        and_or_ast = compound->child[0];
-        free_l(compound);
-        return and_or_ast;
     }
     return compound;
 }
