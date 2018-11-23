@@ -39,35 +39,24 @@ struct AST *funcdec(struct Token **t)
     struct Token *tmp = *t;
     if (strcmp("function", tmp->name) == 0)
     {
-        tmp = tmp->next;
-        if (tmp == NULL)
-            return NULL;
+        next_token(&tmp);
     }
-    if (strcmp("WORD", tmp->type) == 0)
-    {
-        //a verifier avec regex
-        name = tmp;
-        tmp = tmp->next;
-        if (tmp == NULL)
-            return NULL;
-    }
-    else
+    if (strcmp("WORD", tmp->type) != 0)
         return NULL;
+    name = tmp;
+    next_token(&tmp);
+
     if (strcmp("(", tmp->name) != 0)
         return NULL;
-    tmp = tmp->next;
-    if (tmp == NULL || strcmp(")", tmp->name) != 0)
+    next_token(&tmp);
+
+    if (strcmp(")", tmp->name) != 0)
         return NULL;
-    tmp = tmp->next;
-    if (tmp == NULL)
-        return NULL;
+    next_token(&tmp);
 
     while (strcmp("\n", tmp->name) == 0)
-    {
-        tmp = tmp->next;
-        if (tmp == NULL)
-            return NULL;
-    }
+        next_token(&tmp);
+
     if ((body = shell_command(&tmp)) != NULL)
     {
         *t = tmp;
