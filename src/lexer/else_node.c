@@ -34,11 +34,7 @@ struct AST *else_clause(struct Token **t)
     struct AST *elif = NULL;
     if (strcmp(tmp->name, "else") == 0)
     {
-        tmp = tmp->next;
-        if (tmp == NULL)
-        {
-            return NULL;
-        }
+        next_token(&tmp);
         if ((elif = compound_list(&tmp)) != NULL)
         {
             *t = tmp;
@@ -48,25 +44,30 @@ struct AST *else_clause(struct Token **t)
     tmp = *t;
     if (strcmp(tmp->name, "elif") == 0)
     {
-        tmp = tmp->next;
+        next_token(&tmp);
         struct AST *condition = NULL;
         struct AST *elif_body = NULL;
         struct AST *else_body = NULL;
-        if (tmp == NULL || (condition = compound_list(&tmp)) == NULL)
+        if ((condition = compound_list(&tmp)) == NULL)
             return NULL;
+        if (tmp == NULL)
+            call_ps2(t, &tmp);
 
-        if (tmp == NULL || strcmp("then", tmp->name) != 0)
+        if (strcmp("then", tmp->name) != 0)
         {
             AST_destroy(condition);
             return NULL;
         }
-        tmp = tmp->next;
+        next_token(&tmp);
 
-        if (tmp == NULL || (elif_body = compound_list(&tmp)) == NULL)
+        if ((elif_body = compound_list(&tmp)) == NULL)
         {
             AST_destroy(condition);
             return NULL;
         }
+        if (tmp == NULL)
+            call_ps2(t, &tmp);
+
         else_body = else_clause(&tmp);
         *t = tmp;
         struct AST *elif = elif_init(*t);

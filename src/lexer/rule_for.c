@@ -53,7 +53,7 @@ struct AST *rule_for(struct Token **t)
     struct Token *checkpoint;
     if (!tmp || strcmp(tmp->name,"for"))
         return NULL;
-    tmp = tmp->next;
+    next_token(&tmp);
     if (!tmp || strcmp(tmp->type,"WORD"))
         return NULL;
     for_node = for_init(*t);

@@ -18,10 +18,12 @@ struct AST *do_group(struct Token **t)
     struct Token *tmp = *t;
     if (strcmp(tmp->name,"do"))
         return NULL;
-    tmp = tmp->next;
-    if (tmp == NULL || (do_grp=compound_list(&tmp)) == NULL)
+    next_token(&tmp);
+    if ((do_grp=compound_list(&tmp)) == NULL)
         return NULL;
-    if (tmp == NULL || strcmp(tmp->name,"done"))
+    if (tmp == NULL)
+        call_ps2(t, &tmp);
+    if (strcmp(tmp->name,"done"))
     {
         AST_destroy(do_grp);
         return NULL;
