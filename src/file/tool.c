@@ -118,6 +118,7 @@ struct Token *create_token(struct Token *token, char *str)
             add_token(&token,parse);
         parse = strtok(NULL,delim);
     }
+    add_token(&token,"\n");
     return token;
 }
 
@@ -138,6 +139,7 @@ struct Token *read_file(char *f, struct Token *token)
                 add_token(&token,tok);
                 parse = strtok(NULL,delim);
             }
+            add_token(&token,"\n");
         }
     }
     else
@@ -158,7 +160,9 @@ struct Token *read_file(char *f, struct Token *token)
                 add_token(&token,tok);
                 parse = strtok(NULL,delim);
             }
+            add_token(&token,"\n");
         }
     }
+    add_token(&token,"\n");
     return token;
 }
