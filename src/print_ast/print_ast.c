@@ -10,7 +10,7 @@
 #include "../lexer/include/lexer_struct.h"
 #include "../lexer/include/my_tree.h"
 #include "../include/shell.h"
-// dot -Tps ast.gv -o outfile.ps
+// dot -Tps output.gv -o outfile.ps
 
 char *color(struct AST *cur)
 {
