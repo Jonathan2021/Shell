@@ -1,0 +1,204 @@
+\"
+.\" This is the man page of our 42sh project
+.\"
+
+.TH  42SH 1 "November 30, 2018" "Version 0.5" "42sh Manual"
+.SH NAME 
+.B 42sh \- A simple shell
+.SH SYNOPSIS
+.B 42sh
+[options] [command_string | file]
+.SH DESCRIPTION
+\fB42sh\fP is an \fBsh\fP-compatible command language interpreter that executes
+commands read from the standard input or from a file. \fB42sh\fP also
+incorporates useful features like the print of the AST or hte print of the
+linked token.
+.SH OPTIONS
+The following options are supported:
+.TP
+\fB-c\f
+If the \fB-c\fP option is present, then commands are read from the first
+non-option argument \fIcommand_string\fP.
+.TP
+\fB--ast-print\f
+If the \fB--ast-print\fP option is present, then the file of type \fBdot\fP will
+be printed.
+.br
+\fINote:\fP beware the \fBdot\fP file is already present in the root of 42sh
+project.
+.TP
+\fB--type-print\f
+If the \fB--type-print\fP option is present, then the linked token list will be
+printed.
+.TP
+\fB--norc\f
+If the \fB--norc\fP option is present the ressource header will be desactivated.
+.TP
+\fB--ver\fP, \fB--version\f
+Display \fB42sh\fP version and exit.
+.SH DEFINITIONS
+The following definitions are used throughout the rest of this document.
+\f
+.TP
+\fBWORD\fP
+A  sequence  of characters considered as a single unit by the shell. Also known
+as a \fBtoken\fP.
+.TP
+\fBHEREDOC\fP
+
+.SH RESERVED WORDS
+\fIReserved words\fP are words that have a special meaning to the shell. The
+following words are recognized as reserved when unquoted and either the first
+word of a simple command (see \fBSHELL GRAMMAR\fP below) or the third word of a
+\fBcase\fP or \fBfor\fP command:
+\f
+\fBcase do done elif else esac fi for if in then until while { } \fP
+.SH SHELL GRAMMAR
+Extract of the subject:
+\f
+.TP
+\fBinput:\fP
+\fIlist\fP '\\n'
+\f
+|   \fIlist\fP EOF
+\f
+|   '\\n'
+\f
+|   EOF
+\f
+.TP
+\fBlist:\fP
+\fIand_or\fP ((';'|'&') \fIand_or\fP)* [';'|'&']
+\f
+.TP
+\fBand_or:\fP
+\fIpipeline\fP (('&&'|'||') ('\\n')* \fIpipeline\fP)*
+\f
+.TP
+\fBpipeline:\fP
+['!'] \fIcommand\fP ('|' ('\\n')* \fIcommand\fP)*
+\f
+.TP
+\fBcommand:\fP
+\fIsimple_command\fP
+\f
+|   \fIshell_command\fP  (\fIredirection\fP)*
+\f
+|   \fIfuncdec\fP (\fIredirection\fP)*
+\f
+.TP
+\fBsimple_command:\fP
+(\fIprefix\fP)+
+\f
+|   (\fIprefix\fP)* (\fIelement\fP)+
+\f
+.TP
+\fBshell_command:\fP
+\'{' \fIcompound_list\fP '}'
+\f
+|   '(' \fIcompound_list\fP ')'
+\f
+|   \fIrule_for\fP
+\f
+|   \fIrule_wihle\fP
+\f
+|   \fIrule_until\fP
+\f
+|   \fIrule_case\fP
+\f
+|   \fIrule_if\fP
+\f
+.TP
+\fBfuncdec:\fP
+['function'] WORD '(' ')' ('\\n')* \fIshell_command\fP
+\f
+.TP
+\fBredirection:\fP
+[IONUMBER] '>' WORD
+\f
+|   [IONUMBER] '<' WORD
+\f
+|   [IONUMBER] '>>' WORD
+\f
+|   [IONUMBER] '<<' HEREDOC
+\f
+|   [IONUMBER] '<<-' HEREDOC
+\f
+|   [IONUMBER] '>&' WORD
+\f
+|   [IONUMBER] '<&' WORD
+\f
+|   [IONUMBER] '>|' WORD
+\f
+|   [IONUMBER] '<>' WORD
+\f
+.TP
+\fBfix:\fP
+ASSIGMENT_WORD
+\f
+|   \fIredirection\fP
+\f
+.TP
+\fBelement:\fP
+WORD
+\f
+|   \fIredirection\fP
+\f
+.TP
+\fBcompound_list:\fP
+('\\n')* \fIand_or\fP ((';'|'&'|'\\n') ('\\n') *\fIand_or\fP)* [('&'|';'|'\\n') ('\\n')*]
+\f
+.TP
+\fBrule_for:\fP
+\'for' WORD ([';']|[('\\n')* 'in' (WORD)* (';'|'\\n')]) ('\\n')* \fIdo_group\fP
+\f
+.TP
+\fBrule_while:\fP
+\'while' \fIcompound_list\fP \fIdo_group\fP
+\f
+.TP
+\fBrule_until:\fP
+\'until' \fIcompound_list\fP \fIdo_group\fP
+\f
+.TP
+\fBrule_case:\fP
+\'case' WORD ('\\n')* 'in' ('\\n')* [\fIcase_clause\fP] 'esac'
+\f
+.TP
+\fBrule_if:\fP
+\'if' \fIcompound_list\fP 'then' \fIcompound_list\fP [\fIelse_clause\fP] 'fi'
+\f
+.TP
+\fBelse_clause:\fP
+\'else' \fIcompound_list\fP
+\f
+| 'elif' \fIcompound_list\fP 'then' \fIcompound_list\fP [\fIelse_clause\fP]
+\f
+.TP
+\fBdo_group:\fP
+\'do' \fIcompound_list\fP 'done'
+\f
+.TP
+\fBcase_clause:\fP
+\fIcase_item\fP (';;' ('\\n')* \fIcase_item\fP)* [;;] ('\\n')*
+\f
+.TP
+\fBcase_item:\fP
+['('] WORD ('|' WORD)* ')' ('\\n')*  [ \fIcompound_list\fP ]
+\f
+.SH LICENCE
+Copyright (c) 2018 by Sand Jonathan, Siahou Julie, Gossin Thomas and Chemla
+Victor.
+.br
+This software is released under the EPITA License.
+.SH BUGS
+No bugs.
+Anyway, if you find any, please send a report to bug@epita.fr so that the
+author could be kicked from the group.
+.SH AUTHORS
+\fBJonathan Sand\fP
+\fBJulie Siahou\fP
+\fBThomas Gossin\fP
+\fBVictor Chemla\fP
+.SH SEE ALSO
+bash(1)
