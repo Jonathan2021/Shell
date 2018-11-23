@@ -23,6 +23,7 @@
 #include "lexer/include/rule.h"
 #include "print_ast/include/print_ast.h"
 
+struct PS *ps;
 
 void add_token(struct Token **token, char *str)
 {
@@ -74,8 +75,7 @@ void add_token(struct Token **token, char *str)
     copy->next = next;
 }
 
-struct Token *parse_path(struct Token *token, char **argv, long argc, 
-    struct PS *ps)
+struct Token *parse_path(struct Token *token, char **argv, long argc)
 {
     int c = 0;
     static struct option long_options[] =
@@ -112,13 +112,13 @@ struct Token *parse_path(struct Token *token, char **argv, long argc,
             check = 1;
         }
         else if (c == 'a')
-            set_value("--ast-print", "1",&ps);
+            set_value("--ast-print", "1");
         else if (c == 'n')
-            reset_value(ps);
+            reset_value();
         else if (c == 'v')
-            set_value("version", "1",&ps);
+            set_value("version", "1");
         else if (c == 't')
-            set_value("--type-print", "1",&ps);
+            set_value("--type-print", "1");
         else
             fprintf(stderr,"[GNU long options] [options] [file]\n");
     }
@@ -162,19 +162,26 @@ void DestroyToken(struct Token *t)
     free(t);
 }
 
-struct PS *init_ps(void)
+struct PS *get_ps(void)
 {
-    struct PS *ps = malloc(sizeof(struct PS));
+    struct PS *p = malloc(sizeof(struct PS));
+    p->name = NULL;
+    p->value = NULL;
+    return p;
+}
+
+void init_ps(void)
+{
+    ps = malloc(sizeof(struct PS));
     ps->name = NULL;
     ps->value = NULL;
-    return ps;
 }
 
 struct Token *carving(long argc, char **argv)
 {
     char str[4095] = {0};
     struct Token *token = NULL;
-    struct PS *ps = init_ps();
+    init_ps();
     int i = 0;
     while(1)
     {
@@ -182,7 +189,7 @@ struct Token *carving(long argc, char **argv)
         if (i == 0)
         {
             i = 1;
-            token = parse_path(token,argv,argc,ps);
+            token = parse_path(token,argv,argc);
         }
         else
         {
@@ -195,16 +202,16 @@ struct Token *carving(long argc, char **argv)
             token = create_token(token,str);
         }
         lexer(token);
-        if (check_option(token,ps))
+        if (check_option(token))
         {
-            reset_value(ps);
+            reset_value();
             exit(0);
         }
         DestroyToken(token);
         if (!isatty(0))
             exit(0);
     }
-    reset_value(ps);
+    reset_value();
     return 0;
 }
 int main(int argc, char *argv[])
