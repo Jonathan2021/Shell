@@ -27,9 +27,17 @@ char *get_value(char *name)
 char *getvalue(char *name)
 {
     if (name[0] == '$')
-        return get_value(name);
-    else
-        return name;
+    {
+        char *value = get_value(name);
+        if (value)
+            return value;
+    }
+    return name;
+}
+
+void setvalue(char *name, char *value)
+{
+    set_value(name,value);
 }
 
 void set_value(char *name, char *value)

@@ -13,6 +13,7 @@ SRC = src/lexer/and_node.c \
 	src/lexer/dlessdash_node.c \
 	src/main.c \
 	src/file/tool.c \
+	src/file/history.c \
 	src/print_ast/print_ast.c \
 	src/lexer/rule_funcdec.c \
 	src/lexer/dless_node.c \
