@@ -14,19 +14,16 @@ struct Token* init(char *name, char *type)
 
 struct Token *exemple()
 {
-    struct Token *res = init("if", "IF");
-    res->next = init("pwd", "WORD");
-    res->next->next = init("&&", "OP_LOGIQUE");
-    res->next->next->next = init("ls", "WORD");
+    struct Token *res = init("for", "FOR");
+    res->next = init("w", "WORD");
+    res->next->next = init("in", "IN");
+    res->next->next->next = init("1", "WORD");
     res->next->next->next->next = init(";", "SEMICOLON");
-    res->next->next->next->next->next = init("then", "THEN");
+    res->next->next->next->next->next = init("do", "DO");
     struct Token *a = res->next->next->next->next->next;
-    a->next = init("cd", "WORD");
+    a->next = init("ls", "WORD");
     a->next->next = init(";", "SEMICOLON");
-    a->next->next->next = init("else", "ELSE");
-    a->next->next->next->next = init("alias", "WORD");
-    a->next->next->next->next->next = init(";", "SEMICOLON");
-    a->next->next->next->next->next->next = init("fi", "FI");
+    a->next->next->next = init("done", "DONE");
     return res;
 }
 
@@ -55,8 +52,6 @@ int main()
     struct AST *tree = input(&t);
     if (tree == NULL)
         printf("null");
-    else
-        create_dot(tree, "output.gv");
     AST_destroy(tree);
     f_tt(c);
 }
