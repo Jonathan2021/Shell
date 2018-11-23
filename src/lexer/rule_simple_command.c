@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "include/foo.h"
+
 
 struct AST *simple_cmd_init(void)
 {
@@ -9,9 +11,10 @@ struct AST *simple_cmd_init(void)
     if (!node)
         return NULL;
     struct Token *t = malloc(sizeof(struct Token));
-    t->name = " ";
-    t->type = " ";
+    t->name = "simple command";
+    t->type = "SIMPLE COMMAND";
     node->self = t;
+    node->foo = foo_compound;
     return node;
 }
 

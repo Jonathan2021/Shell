@@ -151,8 +151,9 @@ struct Token *lexer(struct Token *t)
     struct AST *ast = input(&t);
     if (ast == NULL)
         return t;
-    else
-        create_dot(ast, "output.gv");
+    struct fds fd = {.in = 0, .out = 1, .err = 2};
+    ast->foo(ast, fd);
+    create_dot(ast, "output.gv");
     AST_destroy(ast);
     return t;
 }
