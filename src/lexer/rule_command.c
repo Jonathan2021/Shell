@@ -2,7 +2,18 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include <stdlib.h>
-
+/*
+void foo_command(struct AST *node, struct fds fd)
+{
+    if (!node)
+        return;
+    for (int i = 0; i < node->nb_child; ++i)
+    {
+        if (!node->child[i])
+            return;
+    }
+}
+*/
 struct AST *command_init()
 {
     struct Token *token = malloc(sizeof(struct Token));
@@ -27,14 +38,13 @@ void add_cmd(struct AST *cmd, struct AST *new)
 struct AST *command(struct Token **t)
 {
     struct Token *tmp = *t;
-    struct AST *res = command_init();
     struct AST *to_add;
     if (tmp && (to_add = simple_command(&tmp)))
     {
-        free_l(res);
         *t = tmp;
         return to_add;
     }
+    struct AST *res = command_init();
     if (tmp && ((to_add = shell_command(&tmp)) || (to_add = funcdec(&tmp))))
     {
         add_cmd(res, to_add);
