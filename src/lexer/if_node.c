@@ -38,6 +38,7 @@ struct AST *rule_if(struct Token **t)
     struct Token *tmp = *t;
     if (strcmp("if", tmp->name) != 0)
         return NULL;
+    name = tmp;
     next_token(&tmp);
 
     if (tmp == NULL || (condition = compound_list(&tmp)) == NULL)
@@ -58,6 +59,9 @@ struct AST *rule_if(struct Token **t)
         AST_destroy(condition);
         return NULL;
     }
+    if (tmp == NULL)
+        call_ps2(t, &tmp);
+
     else_body = else_clause(&tmp);
     if (tmp == NULL)
         call_ps2(t, &tmp);

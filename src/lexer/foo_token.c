@@ -7,7 +7,7 @@
 void next_token(struct Token **tmp)
 {
     struct Token *res = tmp[0]->next;
-    if (res == NULL)
+    if (res == NULL || strcmp("\n", res->name) == 0)
     {
         char str[4095] = {0};
         printf("> ");

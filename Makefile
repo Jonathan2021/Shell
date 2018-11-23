@@ -12,9 +12,8 @@ SRC = src/lexer/and_node.c \
 	src/lexer/rule_for.c \
 	src/lexer/dlessdash_node.c \
 	src/main.c \
-	src/file/tool.c \
-	src/file/history.c \
 	src/print_ast/print_ast.c \
+	src/file/tool.c \
 	src/lexer/rule_funcdec.c \
 	src/lexer/dless_node.c \
 	src/lexer/my_tree.c \
