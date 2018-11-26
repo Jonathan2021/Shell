@@ -6,7 +6,7 @@
 struct Token *get_Token(struct Token **tmp, struct Token **t)
 {
     struct Token *res = tmp[0]->next;
-    if (res == NULL || strcmp("\n", res->name) == 0)
+    if (res == NULL || (strcmp("\n", res->name) == 0 && res->next == NULL))
     {
         char str[4095] = {0};
         printf("> ");

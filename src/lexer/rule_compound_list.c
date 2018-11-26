@@ -157,6 +157,8 @@ struct AST *compound_list(struct Token **t)
             tmp = cpy;
             *t = tmp;
         }
+        else
+            break;
     }
     if (tmp && (!strcmp(tmp->name,"&") ||
         !strcmp(tmp->name,";") ||
