@@ -207,7 +207,8 @@ struct Token *carving(long argc, char **argv)
                 continue;
             if (strncmp(str,"exit",4) == 0)
                 return 0;
-        for
+        /*    if (check && (check[0] != '\n' && check[0] != '\0'))
+                write_history(check);*/
             token = create_token(token,str);
         }
         lexer(token);
@@ -225,7 +226,7 @@ struct Token *carving(long argc, char **argv)
 }
 int main(int argc, char *argv[])
 {
-    foo for
+ //   delete_history();
     FILE *file = fopen("src/file/variable.txt","w+");
     fprintf(file,"IFS \"\\t \\n\"\n--ast-print \"0\"\nversion \"0\"\n--type-print \"0\"\n");
     fclose(file);
