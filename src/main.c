@@ -157,7 +157,7 @@ struct Token *lexer(struct Token *t)
     if (ast == NULL)
         return t;
     struct fds fd = {.in = 0, .out = 1, .err = 2};
-    ast->foo(ast, fd);
+    ast->foo(ast, fd); //seg fault (for a in ls ; do ls ; done)
     create_dot(ast, "output.gv");
     AST_destroy(ast);
     return t;

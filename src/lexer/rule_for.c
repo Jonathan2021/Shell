@@ -59,7 +59,7 @@ struct AST *rule_for(struct Token **t)
         return NULL;
     for_node = for_init(*t);
     for_node->child[0] = word_init(tmp);
-    tmp = tmp->next;
+    next_token(&tmp);
     checkpoint = tmp;
     if (!strcmp(tmp->name,";"))
     {
@@ -72,21 +72,21 @@ struct AST *rule_for(struct Token **t)
         struct AST *in;
         while(tmp && !strcmp(tmp->name,"\n"))
         {
-            tmp = tmp->next;
+            next_token(&tmp);
         }
         if (tmp && !strcmp(tmp->name,"in"))
         {
            in = in_init(tmp); 
-            tmp = tmp->next;
+            next_token(&tmp);
             while(tmp && !strcmp(tmp->type,"WORD"))
             {
                 add_in(in, tmp);
-                tmp = tmp->next;
+                next_token(&tmp);
             }
             if (tmp && (!strcmp(tmp->name,";") ||
                 !strcmp(tmp->name,"\n")))
                 {
-                    tmp = tmp->next;
+                    next_token(&tmp);
                     checkpoint = tmp;
                     for_node->child[1] = in;
                 }
@@ -95,7 +95,7 @@ struct AST *rule_for(struct Token **t)
     tmp = checkpoint;
     while(tmp && !strcmp(tmp->name,"\n"))
     {
-        tmp = tmp->next;
+        next_token(&tmp);
     }
     if(!tmp || !(do_group_ast = do_group(&tmp)))
     {
@@ -106,5 +106,3 @@ struct AST *rule_for(struct Token **t)
     *t = tmp;
     return for_node;
 }
-
-

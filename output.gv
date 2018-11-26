@@ -1,0 +1,24 @@
+digraph G {
+"(0)list"[color=green]
+"(1)for"[color=magenta]
+"(0)list" -> "(1)for"
+"(1)for"[color=magenta]
+"(2)a"[color=blue2]
+"(1)for" -> "(2)a"
+"(2)a"[color=blue2]
+"(3)in"[color=black]
+"(1)for" -> "(3)in"
+"(3)in"[color=black]
+"(4)ls"[color=blue2]
+"(3)in" -> "(4)ls"
+"(4)ls"[color=blue2]
+"(5)compound"[color=green2]
+"(1)for" -> "(5)compound"
+"(5)compound"[color=green2]
+"(6)PÒ@"[color=blue2]
+"(5)compound" -> "(6)PÒ@"
+"(6)PÒ@"[color=blue2]
+"(7)"[color=aquamarine]
+"(5)compound" -> "(7)"
+"(7)"[color=aquamarine]
+}
