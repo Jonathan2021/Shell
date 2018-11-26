@@ -64,6 +64,7 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         {
             my_cmd[i] = NULL;
             break;
+        }
         if (strcmp(cur_type, "WORD"))
         {
             node->child[*index]->foo(node->child[*index], fd);

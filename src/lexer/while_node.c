@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "include/foo.h"
 
 void foo_while(struct AST *node, struct fds fd)
 {
