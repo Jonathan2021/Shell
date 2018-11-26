@@ -5,14 +5,19 @@
 
 void foo_until(struct AST *node, struct fds fd)
 {
-    if (!node || !node->child[0])
+    if (!node || node->nb_child < 2 || !node->child[0] || !node->child[1])
+    {
+        printf("failed first test until\n");
         return;
+    }
     node->child[0]->foo(node->child[0], fd);
+    printf("child res is : %d\n", node->child[0]->res);
     node->res = !node->child[0]->res;
-    if (!node->res && node->nb_child > 1 && node->child[1])
+    while (node->res)
     {
         node->child[1]->foo(node->child[1], fd);
-        node->foo(node, fd);
+        node->child[0]->foo(node->child[0], fd);
+        node->res = !node->child[0]->res;
     }
 }
 
@@ -46,7 +51,8 @@ struct AST *rule_until(struct Token **t)
 
     if (!(do_body = do_group(&tmp)))
         return NULL;
-    struct AST *node = while_init(name);
+    //Pas besoin  de tmp->next?
+    struct AST *node = until_init(name);
     node->child[0] = condition;
     node->child[1] = do_body;
     *t = tmp;
