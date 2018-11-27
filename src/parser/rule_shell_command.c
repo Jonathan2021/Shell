@@ -2,9 +2,16 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "include/foo.h"
 
 
-
+void foo_word(struct AST *node, struct fds fd)
+{
+    char *cmd[2];
+    cmd[0] = node->self->name;
+    cmd[1] = NULL;
+    node->res = my_exec(cmd, fd);
+}
 
 struct AST *word_init(struct Token *token)
 {
@@ -12,6 +19,7 @@ struct AST *word_init(struct Token *token)
     if(!node)
         return NULL;
     node->self = token;
+    node->foo = foo_word;
     //node->child[0] = left_body
     //node->child[1] = right_body
     return node;
