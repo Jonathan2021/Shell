@@ -18,6 +18,11 @@ else
     if [ -f "outfile.ps" ] ; then
         rm outfile.ps
     fi
+
+    if [ -f ".42sh_history" ] ; then
+        rm .42sh_history
+    fi
+
     rm -rf autom4te.cache/ compile config.h.in Makefile missing \
     aclocal.m4 install-sh depcomp Makefile.in
 fi
