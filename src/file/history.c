@@ -18,7 +18,7 @@
 
 int line = 0;
 
-/*void writehistory(char *str)
+void writehistory(char *str)
 {
     FILE *file = fopen(".42sh_history", "a+");
     char *parse;
@@ -35,7 +35,7 @@ int line = 0;
     }
     fclose(file);
     line ++;
-}*/
+}
 
 int up_arrow()
 {

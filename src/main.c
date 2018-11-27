@@ -94,28 +94,13 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
         };
     int option_index = 0;
     optind = 0;
-    int check = 0;
     while ((c = getopt_long (argc,argv, "c:vnat",
         long_options, &option_index)) != -1)
     {
         if (c == 'c')
         {
-            char *parse;
-            char *delim = {"\t \n"};
-            parse = strtok(optarg,delim);
-            while (parse)
-            {
-                if (strlen(parse) > 1 && parse[strlen(parse)-1] == ';')
-                {
-                    parse[strlen(parse)-1] = '\0';
-                    add_token(&token,parse);
-                    add_token(&token,";");
-                }
-                else
-                    add_token(&token,parse);
-                parse = strtok(NULL,delim);
-            }
-            check = 1;
+            token = create_token(token,optarg);
+            set_value("--exit", "1");
         }
         else if (c == 'a')
             set_value("--ast-print", "1");
@@ -128,7 +113,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
         else
             fprintf(stderr,"[GNU long options] [options] [file]\n");
     }
-    if (!check && (argv[argc-1] || !isatty(0)))
+    if (get_value("--exit") == NULL && (argv[argc-1] || !isatty(0)))
     {
         token = NULL;
         if (isatty(0))
@@ -157,7 +142,7 @@ struct Token *lexer(struct Token *t)
     if (ast == NULL)
         return t;
     struct fds fd = {.in = 0, .out = 1, .err = 2};
-    ast->foo(ast, fd); //seg fault (for a in ls ; do ls ; done)
+    ast->foo(ast, fd);
     create_dot(ast, "output.gv");
     AST_destroy(ast);
     return t;
@@ -207,8 +192,11 @@ struct Token *carving(long argc, char **argv)
                 continue;
             if (strncmp(str,"exit",4) == 0)
                 return 0;
-        /*    if (check && (check[0] != '\n' && check[0] != '\0'))
-                write_history(check);*/
+            if (check && (check[0] != '\n' && check[0] != '\0'))
+            {
+                add_history(check);
+				append_history(1,".42sh_history");
+            }
             token = create_token(token,str);
         }
         lexer(token);
@@ -226,10 +214,7 @@ struct Token *carving(long argc, char **argv)
 }
 int main(int argc, char *argv[])
 {
- //   delete_history();
-    FILE *file = fopen("src/file/variable.txt","w+");
-    fprintf(file,"IFS \"\\t \\n\"\n--ast-print \"0\"\nversion \"0\"\n--type-print \"0\"\n");
-    fclose(file);
+    delete_history();
     init_history();
     carving(argc,argv);
     return 0;
