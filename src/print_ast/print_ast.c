@@ -7,8 +7,8 @@
 #include <err.h>
 #include <stdlib.h>
 #include <sys/stat.h>
-#include "../lexer/include/lexer_struct.h"
-#include "../lexer/include/my_tree.h"
+#include "../parser/include/lexer_struct.h"
+#include "../parser/include/my_tree.h"
 #include "../include/shell.h"
 // dot -Tps output.gv -o outfile.ps
 

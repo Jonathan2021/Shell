@@ -1,6 +1,6 @@
 #ifndef SHELL_H
 # define SHELL_H
-#include "../lexer/include/lexer_struct.h"
+#include "../parser/include/lexer_struct.h"
 struct PS
 {
     char *name;
@@ -12,6 +12,9 @@ extern struct PS *ps;
 
 void add_token(struct Token **token, char *str);
 struct Token *parse_path(struct Token *token, char **argv, long argc);
+void DestroyToken(struct Token *t);
+struct PS *get_ps(void);
+void init_ps(void);
 void set_value(char *name, char *value);
 char *get_value(char *name);
 void reset_value(void);
@@ -26,5 +29,6 @@ void delete_history(void);
 void writehistory(char *str);
 void init_history(void);
 int up_arrow();
+struct Token *lexer(struct Token *t);
 
 #endif /* !SHELL_H */
