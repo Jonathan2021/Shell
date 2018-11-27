@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "../include/shell.h"
 
-struct Token *get_Token(struct Token **tmp, struct Token **t)
+void next_token(struct Token **tmp)
 {
     struct Token *res = tmp[0]->next;
     if (res == NULL || (strcmp("\n", res->name) == 0 && res->next == NULL))

@@ -4,6 +4,7 @@
 #include "../include/shell.h"
 #include <stdlib.h>
 #include "include/rule.h"
+#include "include/foo.h"
 #include <stdio.h>
 
 void foo_for(struct AST *node, struct fds fd)
