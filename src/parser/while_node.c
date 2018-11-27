@@ -44,7 +44,7 @@ struct AST *rule_while(struct Token **t)
     if (!(condition = compound_list(&tmp)))
         return NULL;
     if (tmp == NULL)
-        call_ps2(t,&tmp);
+        tmp = call_ps2(t);
 
     if (!(do_body = do_group(&tmp)))
         return NULL;

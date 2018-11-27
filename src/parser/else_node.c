@@ -52,7 +52,7 @@ struct AST *else_clause(struct Token **t)
         if ((condition = compound_list(&tmp)) == NULL)
             return NULL;
         if (tmp == NULL)
-            call_ps2(t, &tmp);
+            tmp = call_ps2(t);
 
         if (strcmp("then", tmp->name) != 0)
         {
@@ -67,7 +67,7 @@ struct AST *else_clause(struct Token **t)
             return NULL;
         }
         if (tmp == NULL)
-            call_ps2(t, &tmp);
+            tmp = call_ps2(t);
 
         else_body = else_clause(&tmp);
         *t = tmp;
