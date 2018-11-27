@@ -27,7 +27,7 @@ struct Token *call_ps2(struct Token **t)
     printf("> ");
     struct Token *res = NULL;
     if (fgets(str,4095,stdin) == NULL )
-        return ;
+        return NULL;
     res = create_token(res,str);
     tmp->next = res;
     return res;
