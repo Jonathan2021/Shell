@@ -20,6 +20,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <glob.h>
+#include<time.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../include/shell.h"
@@ -85,16 +86,17 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
 {
     int c = 0;
     static struct option long_options[] =
-        { {"version",no_argument,0,'v'},
-          {"ver",no_argument,0,'v'},
-          {"norc",  no_argument, 0,'n'},
-          {"ast-print",  no_argument, 0, 'a'},
-          {"type-print",  no_argument, 0, 't'},
+        { {"version",no_argument,0,3},
+          {"ver",no_argument,0,3},
+          {"norc",  no_argument, 0,4},
+          {"ast-print",  no_argument, 0, 1},
+          {"type-print",  no_argument, 0, 2},
+          {"timeout",  required_argument, 0, 5},
           {0, 0, 0, 0},
         };
     int option_index = 0;
     optind = 0;
-    while ((c = getopt_long (argc,argv, "c:vnat",
+    while ((c = getopt_long (argc,argv, "c:t:",
         long_options, &option_index)) != -1)
     {
         if (c == 'c')
@@ -102,14 +104,16 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
             token = create_token(token,optarg);
             set_value("--exit", "1");
         }
-        else if (c == 'a')
+        else if (c == 1)
             set_value("--ast-print", "1");
-        else if (c == 'n')
+        else if (c == 4)
             reset_value();
-        else if (c == 'v')
+        else if (c == 3)
             set_value("version", "1");
-        else if (c == 't')
+        else if (c == 2)
             set_value("--type-print", "1");
+        else if (optarg && (c == 5 || c == 't'))
+            set_value("--timeout", optarg);
         else
             fprintf(stderr,"[GNU long options] [options] [file]\n");
     }
@@ -155,4 +159,27 @@ void init_ps(void)
     ps = malloc(sizeof(struct PS));
     ps->name = NULL;
     ps->value = NULL;
+}
+
+void time_out(clock_t begin)
+{
+    clock_t end=clock();
+    double times = (end-begin)/CLOCKS_PER_SEC;
+    char *check = get_value("--timeout");
+    if (check)
+    {
+        double wait = atoi(get_value("--timeout"));
+        if (times > wait)
+        {
+            printf("TOO LONG !!\n");
+            printf ("execution = %f\n",times);
+            printf ("time set = %f\n",wait);
+        }
+        else
+        {
+            printf ("TIMES OK\n");
+            printf ("execution = %f\n",times);
+            printf ("time set = %f\n",wait);
+        }
+    }
 }

@@ -20,6 +20,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <glob.h>
+#include<time.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "include/shell.h"
@@ -37,6 +38,7 @@ struct Token *carving(long argc, char **argv)
     while(1)
     {
         token = NULL;
+        clock_t begin=clock();
         if (i == 0)
         {
             i = 1;
@@ -44,7 +46,6 @@ struct Token *carving(long argc, char **argv)
         }
         else
         {
-            //rl_bind_keyseq("\e[A",up_arrow);
             printf("42sh$ ");
             char *check = fgets(str,4095,stdin);
             if (!check)
@@ -59,6 +60,7 @@ struct Token *carving(long argc, char **argv)
             token = create_token(token,str);
         }
         lexer(token);
+        time_out(begin);
         if (check_option(token))
         {
             reset_value();
