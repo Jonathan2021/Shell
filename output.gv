@@ -1,0 +1,6 @@
+digraph G {
+"(0)list"[color=green]
+"(1)ecit"[color=blue2]
+"(0)list" -> "(1)ecit"
+"(1)ecit"[color=blue2]
+}
