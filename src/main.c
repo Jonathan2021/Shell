@@ -55,7 +55,7 @@ struct Token *carving(long argc, char **argv)
             if (check && (check[0] != '\n' && check[0] != '\0'))
             {
                 add_history(check);
-				append_history(1,".42sh_history");
+                append_history(1,".42sh_history");
             }
             token = create_token(token,str);
         }

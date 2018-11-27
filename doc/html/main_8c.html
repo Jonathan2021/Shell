@@ -60,7 +60,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -102,37 +101,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;sys/stat.h&gt;</code><br />
 <code>#include &lt;getopt.h&gt;</code><br />
+<code>#include &lt;sys/wait.h&gt;</code><br />
+<code>#include &lt;errno.h&gt;</code><br />
+<code>#include &lt;glob.h&gt;</code><br />
+<code>#include &lt;time.h&gt;</code><br />
+<code>#include &lt;readline/readline.h&gt;</code><br />
+<code>#include &lt;readline/history.h&gt;</code><br />
 <code>#include &quot;include/shell.h&quot;</code><br />
-<code>#include &quot;lexer/include/lexer_struct.h&quot;</code><br />
-<code>#include &quot;lexer/include/my_tree.h&quot;</code><br />
-<code>#include &quot;lexer/include/rule.h&quot;</code><br />
+<code>#include &quot;parser/include/lexer_struct.h&quot;</code><br />
+<code>#include &quot;parser/include/my_tree.h&quot;</code><br />
+<code>#include &quot;parser/include/rule.h&quot;</code><br />
 <code>#include &quot;print_ast/include/print_ast.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for main.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8c__incl.png" border="0" usemap="#src_2main_8c" alt=""/></div>
+<map name="src_2main_8c" id="src_2main_8c">
+</map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:afb84c62a61e5423683cd14dcd09869a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afb84c62a61e5423683cd14dcd09869a1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add_token</b> (struct Token **token, char *str)</td></tr>
-<tr class="separator:afb84c62a61e5423683cd14dcd09869a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4dceacddf2678165fe46683f4346035"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4dceacddf2678165fe46683f4346035"></a>
-struct Token *&#160;</td><td class="memItemRight" valign="bottom"><b>parse_path</b> (struct Token *token, char **argv, long argc, struct PS *ps)</td></tr>
-<tr class="separator:ab4dceacddf2678165fe46683f4346035"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a896ebd9330a9cd0214cb899a28bcae76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a896ebd9330a9cd0214cb899a28bcae76">print_t</a> (struct Token *t)</td></tr>
-<tr class="memdesc:a896ebd9330a9cd0214cb899a28bcae76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Printing AST function.  <a href="#a896ebd9330a9cd0214cb899a28bcae76">More...</a><br /></td></tr>
-<tr class="separator:a896ebd9330a9cd0214cb899a28bcae76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ff68d8e74fe500262ae39dfe782d66e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ff68d8e74fe500262ae39dfe782d66e"></a>
-struct Token *&#160;</td><td class="memItemRight" valign="bottom"><b>lexer</b> (struct Token *t)</td></tr>
-<tr class="separator:a2ff68d8e74fe500262ae39dfe782d66e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20e488f2f61f0493ae9fa3da87def064"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20e488f2f61f0493ae9fa3da87def064"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DestroyToken</b> (struct Token *t)</td></tr>
-<tr class="separator:a20e488f2f61f0493ae9fa3da87def064"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accf36cd1c7e073ad43ea9074ff2ac8b3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="accf36cd1c7e073ad43ea9074ff2ac8b3"></a>
-struct PS *&#160;</td><td class="memItemRight" valign="bottom"><b>init_ps</b> (void)</td></tr>
-<tr class="separator:accf36cd1c7e073ad43ea9074ff2ac8b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07fcb75e60a631eaf3cd1c6612620a06"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a07fcb75e60a631eaf3cd1c6612620a06"></a>
 struct Token *&#160;</td><td class="memItemRight" valign="bottom"><b>carving</b> (long argc, char **argv)</td></tr>
 <tr class="separator:a07fcb75e60a631eaf3cd1c6612620a06"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,33 +136,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 <dl class="section date"><dt>Date</dt><dd>30 novembre 2018</dd></dl>
 File with the main </li>
 </ul>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a896ebd9330a9cd0214cb899a28bcae76"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void print_t </td>
-          <td>(</td>
-          <td class="paramtype">struct Token *&#160;</td>
-          <td class="paramname"><em>t</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Printing AST function. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">t</td><td>Adress of the pointer structure to be print. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>No return. </dd></dl>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
