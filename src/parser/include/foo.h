@@ -6,4 +6,5 @@
 void foo_compound(struct AST *node, struct fds fd);
 void next_token(struct Token **tmp);
 void call_ps2(struct Token **t, struct Token **t2);
+int my_exec(char *cmd[], struct fds fd);
 #endif /* !_FOO_H_*/

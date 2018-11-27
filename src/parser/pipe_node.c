@@ -52,12 +52,12 @@ struct AST *pipe_init(struct Token *token)
     return node;
 }
 
-/* struct AST *pipeline(struct Token **t)
+struct AST *pipeline(struct Token **t)
 {
     struct AST *origin = NULL;
     struct AST *tmp_ast;
     struct AST *rattach;
-    struct AST *first_cmd;
+    //struct AST *first_cmd;
 
     struct Token *tmp = *t;
     if (tmp && !strcmp("!", tmp->name))
@@ -70,7 +70,7 @@ struct AST *pipe_init(struct Token *token)
         AST_destroy(origin);
         return NULL;
     }
-    first_cmd = rattach;
+    //first_cmd = rattach;
     *t = tmp;
     while (1)
     {
@@ -97,8 +97,8 @@ struct AST *pipe_init(struct Token *token)
     else
         origin = rattach;
     return origin;
-} */
-
+}
+/*
 struct AST *r_pipeline(struct Token **t)
 {
     struct AST *left_child;
@@ -133,6 +133,7 @@ struct AST *r_pipeline(struct Token **t)
     struct AST *node = pipe_init(name);
     node->child[0] = left_child;
     node->child[1] = right_child;
+    *t = tmp;
     return node;
 }
 struct AST *pipeline(struct Token **t)
@@ -161,3 +162,4 @@ struct AST *pipeline(struct Token **t)
     *t = tmp;
     return origin;
 }
+*/

@@ -54,12 +54,6 @@ struct AST *command(struct Token **t)
             add_cmd(res, to_add);
             *t = tmp;
         }
-        if (res->nb_child == 1)
-        {
-            to_add = res->child[0];
-            free_l(res);
-            return to_add;
-        }
         return res;
     }
     AST_destroy(res);
