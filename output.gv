@@ -1,0 +1,39 @@
+digraph G {
+"(0)list"[color=green]
+"(1)if"[color=khaki1]
+"(0)list" -> "(1)if"
+"(1)if"[color=khaki1]
+"(2)compound"[color=green2]
+"(1)if" -> "(2)compound"
+"(2)compound"[color=green2]
+"(3)false"[color=blue2]
+"(2)compound" -> "(3)false"
+"(3)false"[color=blue2]
+"(4);"[color=aquamarine]
+"(2)compound" -> "(4);"
+"(4);"[color=aquamarine]
+"(5)compound"[color=green2]
+"(1)if" -> "(5)compound"
+"(5)compound"[color=green2]
+"(6)pwd"[color=blue2]
+"(5)compound" -> "(6)pwd"
+"(6)pwd"[color=blue2]
+"(7);"[color=aquamarine]
+"(5)compound" -> "(7);"
+"(7);"[color=aquamarine]
+"(8)compound"[color=green2]
+"(1)if" -> "(8)compound"
+"(8)compound"[color=green2]
+"(9)simple command"[color=green1]
+"(8)compound" -> "(9)simple command"
+"(9)simple command"[color=green1]
+"(10)echo"[color=blue2]
+"(9)simple command" -> "(10)echo"
+"(10)echo"[color=blue2]
+"(11)salope"[color=blue2]
+"(9)simple command" -> "(11)salope"
+"(11)salope"[color=blue2]
+"(12);"[color=aquamarine]
+"(8)compound" -> "(12);"
+"(12);"[color=aquamarine]
+}

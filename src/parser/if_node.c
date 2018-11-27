@@ -46,7 +46,7 @@ struct AST *rule_if(struct Token **t)
         return NULL;
 
     if (tmp == NULL)
-        call_ps2(t, &tmp);
+        tmp = call_ps2(t);
 
     if (strcmp("then", tmp->name) != 0)
     {
@@ -61,11 +61,11 @@ struct AST *rule_if(struct Token **t)
         return NULL;
     }
     if (tmp == NULL)
-        call_ps2(t, &tmp);
+        tmp = call_ps2(t);
 
     else_body = else_clause(&tmp);
     if (tmp == NULL)
-        call_ps2(t, &tmp);
+        tmp = call_ps2(t);
 
     if (strcmp("fi", tmp->name) != 0)
     {
