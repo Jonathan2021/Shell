@@ -1,6 +1,7 @@
 #ifndef SHELL_H
 # define SHELL_H
 #include "../parser/include/lexer_struct.h"
+#include<time.h>
 struct PS
 {
     char *name;
@@ -29,6 +30,7 @@ void delete_history(void);
 void writehistory(char *str);
 void init_history(void);
 int up_arrow();
+void time_out(clock_t time);
 struct Token *lexer(struct Token *t);
 
 #endif /* !SHELL_H */
