@@ -32,6 +32,7 @@ void foo_pipe(struct AST *node, struct fds fd)
         close(pipefd[1]);
         node->child[1]->foo(node->child[1], newfd);
         close(pipefd[0]);
+        exit(0);
     }
     else
     {
