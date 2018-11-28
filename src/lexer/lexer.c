@@ -35,7 +35,7 @@ void add_token(struct Token **token, char *str)
 {
     char *grammar[21][20] =
     {{"SEMICOLON",";","\0"},
-        {"OP_LOGIQUE","&&","||",";;", "|", "\0"},
+        {"OP_LOGIQUE","&&","||",";;","\0"},
         {"NEW_LINE","\n","\0"},
         {"OP_IO","<<",">>","<&",">&","<>","<<-","\0"},
         {"CLOBBER",">|","\0"},
@@ -107,7 +107,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
         else if (c == 1)
             set_value("--ast-print", "1");
         else if (c == 4)
-            reset_value();
+            reset_file();
         else if (c == 3)
             set_value("version", "1");
         else if (c == 2)

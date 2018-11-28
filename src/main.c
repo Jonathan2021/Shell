@@ -46,7 +46,7 @@ struct Token *carving(long argc, char **argv)
         }
         else
         {
-            printf("42sh$ ");
+            printf("%s",get_file("PS1"));
             char *check = fgets(str,4095,stdin);
             if (!check)
                 continue;
@@ -55,7 +55,7 @@ struct Token *carving(long argc, char **argv)
             if (check && (check[0] != '\n' && check[0] != '\0'))
             {
                 add_history(check);
-                append_history(1,".42sh_history");
+				append_history(1,".42sh_history");
             }
             token = create_token(token,str);
         }
@@ -75,9 +75,11 @@ struct Token *carving(long argc, char **argv)
 }
 int main(int argc, char *argv[])
 {
+    FILE *file = fopen("src/etc/42shrc","w+");
+    fprintf(file,"PS1 \"42sh \"\nPS2 \">\"");
+    fclose(file);
     delete_history();
     init_history();
     carving(argc,argv);
     return 0;
-} 
-
+}
