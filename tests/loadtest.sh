@@ -20,5 +20,10 @@ else
      pytest tests/conftest.py tests/test_command.yml
 fi
 deactivate
+if [ -f output.gv ] ; then
+    rm output.gv
+else
+    rm tests/output.gv
+fi
 rm -rf env/
 rm -rf tests/__pycache__ __pycache__
