@@ -4,3 +4,67 @@ echo_backslash_n:
     expected:
         stdout: "hello\n"
         rvalue: 0
+
+echo_error:
+    type: "output_diff"
+    command: "echo if if"
+    expected:
+        stdout: "if if\n"
+        rvalue: 0
+
+echo_long_sentence:
+    type: "output_diff"
+    command: "echo my name is marco polo"
+    expected:
+        stdout: "my name is marco polo\n"
+        rvalue: 0
+
+echo_pwd:
+    type: "output_diff"
+    command: "echo pwd"
+    expected:
+        stdout: "pwd\n"
+        rvalue: 0
+
+echo_ls:
+    type: "output_diff"
+    command: "echo ls"
+    expected:
+        stdout: "ls\n"
+        rvalue: 0
+
+echo_$ls:
+    type: "output_diff"
+    command: "echo $ls"
+    expected:
+        stdout: "$ls\n"
+        rvalue: 0
+
+echo_42:
+    type: "output_diff"
+    command: "echo 42"
+    expected:
+        stdout: "42\n"
+        rvalue: 0
+
+echo_echo:
+    type: "output_diff"
+    command: "echo echo"
+    expected:
+        stdout: "echo\n"
+        rvalue: 0
+
+echo_hello_word:
+    type: "output_diff"
+    command: "echo hello word"
+    expected:
+        stdout: "hello word\n"
+        rvalue: 0
+
+echo_42sh:
+    type: "output_diff"
+    command: "echo 42sh"
+    expected:
+        stdout: "42sh\n"
+        rvalue: 0
+
