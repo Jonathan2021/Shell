@@ -22,7 +22,10 @@ else
     if [ -f ".42sh_history" ] ; then
         rm .42sh_history
     fi
-
+    
+    if [ -d "doc/html" ] ; then
+        rm -rf doc/html
+    fi
     rm -rf autom4te.cache/ compile config.h.in Makefile missing \
     aclocal.m4 install-sh depcomp Makefile.in
 fi

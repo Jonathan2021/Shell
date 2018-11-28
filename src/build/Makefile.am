@@ -18,6 +18,7 @@ bin_PROGRAMS = 42sh
 			   src/file/history.c\
 			   src/print_ast/print_ast.c \
 			   src/file/tool.c \
+			   src/file/tool_file.c \ 
 			   src/parser/rule_funcdec.c \
 			   src/parser/dless_node.c \
 			   src/parser/my_tree.c \
@@ -40,7 +41,9 @@ bin_PROGRAMS = 42sh
 
 check:
 	./src/testsuit/loadtest.sh
-
+doc:
+	doxygen doc/Doxyfile
+.PHONY:doc
 clean:
 	rm 42sh
 42sh_LDADD= -lreadline
