@@ -8,8 +8,9 @@ if [ -f conftest.py ] ; then
     pytest conftest.py testsuit.py
     pytest conftest.py test_command.yml
 else
-     pytest src/testsuit/conftest.py src/testsuit/testsuit.py
-     pytest src/testsuit/conftest.py src/testsuit/test_command.yml
+     pytest tests/conftest.py tests/testsuit.py
+     pytest tests/conftest.py tests/test_command.yml
 fi
 deactivate
 rm -rf env/
+rm -rf tests/__pycache__ __pycache__
