@@ -40,7 +40,7 @@ bin_PROGRAMS = 42sh
 			   src/parser/rule_simple_command.c
 
 check:
-	./src/testsuit/loadtest.sh
+	./tests/loadtest.sh
 doc:
 	doxygen doc/Doxyfile
 .PHONY:doc
