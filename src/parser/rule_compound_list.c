@@ -35,6 +35,7 @@ int my_exec(char *cmd[], struct fds fd)
         {
             fprintf(stderr, "execvp failed\n");
         }
+        exit(0);
     }
     else
     {
