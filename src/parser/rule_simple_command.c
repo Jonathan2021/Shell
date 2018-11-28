@@ -39,18 +39,7 @@ struct AST *simple_command(struct Token **t)
             add_list(list, node);
 
             if (tmp == NULL)
-            {
-                if (list->nb_child == 1)
-                {
-                    node = list->child[0];
-                    free_l(list);
-                    return node;
-                }
-                else
-                {
-                    return list;
-                }
-            }
+                return list;
         }
     }
     if ((node = element(&tmp)) != NULL)
@@ -59,50 +48,17 @@ struct AST *simple_command(struct Token **t)
         *t = tmp;
         add_list(list, node);
         if (tmp == NULL)
-        {
-            if (list->nb_child == 1)
-            {
-                node = list->child[0];
-                free_l(list);
-                return node;
-            }
-            else
-            {
-                return list;
-            }
-        }
+            return list;
         while ((node = element(&tmp)) != NULL)
         {
             *t = tmp;
             add_list(list, node);
             if (tmp == NULL)
-            {
-                if (list->nb_child == 1)
-                {
-                    node = list->child[0];
-                    free_l(list);
-                    return node;
-                }
-                else
-                {
-                    return list;
-                }
-            }
+                return list;
         }
     }
     if (list->nb_child != 0)
-    {
-        if (list->nb_child == 1)
-        {
-            node = list->child[0];
-            free_l(list);
-            return node;
-        }
-        else
-        {
-            return list;
-        }
-    }
+        return list;
     free_l(list);
     return NULL;
 }
