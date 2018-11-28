@@ -1,0 +1,12 @@
+digraph G {
+"(0)list"[color=green]
+"(1)simple command"[color=green1]
+"(0)list" -> "(1)simple command"
+"(1)simple command"[color=green1]
+"(2)echo"[color=blue2]
+"(1)simple command" -> "(2)echo"
+"(2)echo"[color=blue2]
+"(3)hello"[color=blue2]
+"(1)simple command" -> "(3)hello"
+"(3)hello"[color=blue2]
+}

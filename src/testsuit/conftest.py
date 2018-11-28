@@ -32,7 +32,7 @@ class YamlItem(pytest.Item):
             self.expected = self.spec['expected']
 
     def runtest(self):
-        process = subprocess.Popen(["../42sh"],
+        process = subprocess.Popen(["bash"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 stdin=subprocess.PIPE)

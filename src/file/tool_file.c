@@ -11,7 +11,7 @@
 
 char *get_file(char *name)
 {
-    FILE *file = fopen("src/etc/42shrc","r+");
+    FILE *file = fopen("/tmp/42shrc","r+");
     if (!file)
         return NULL;
     char *check = malloc(60);
@@ -38,10 +38,10 @@ char *get_file(char *name)
 
 void set_file(char *name, char *value)
 {
-    FILE *file = fopen("src/etc/42shrc","r");
+    FILE *file = fopen("/tmp/42shrc","r");
     if (!file)
         return;
-    FILE *copy = fopen("src/etc/copy.txt","w+");
+    FILE *copy = fopen("/tmp/copy.txt","w+");
     char *check = malloc(60);
     char *data = malloc(60);
     int nb;
@@ -56,11 +56,11 @@ void set_file(char *name, char *value)
             fprintf(copy,"%s %s\n",check,data);
         }
     }
-    remove("src/etc/42shrc");
+    remove("/tmp/42shrc");
     free(check);
     fclose(file);
     fclose(copy);
-    rename("src/etc/copy.txt","src/etc/42shrc");
+    rename("/tmp/copy.txt","/tmp/42shrc");
 
 }
 

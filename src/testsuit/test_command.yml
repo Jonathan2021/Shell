@@ -1,0 +1,62 @@
+echo_backslash_n:
+    type: "output_diff"
+    command: "echo hello world"
+    expected:
+        stdout: "hello world\n"
+        rvalue: 0
+
+echo_backslash_n:
+    type: "output_diff"
+    command: "echo hello world"
+    expected:
+        stdout: "hello world\n"
+        rvalue: 0
+
+echo_backslash_n:
+    type: "output_diff"
+    command: "echo hello world"
+    expected:
+        stdout: "hello world\n"
+        rvalue: 0
+
+echo_backslash_n:
+    type: "output_diff"
+    command: "echo hello world"
+    expected:
+        stdout: "hello world\n"
+        rvalue: 0
+
+echo_backslash_n:
+    type: "output_diff"
+    command: "echo hello world"
+    expected:
+        stdout: "hello world\n"
+        rvalue: 0
+
+echo_backslash_n:
+    type: "output_diff"
+    command: "echo hello world"
+    expected:
+        stdout: "hello world\n"
+        rvalue: 0
+
+echo_backslash_n:
+    type: "output_diff"
+    command: "echo hello world"
+    expected:
+        stdout: "hello world\n"
+        rvalue: 0
+
+echo_backslash_n:
+    type: "output_diff"
+    command: "echo hello world"
+    expected:
+        stdout: "hello world\n"
+        rvalue: 0
+
+echo_backslash_n:
+    type: "output_diff"
+    command: "echo hello world"
+    expected:
+        stdout: "hello world\n"
+        rvalue: 0

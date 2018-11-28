@@ -75,7 +75,7 @@ struct Token *carving(long argc, char **argv)
 }
 int main(int argc, char *argv[])
 {
-    FILE *file = fopen("src/etc/42shrc","w+");
+    FILE *file = fopen("/tmp/42shrc","w+");
     fprintf(file,"PS1 \"42sh \"\nPS2 \">\"");
     fclose(file);
     delete_history();

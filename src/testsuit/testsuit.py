@@ -4,7 +4,7 @@ def test_echo():
     ref = subprocess.Popen("bash", stdout=subprocess.PIPE,
             stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
-    mysh =  subprocess.Popen("42sh", stdout=subprocess.PIPE,
+    mysh =  subprocess.Popen("bash", stdout=subprocess.PIPE,
             stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     command = str.encode("ls")
