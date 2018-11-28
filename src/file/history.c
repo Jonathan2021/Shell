@@ -51,9 +51,9 @@ void init_history(void)
 	if (handle==NULL) 
 		handle=fopen(".42sh_history","w+");
 	fclose(handle);
-	read_history(".42sh_history");
-	stifle_history(500);
-	write_history(".42sh_history");
+	//read_history(".42sh_history");
+	//stifle_history(500);
+	//write_history(".42sh_history");
 }
 
 void delete_history(void)

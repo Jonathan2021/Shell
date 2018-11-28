@@ -96,6 +96,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
         };
     int option_index = 0;
     optind = 0;
+    int i = 0;
     while ((c = getopt_long (argc,argv, "c:t:",
         long_options, &option_index)) != -1)
     {
@@ -116,13 +117,17 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
             set_value("--timeout", optarg);
         else
             fprintf(stderr,"[GNU long options] [options] [file]\n");
+        i++;
     }
     if (get_value("--exit") == NULL && (argv[argc-1] || !isatty(0)))
     {
         token = NULL;
-        if (isatty(0))
+        if (isatty(0) && i < argc-1)
+        {
             token = read_file(argv[argc-1],token);
-        else
+            set_value("--exit", "1");
+        }
+        else if (!isatty(0))
             token = read_file(NULL,token);
     }
     return token;
