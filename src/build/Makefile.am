@@ -40,6 +40,7 @@ bin_PROGRAMS = 42sh
 			   src/parser/rule_simple_command.c
 
 check:
+	cd tests/
 	./tests/loadtest.sh
 doc:
 	doxygen doc/Doxyfile

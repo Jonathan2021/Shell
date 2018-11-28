@@ -1,9 +1,14 @@
 #!/bin/sh
 
+
 if [ "$1" != "clean" ] ; then
     cp src/build/configure.ac .
     cp src/build/Makefile.am .
     autoreconf -vi
+    if [ "$1" = "all" ] ; then
+        ./configure
+        make
+    fi
 else
     make distclean
     if [ -f "configure.ac" ] ; then
