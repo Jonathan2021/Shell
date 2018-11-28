@@ -3,10 +3,10 @@ digraph G {
 "(1)simple command"[color=green1]
 "(0)list" -> "(1)simple command"
 "(1)simple command"[color=green1]
-"(2)Q?j'"[color=blue2]
-"(1)simple command" -> "(2)Q?j'"
-"(2)Q?j'"[color=blue2]
-"(3)€ÿÿ¯À•Øÿ"[color=blue2]
-"(1)simple command" -> "(3)€ÿÿ¯À•Øÿ"
-"(3)€ÿÿ¯À•Øÿ"[color=blue2]
+"(2)¡åðd€ÿÿ_›þ"[color=blue2]
+"(1)simple command" -> "(2)¡åðd€ÿÿ_›þ"
+"(2)¡åðd€ÿÿ_›þ"[color=blue2]
+"(3)€ÿÿ_›þ"[color=blue2]
+"(1)simple command" -> "(3)€ÿÿ_›þ"
+"(3)€ÿÿ_›þ"[color=blue2]
 }

@@ -1,5 +1,12 @@
 #!/bin/bash
-cd tests > /dev/null
+if [ -d tests ] ; then
+    cd tests > /dev/null
+fi
+
+if [ ! -f "../42sh" ] ; then
+    echo "NO executable 42sh"
+    exit 0
+fi
 python3 -m venv env > /dev/null
 source env/bin/activate
 #pip install requirement.txt

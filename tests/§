@@ -1,6 +1,0 @@
-echo_backslash_n:
-    type: "output_diff"
-    command: "echo hello"
-    expected:
-        stdout: "hello\n"
-        rvalue: 0
