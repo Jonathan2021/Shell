@@ -1,3 +1,9 @@
+/**
+ ** \file file/history.c
+ ** \brief File with functions about the history of 42sh.
+ ** \date 29 novembre 2018
+ **
+ **/
 #define _GNU_SOURCE
 #include <termios.h>
 #include <stdlib.h>
@@ -17,7 +23,10 @@
 #include "../include/shell.h"
 
 int line = 0;
-
+/**
+ ** \brief Write the str in the .42sh_history file.
+ ** \param str command write in the history
+ **/
 void writehistory(char *str)
 {
     FILE *file = fopen(".42sh_history", "a+");
@@ -36,68 +45,36 @@ void writehistory(char *str)
     fclose(file);
     line ++;
 }
-
+/**
+ ** \brief Come back to the last command.
+ ** \bug Don't use this function some problems
+ ** \return The value 0;
+ **/
 int up_arrow()
 {
-	HIST_ENTRY *historique=history_get(history_length);
-	rl_replace_line(historique->line,0);
-	rl_end_of_line(0,0);
-	return 0;
+    HIST_ENTRY *historique=history_get(history_length);
+    rl_replace_line(historique->line,0);
+    rl_end_of_line(0,0);
+    return 0;
 }
+
+/**
+ ** \brief Crete the file if it doesn't exist.
+ **/
 void init_history(void)
 {
     using_history();
-	FILE *handle=fopen(".42sh_history","r");
-	if (handle==NULL) 
-		handle=fopen(".42sh_history","w+");
-	fclose(handle);
-	//read_history(".42sh_history");
-	//stifle_history(500);
-	//write_history(".42sh_history");
+    FILE *handle=fopen(".42sh_history","r");
+    if (handle==NULL) 
+        handle=fopen(".42sh_history","w+");
+    fclose(handle);
 }
 
+/**
+ ** \brief Delete the .42sh_history file.
+ **/
 void delete_history(void)
 {
     remove(".42sh_history");
 }
 
-int my_getch()
-{
-    struct     termios info;
-    char     sequence[10];
-    int        svg,pos,entier;
-
-    tcgetattr(STDIN_FILENO,&info);
-    svg=info.c_lflag;
-    info.c_lflag = ~ECHO & ~ICANON; // ~ECHO=noecho ICANON=mode canonique (pas d'attente de entrée)
-    tcsetattr(STDIN_FILENO, TCSANOW, &info);
-    pos=0;
-    entier=getchar();
-    if (entier==27)
-    {
-        entier=getchar();
-        sequence[pos]=(char)entier;
-        ++pos;
-        if (entier=='[')
-        {
-            do
-            {
-                entier=getchar();
-                sequence[pos]=(char)entier;
-                ++pos;
-            } while (entier<=0x40);
-            sequence[pos]='\0';
-            if (strcmp(sequence,"[A")==0) entier=0403;             // fleche haute=27,[A 
-            else if (strcmp(sequence,"[21~")==0) entier=0420;     // touche F10=27,[21~
-            else entier=0;
-        }
-        else
-        {
-            ungetc(entier,stdin);
-            entier=0;
-        }
-    }
-    info.c_lflag = svg;
-    tcsetattr(STDIN_FILENO, TCSANOW, &info);
-    return entier;
-}

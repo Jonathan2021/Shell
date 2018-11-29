@@ -1,10 +1,7 @@
 /**
- ** \file lexer.c
- ** \brief Program for the main
- *     * \version 0.5
- ** \date 30 novembre 2018
- **
- ** File with the main
+ ** \file lexer/lexer.c
+ ** \brief Dtermine each tokens and each options
+ ** \date 29 novembre 2018
  **
  **/
 #define _GNU_SOURCE
@@ -31,7 +28,11 @@
 #include <fnmatch.h>
 
 struct PS *ps;
-
+/**
+ ** \brief Check if the str is a io_number
+ ** \param str str to ba analyse
+ ** \return An integer. 0 is not an ionumber and 1 if it is one
+ **/
 int is_ionumber(char *str)
 {
     int i = 0;
@@ -42,7 +43,11 @@ int is_ionumber(char *str)
     }
     return (i && (str[i] == '<' || str[i] == '>'));
 }
-
+/**
+ ** \brief Add a token to the end of the chain list
+ ** \param token the full chain list of tokens
+ ** \param str the string to be put at the end of the chain list
+ **/
 void add_token(struct Token **token, char *str)
 {
     char *grammar[3][20] =
@@ -97,6 +102,13 @@ void add_token(struct Token **token, char *str)
     copy->next = next;
 }
 
+/**
+ ** \brief Parse all the user input for the options
+ ** \param token the full chain list of tokens
+ ** \param argv the list of argument given by the user
+ ** \param argc the number of argument given by the user
+ ** \return the correct chain list without the options given by the user and olso init the struct ps.
+ **/
 struct Token *parse_path(struct Token *token, char **argv, long argc)
 {
     int c = 0;
@@ -151,6 +163,11 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
     return token;
 }
 
+/**
+ ** \brief This function build the AST tree and execute it.Moreover,  create a dot file output.gv if the option are given by the user.
+ ** \param t the full chain list of tokens with their types
+ ** \return the chain list of token
+ **/
 struct Token *lexer(struct Token *t)
 {
     struct AST *ast = input(&t);
@@ -164,6 +181,11 @@ struct Token *lexer(struct Token *t)
     AST_destroy(ast);
     return t;
 }
+
+/**
+ ** \brief Free the chain list of token
+ ** \param the chain list of token.
+ **/
 void DestroyToken(struct Token *t)
 {
     if (t != NULL)
@@ -172,7 +194,10 @@ void DestroyToken(struct Token *t)
         free(t->name);
     free(t);
 }
-
+/**
+ ** \brief Initializie a new struct of PS
+ ** \return the new struct PS inititalizied
+ **/
 struct PS *get_ps(void)
 {
     struct PS *p = malloc(sizeof(struct PS));
@@ -180,33 +205,12 @@ struct PS *get_ps(void)
     p->value = NULL;
     return p;
 }
-
+/**
+ ** \brief Inittialize the begin of the PS struct
+ **/
 void init_ps(void)
 {
     ps = malloc(sizeof(struct PS));
     ps->name = NULL;
     ps->value = NULL;
-}
-
-void time_out(clock_t begin)
-{
-    clock_t end=clock();
-    double times = (end-begin)/CLOCKS_PER_SEC;
-    char *check = get_value("--timeout");
-    if (check)
-    {
-        double wait = atoi(get_value("--timeout"));
-        if (times > wait)
-        {
-            printf("TOO LONG !!\n");
-            printf ("execution = %f\n",times);
-            printf ("time set = %f\n",wait);
-        }
-        else
-        {
-            printf ("TIMES OK\n");
-            printf ("execution = %f\n",times);
-            printf ("time set = %f\n",wait);
-        }
-    }
 }
