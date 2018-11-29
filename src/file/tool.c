@@ -1,3 +1,8 @@
+/**
+ ** \file file/tool.c
+ ** \brief Functions for cutting the user input 
+ ** \date 29 novembre 2018
+ **/
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <fcntl.h>
@@ -8,6 +13,14 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include "../include/shell.h"
+
+/**
+ ** \brief our strncpy
+ ** \param dest is the string destination
+ ** \param src is the string source
+ ** \param n size of the string to be copy
+ ** \return The pointer on the destination string
+ **/
 
 char *my_strncpy(char *dest, const char *src, size_t n)
 {
@@ -21,6 +34,11 @@ char *my_strncpy(char *dest, const char *src, size_t n)
     return dest;
 }
 
+/**
+ ** \brief Give the option value
+ ** \param name is the option enter by the user
+ ** \return NULL if the option doesn't exist or the correspondant value associated to the option.
+ **/
 char *get_value(char *name)
 {
     struct PS *tmp = ps;
@@ -34,6 +52,12 @@ char *get_value(char *name)
     }
     return NULL;
 }
+
+/**
+ ** \brief Give the value of the variable
+ ** \param name is a basic string
+ ** \return Yhe correspondant value associated to the variable.
+ **/
 
 char *getvalue(char *name)
 {
@@ -49,11 +73,21 @@ char *getvalue(char *name)
     return name;
 }
 
+/**
+ ** \brief Set the value of the name pass in parameter
+ ** \param name is the option
+ ** \param value is the value which gone a be associated to the option
+ **/
 void setvalue(char *name, char *value)
 {
     set_value(name,value);
 }
 
+/**
+ ** \brief Set the value of the name pass in parameter
+ ** \param name is the variable
+ ** \param value is the value which gone a be associated to the variable
+ **/
 void set_value(char *name, char *value)
 {
     struct PS *tmp = ps;
@@ -71,6 +105,12 @@ void set_value(char *name, char *value)
     tmp->next = get_ps();
 }
 
+/**
+ ** \brief cutting the -c option
+ ** \param argv list of the -c argument
+ ** \param str the full argument of -c
+ ** \return Number of argument cut in -c argument.
+ **/
 long str_to_argv(char **argv, char *str)
 {
     char *parse;
@@ -118,7 +158,9 @@ long str_to_argv(char **argv, char *str)
     argv[i] = NULL;
     return i;
 }
-
+/**
+ ** \brief Free the struct ps
+ **/
 void reset_value(void)
 {
     struct PS *tmp = ps;
@@ -131,6 +173,12 @@ void reset_value(void)
     free(ps);
 }
 
+/**
+ ** \brief create the chain list composed of token.
+ ** \param token list chain
+ ** \param str the full argument of -c
+ ** \return The new chain list of token.
+ **/
 struct Token *create_token(struct Token *token, char *str)
 {
     char *parse;
@@ -177,6 +225,12 @@ struct Token *create_token(struct Token *token, char *str)
     return token;
 }
 
+/**
+ ** \brief Create the chain list from a file
+ ** \param f the name of the file
+ ** \param token the chain list of token.
+ ** \return The new chain list of token.
+ **/
 struct Token *read_file(char *f, struct Token *token)
 {
     if (!f)
