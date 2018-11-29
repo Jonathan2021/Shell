@@ -18,7 +18,7 @@ if [ -f conftest.py ] ; then
    ./execpython.sh "pytest conftest.py" $1
 else
 #     pytest tests/conftest.py tests/testsuit.py
-     pytest tests/conftest.py tests/test_command.yml
+     pytest tests/conftest.py tests/test_yml/test_cmd.yml
 fi
 deactivate
 if [ -f output.gv ] ; then
@@ -29,3 +29,4 @@ if [ -f tests/output.gv ] ; then
 fi
 rm -rf env/
 rm -rf tests/__pycache__ __pycache__
+rm -rf tests/.pytest_cache/ pytest_cache/
