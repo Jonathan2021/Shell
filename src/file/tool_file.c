@@ -1,3 +1,8 @@
+/**
+ ** \file file/tool_file.c
+ ** \brief Same thing of tool.c but in a file
+ ** \date 29 novembre 2018
+ **/
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <fcntl.h>
@@ -8,6 +13,12 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include "../include/shell.h"
+
+/**
+ ** \brief Give the name of a variable in the /tmp/42shrc file
+ ** \param name The name of the variable
+ ** \return The value associated to the variable given in parameters
+ **/
 
 char *get_file(char *name)
 {
@@ -36,6 +47,11 @@ char *get_file(char *name)
     return NULL;
 }
 
+/**
+ ** \brief Set the name of a variable in the /tmp/42shrc file with value given in parameter
+ ** \param name The name of the variable
+ ** \param value the correspondant value of the variable
+ **/
 void set_file(char *name, char *value)
 {
     FILE *file = fopen("/tmp/42shrc","r");
@@ -63,7 +79,9 @@ void set_file(char *name, char *value)
     rename("/tmp/copy.txt","/tmp/42shrc");
 
 }
-
+/**
+ ** \brief Set the file /tmp/42shrc to the initail variable
+ **/
 void reset_file(void)
 {
     set_file("PS1","");
