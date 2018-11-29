@@ -46,3 +46,22 @@ if_false_then_false:
     type: "command_diff"
     command: "if false ; then false ; fi"
 
+if_ls_then_pwd_else_echo_test_fi:
+    type: "command_diff"
+    command: "if ls ; then pwd ; else echo test ; fi"
+
+if_ls_and_pwd_then_pwd_ls_else_echo_test_fi:
+    type: "command_diff"
+    command: "if ls && pwd ; then pwd ; ls ; else echo test ; fi"
+
+ls_if_ls:
+    type: "command_diff"
+    command: "ls if ls"
+
+if_if_ls_then_ls_fi_then_pwd_fi:
+    type: "command_diff"
+    command: "if if ls ; then ls ;  fi ; then pwd ; fi"
+
+if_ls_&&_echo_then_echo_fi:
+    type: "command_diff"
+    command: "if ls && echo 2 ; then echo 3 ; fi"
