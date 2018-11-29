@@ -29,6 +29,14 @@
 #include "parser/include/rule.h"
 #include "print_ast/include/print_ast.h"
 
+/**
+ ** \fn struct Token *carving(long argc, char **argv)
+ ** \brief Carving the user input.
+ **
+ ** \param argc number of argument
+ ** \param argv the list of argument
+ ** \return The chain list of type strcut Token *.
+ **/
 struct Token *carving(long argc, char **argv)
 {
     char str[4095] = {0};
@@ -54,7 +62,7 @@ struct Token *carving(long argc, char **argv)
             if (check && (check[0] != '\n' && check[0] != '\0'))
             {
                 add_history(check);
-				append_history(1,".42sh_history");
+                append_history(1,".42sh_history");
             }
             token = create_token(token,str);
         }
@@ -71,6 +79,13 @@ struct Token *carving(long argc, char **argv)
     reset_value();
     return 0;
 }
+/**
+ ** \brief Main function in 42sh.
+ **
+ ** \param argc number of argument
+ ** \param argv the list of argument
+ ** \return The value 0 
+ **/
 int main(int argc, char *argv[])
 {
     FILE *file = fopen("/tmp/42shrc","w+");
