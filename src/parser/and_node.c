@@ -2,7 +2,16 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+/**
+ ** \file parser/and_node.c
+ ** \brief The grammar rule for the and_or rule (see subject). This create the good associated ast node.
+ ** \date 29 novembre 2018
+ **/
 
+/**
+ ** \brief build the and node for the ast
+ ** \param node the node of the ast 
+ **/
 void foo_and(struct AST *node, struct fds fd)
 {
     if(!node || !node->child[0] || !node->child[1])
