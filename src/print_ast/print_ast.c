@@ -1,6 +1,6 @@
 /**
  ** \file print_ast/print_ast.c
- ** \brief Everything for creating the DOT file from the AST
+ ** \brief function for creating the DOT file from the AST
  ** \date 29 novembre 2018
  **/
 
@@ -16,7 +16,14 @@
 #include "../parser/include/lexer_struct.h"
 #include "../parser/include/my_tree.h"
 #include "../include/shell.h"
-// dot -Tps output.gv -o outfile.ps
+
+//command for create picture of graph : dot -Tps output.gv -o outfile.ps
+
+/**
+ ** \brief return color of the type node
+ ** \param cur ast tree
+ ** \return color of node
+ **/
 
 char *color(struct AST *cur)
 {
@@ -60,6 +67,14 @@ char *color(struct AST *cur)
     return NULL;
 }
 
+/**
+ ** \brief print the DOT file corresponding to the ast
+ ** \param cur ast tree
+  ** \param file file descriptor
+    ** \param j identifier of node
+ ** \return number of node
+ **/
+
 int print_ast(struct AST *cur, FILE *file, int j)
 {
     int cpy = j;
@@ -77,6 +92,10 @@ int print_ast(struct AST *cur, FILE *file, int j)
     return cpy;
 }
 
+/**
+ ** \brief print on output the DOT file
+ **/
+
 void ast_print(void)
 {
     char chaine[100] = "";
@@ -91,6 +110,12 @@ void ast_print(void)
     printf("\n");
     fclose(file);
 }
+
+/**
+ ** \brief check all option and execute option
+ ** \param token linked list
+ ** \return exit value
+ **/
 
 int check_option(struct Token *token)
 {
@@ -136,6 +161,12 @@ int check_option(struct Token *token)
         return 1;
     return 0;
 }
+
+/**
+ ** \brief create dot file and init it
+ ** \param cur ast tree
+ ** \param filename name of file
+ **/
 
  void create_dot(struct AST *cur, const char *filename)
  {
