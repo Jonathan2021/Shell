@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $# -eq 1 ] ; then
-    LS=$(find . *.yml | grep \.yml | grep "^\.")
+    LS=$(find .  | grep "\.yml" | grep "^\.")
     $1 $LS
     exit 0
 fi

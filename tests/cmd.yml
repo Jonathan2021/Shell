@@ -1,7 +1,0 @@
-echo_42sh:
-    type: "output_diff"
-    command: "echo 42sh"
-    expected:
-        stdout: "42sh\n"
-        rvalue: 0
-

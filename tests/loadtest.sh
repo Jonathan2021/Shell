@@ -29,3 +29,4 @@ if [ -f tests/output.gv ] ; then
 fi
 rm -rf env/
 rm -rf tests/__pycache__ __pycache__
+rm -rf tests/.pytest_cache/ pytest_cache/
