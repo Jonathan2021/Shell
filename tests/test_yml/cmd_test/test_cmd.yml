@@ -62,5 +62,24 @@ cmd_gdb:
     type: "command_diff"
     command: "gdb"
 
+cmd_ls_;_ls:
+    type: "command_diff"
+    command: "ls ; ls"
+
+cmd_ls_&&_ls:
+    type: "command_diff"
+    command: "ls && ls"
+
+cmd_echo:
+    type: "command_diff"
+    command: "echo"
+
+cmd_git_help:
+    type: "command_diff"
+    command: "git --help"
+
+cmd_man_man:
+    type: "command_diff"
+    command: "man man"
 
 

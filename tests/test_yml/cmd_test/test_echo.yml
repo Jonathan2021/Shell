@@ -61,10 +61,25 @@ echo_hello_word:
         stdout: "hello word\n"
         rvalue: 0
 
+echo_epita:
+    type: "output_diff"
+    command: "echo epita"
+    expected:
+        stdout: "epita\n"
+        rvalue: 0
+
 echo_42sh:
     type: "output_diff"
     command: "echo 42sh"
     expected:
         stdout: "42sh\n"
         rvalue: 0
+
+echo_team:
+    type: "output_diff"
+    command: "echo team souder"
+    expected:
+        stdout: "team souder\n"
+        rvalue: 0
+
 
