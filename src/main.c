@@ -69,6 +69,7 @@ struct Token *carving(long argc, char **argv)
         lexer(token);
         if (check_option(token))
         {
+            DestroyToken(token);
             reset_value();
             exit(0);
         }
