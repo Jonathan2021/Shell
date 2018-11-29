@@ -8,27 +8,46 @@
 #include <stdio.h>
 #include <unistd.h>
 
+int great_dgreat(struct AST *node, struct fds *fd, int file)
+{
+    int io = 1;
+    if (node->child[0])
+        io = atoi(getvalue(node->child[0]->self->name));
+    if(!io)
+    {
+        if(fd->in != -1)
+            close(fd->in);
+        fd->in = file;
+    }
+    else if(io == 1)
+    {
+        if(fd->out != -1)
+            close(fd->out);
+        fd->out = file;
+    }
+    else if(io == 2)
+    {
+        if(fd->err != -1)
+            close(fd->err);
+        fd->err = file;
+    }
+    else
+        return 0;
+    return 1;
+}
+
 void greater(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
     int file = open(getvalue(path), O_WRONLY | O_TRUNC | O_CREAT, 0666);
     if (file == -1)
         fprintf(stderr, "greater: open failed\n");
-    int io = 1;
-    if (node->child[0])
-        io = atoi(getvalue(node->child[0]->self->name));
-    if(fd->out == io)
+    if(!great_dgreat(node, fd, file))
     {
-        fd->out = file;
-        if (io != 1)
-            close(io);
+        close(file);
+        return;
     }
-    if(fd->err == io)
-    {
-        fd->err = file;
-        if (io != 2)
-            close(io);
-    }
+    
 }
 
 void dgreat(struct AST *node, struct fds *fd)
@@ -37,21 +56,12 @@ void dgreat(struct AST *node, struct fds *fd)
     int file = open(getvalue(path), O_WRONLY | O_APPEND | O_CREAT, 0666);
     if(file == -1)
         fprintf(stderr, "dgreat: open failed\n");
-    int io = 1;
-    if (node->child[0])
-        io = atoi(getvalue(node->child[0]->self->name));
-    if (fd->out == io)
+    if(!great_dgreat(node, fd, file))
     {
-        fd->out = file;
-        if (io != 1)
-            close(io);
+        close(file);
+        return;
     }
-    if(fd->err == io)
-    {
-        fd->err = file;
-        if (io != 2)
-            close(io);
-    }
+
 }
 
 //void less(struct AST *node, struct fds *fd)
