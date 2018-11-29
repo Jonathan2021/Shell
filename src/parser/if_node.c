@@ -22,6 +22,7 @@ struct AST *if_init(struct Token *token)
     if(!node)
         return NULL;
     node->self = token;
+    token->type = "IF";
     node->foo = foo_if;
     //node->child[0] = condition
     //node->child[1] = ifbody

@@ -25,6 +25,7 @@ struct AST *while_init(struct Token *token)
         return NULL;
     node->self = token;
     node->foo = foo_while;
+    token->type = "WHILE";
     //node->child[0] = left_body
     //node->child[1] = right_body
     return node;

@@ -29,6 +29,7 @@ struct AST *until_init(struct Token *token)
         return NULL;
     node->self = token;
     node->foo = foo_until;
+    token->type = "UNTIL";
     //node->child[0] = left_body
     //node->child[1] = right_body
     return node;

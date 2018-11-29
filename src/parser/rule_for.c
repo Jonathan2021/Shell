@@ -26,6 +26,7 @@ struct AST *for_init(struct Token *token)
     if (!node)
         return NULL;
     node->self = token;
+    token->type = "FOR";
     node->foo = foo_for;
     return node;
 }
@@ -50,34 +51,37 @@ void add_in(struct AST *in, struct Token *token)
 struct AST *rule_for(struct Token **t)
 {
     struct AST *for_node;
+    struct Token *for_token;
+    struct Token *var;
+    struct Token *mid = NULL;
     struct Token *tmp = *t;
     struct AST *do_group_ast;
     struct Token *checkpoint;
+    struct AST *in = NULL;
     if (!tmp || strcmp(tmp->name,"for"))
         return NULL;
+    for_token = tmp;
     next_token(&tmp);
     if (!tmp || strcmp(tmp->type,"WORD"))
         return NULL;
-    for_node = for_init(*t);
-    for_node->child[0] = word_init(tmp);
+    var = tmp;
     next_token(&tmp);
     checkpoint = tmp;
     if (!strcmp(tmp->name,";"))
     {
-        for_node->child[1] = word_init(tmp);
+        mid = tmp;
         tmp = tmp->next;
         checkpoint = tmp;
     }
     else
     {
-        struct AST *in;
         while(tmp && !strcmp(tmp->name,"\n"))
         {
             next_token(&tmp);
         }
         if (tmp && !strcmp(tmp->name,"in"))
         {
-           in = in_init(tmp); 
+            in = in_init(tmp); 
             next_token(&tmp);
             while(tmp && !strcmp(tmp->type,"WORD"))
             {
@@ -89,8 +93,9 @@ struct AST *rule_for(struct Token **t)
                 {
                     next_token(&tmp);
                     checkpoint = tmp;
-                    for_node->child[1] = in;
                 }
+            else
+                AST_destroy(in);
         }
     }
     tmp = checkpoint;
@@ -100,9 +105,16 @@ struct AST *rule_for(struct Token **t)
     }
     if(!tmp || !(do_group_ast = do_group(&tmp)))
     {
-        AST_destroy(for_node);
+        if(in)
+            AST_destroy(in);
         return NULL;
     }
+    for_node = for_init(for_token);
+    for_node->child[0] = word_init(var);
+    if(mid)
+        for_node->child[1] = word_init(mid);
+    else
+        for_node->child[1] = in;
     for_node->child[2] = do_group_ast;
     *t = tmp;
     return for_node;
