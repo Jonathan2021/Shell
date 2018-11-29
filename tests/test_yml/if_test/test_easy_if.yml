@@ -1,0 +1,67 @@
+if_true_then_pwd:
+    type: "command_diff"
+    command: "if true ; then pwd ; fi"
+
+if_ls_then_echo:
+    type: "command_diff"
+    command: "if ls ; then echo ramener la coup a la maison ; fi"
+
+if_false_then_gdb:
+    type: "command_diff"
+    command: "if false ; then gdb ; fi"
+
+if_pwd_then_man:
+    type: "command_diff"
+    command: "if pwd ; then man find ; fi"
+
+if_ls_&&__pwd_then_echo_ls_else_echo_pwd:
+    type: "command_diff"
+    command: "if ls && pwd ; then echo ls ; else echo pwd ; fi"
+
+if_find_then_pwd:
+    type: "command_diff"
+    command: "if find *.yml ; then pwd ; fi"
+
+if_find_then_pwd_else_echo:
+    type: "command_diff"
+    command: "if find *.yml ; then pwd ; else echo ceci est une testsuite ; fi"
+
+if_true_or_false_then_true_else_false:
+    type: "command_diff"
+    command: "if true || false ; then true ; else false ; fi"
+
+if_false_then_echo:
+    type: "command_diff"
+    command: "if false ; then echo michel fait du voltaire ; fi"
+
+if_pwd_&&_echo_then_pwd:
+    type: "command_diff"
+    command: "if pwd && echo ; then pwd ; fi"
+
+if_true_then_true:
+    type: "command_diff"
+    command: "if true ; then true ; fi"
+
+if_false_then_false:
+    type: "command_diff"
+    command: "if false ; then false ; fi"
+
+if_ls_then_pwd_else_echo_test_fi:
+    type: "command_diff"
+    command: "if ls ; then pwd ; else echo test ; fi"
+
+if_ls_and_pwd_then_pwd_ls_else_echo_test_fi:
+    type: "command_diff"
+    command: "if ls && pwd ; then pwd ; ls ; else echo test ; fi"
+
+ls_if_ls:
+    type: "command_diff"
+    command: "ls if ls"
+
+if_if_ls_then_ls_fi_then_pwd_fi:
+    type: "command_diff"
+    command: "if if ls ; then ls ;  fi ; then pwd ; fi"
+
+if_ls_&&_echo_then_echo_fi:
+    type: "command_diff"
+    command: "if ls && echo 2 ; then echo 3 ; fi"
