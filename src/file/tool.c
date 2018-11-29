@@ -184,7 +184,7 @@ struct Token *create_token(struct Token *token, char *str)
     char *parse;
     char *delim = {"\t \n"};
     parse = strtok(str,delim);
-    char *grammar[20] = {"&&","||",";;", "<<", ">>", "<&", ">&", "<>", "<<-", ">|",";","&",">","<"};
+    char *grammar[20] = {")","(","&&","||",";;", "<<", ">>", "<&", ">&", "<>", "<<-", ">|",";","&",">","<"};
     while (parse)
     {
         for (int j = 0; parse[j] != '\0';)
