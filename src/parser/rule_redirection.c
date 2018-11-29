@@ -23,6 +23,12 @@ void greater(struct AST *node, struct fds *fd)
         if (io != 1)
             close(io);
     }
+    if(fd->err == io)
+    {
+        fd->err = file;
+        if (io != 2)
+            close(io);
+    }
 }
 
 void dgreat(struct AST *node, struct fds *fd)
@@ -38,6 +44,12 @@ void dgreat(struct AST *node, struct fds *fd)
     {
         fd->out = file;
         if (io != 1)
+            close(io);
+    }
+    if(fd->err == io)
+    {
+        fd->err = file;
+        if (io != 2)
             close(io);
     }
 }
