@@ -16,25 +16,34 @@ int my_exec(char *cmd[], struct fds fd)
         fprintf(stderr, "fork failed in compound\n");
     if(!pid)
     {
+        int in = 0;
+        int out = 0;
+        int err = 0;
         if (fd.in)
         {
             dup2(fd.in, 0);
-            close(fd.in);
+            in = 1;
         }
         if (fd.out != 1)
         {
             dup2(fd.out, 1);
-            close(fd.out);
+            out = 1;
         }
         if(fd.err != 2)
         {
             dup2(fd.err, 2);
-            close(fd.err);
+            err = 1;
         }
         if(execvp(cmd[0], cmd) < 0)
         {
             fprintf(stderr, "execvp failed\n");
         }
+        if (in)
+            close(fd.in);
+        if (out)
+            close(fd.out);
+        if (err)
+            close(fd.err);
         exit(0);
     }
     else
@@ -44,6 +53,12 @@ int my_exec(char *cmd[], struct fds fd)
         res = WIFEXITED(wstatus);
         if (res)
             res = !WEXITSTATUS(wstatus);
+        if (fd.in)
+            close(fd.in);
+        if (fd.out != 1)
+            close(fd.out);
+        if (fd.err != 2)
+            close(fd.err);
     }
     return res;
 }

@@ -28,18 +28,18 @@ void foo_pipe(struct AST *node, struct fds fd)
     }
     else if (!cpid)
     {
-        struct fds newfd = { .in = pipefd[0], .err = fd.err, .out = fd.out};
-        close(pipefd[1]);
-        node->child[1]->foo(node->child[1], newfd);
-        close(pipefd[0]);
-        exit(0);
-    }
-    else
-    {
         struct fds newfd = { .in = fd.in, .err = fd.err, .out = pipefd[1]};
         close(pipefd[0]);
         node->child[0]->foo(node->child[0], newfd);
         close(pipefd[1]);
+        exit(0);
+    }
+    else
+    {
+        struct fds newfd = { .in = pipefd[0], .err = fd.err, .out = fd.out};
+        close(pipefd[1]);
+        node->child[1]->foo(node->child[1], newfd);
+        close(pipefd[0]);
     }
 }
 
