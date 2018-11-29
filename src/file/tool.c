@@ -201,6 +201,7 @@ struct Token *create_token(struct Token *token, char *str)
                         else
                             my_strncpy(cpy,parse,j);
                         add_token(&token,cpy); 
+                        free(cpy);
                     }
                     if (!is_ionumber(parse+j))
                     {
