@@ -193,7 +193,10 @@ struct AST *compound_list(struct Token **t)
             while (cpy && !strcmp(cpy->name,"\n"))
                 cpy = cpy->next;
             if (!cpy || !(and_or_ast = and_or(&cpy)))
+            {
+                AST_destroy(separator);
                 break;
+            }
             add_compound(compound, separator);
             add_compound(compound, and_or_ast);
             tmp = cpy;
