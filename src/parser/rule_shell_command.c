@@ -1,27 +1,24 @@
+/**
+ ** \file parser/rule_shell_command.c
+ ** \brief All about the shell_comand rule (see the subject)
+ ** \date 29 novembre 2018
+ **/
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include "include/foo.h"
-
-
-void foo_word(struct AST *node, struct fds fd)
-{
-    char *cmd[2];
-    cmd[0] = node->self->name;
-    cmd[1] = NULL;
-    node->res = my_exec(cmd, fd);
-}
-
+/**
+ ** \brief Init a word node with the given first givem token in the list
+ ** \param token the chain list of tokens
+ ** \return The new AST node for the word fil in it
+ **/
 struct AST *word_init(struct Token *token)
 {
     struct AST *node = AST_init(0);
     if(!node)
         return NULL;
     node->self = token;
-    node->foo = foo_word;
-    //node->child[0] = left_body
-    //node->child[1] = right_body
     return node;
 }
 
@@ -29,7 +26,10 @@ void foo_shell_cmd(__attribute__((unused)) struct AST *node, __attribute__((unus
 {
     return;
 }
-
+/**
+ ** \brief Init a shell command AST node
+ ** \return The new AST node of type shell command not init
+ **/
 struct AST *shell_cmd_init(void)
 {
     struct Token *token = malloc(sizeof(struct Token));
@@ -48,11 +48,12 @@ struct AST *shell_cmd_init(void)
     return node;
 
 }
-//struct AST *assignment_word_init(struct Token *token)
-//{
 
-//}
-
+/**
+ ** \brief Create and fill the new node of shell command with the good thing as the grammar say,
+ ** \param t the chain list oftokens
+ ** \return The new AST node of type shell command with the good fill
+ **/
 struct AST *shell_command(struct Token **t)
 {
     struct Token *t1 = *t;

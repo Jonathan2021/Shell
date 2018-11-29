@@ -1,9 +1,20 @@
+/**
+ ** \file parser/rule_simple_command.c
+ ** \brief All about the rule of simple_command
+ ** \date 29 novembre 32018
+ **/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include "include/foo.h"
-
+/**
+ ** \brief Function chack if it is a reserve word
+ ** \param token the chain list of tokens
+ ** \return The value 0 if token is NULL else return the value 1
+ **/
 int reserve(struct Token *token)
 {
     if (!token)
@@ -35,7 +46,10 @@ int reserve(struct Token *token)
     }
     return 1;
 }
-
+/**
+ ** \brief Create a simple_command node AST
+ ** \return The AST node initializied
+ **/
 struct AST *simple_cmd_init(void)
 {
     struct AST *node = AST_init(0);
@@ -49,6 +63,11 @@ struct AST *simple_cmd_init(void)
     return node;
 }
 
+/**
+ ** \brief Function for the grammar rule simple_command
+ ** \param t is th chain list of tokens
+ ** \return The AST node fill if the good node
+ **/
 struct AST *simple_command(struct Token **t)
 {
     struct Token *tmp = *t;

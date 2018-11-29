@@ -1,29 +1,20 @@
+/**
+ ** \file parser/rule_list.c
+ ** \brief Grammar rule for the list (see subject)
+ ** \date 29 novembre 2018
+ **/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include "include/foo.h"
 
-/*
-void foo_list(struct AST *node, struct fds fd)
-{
-    if(!node || ! node->child[0])
-        return;
-    int index = 0;
-    while (index < node->nb_child && node->child[index])
-    {
-        if (!strcmp(node->child[index]->self->name, ";")
-            || !strcmp(node->child[index]->self->name, "&"))
-        {
-            index++;
-            continue;
-        }
-        node->child[index]->foo(node->child[index], fd);
-        index++;
-    }
-}
-*/
-
+/**
+ ** \brief Function which init a list AST node
+ ** \return Node AST list
+ **/
 struct AST *list_init(void)
 {
     struct AST *node = AST_init(0);
@@ -36,7 +27,10 @@ struct AST *list_init(void)
     node->foo = foo_compound;
     return node;
 }
-
+/**
+ ** \brief Grammar function which create and fill the AST list node with the good grammar rule
+ ** \param t The chain list of tokens
+ **/
 struct AST *list(struct Token **t)
 { 
     struct AST *node = NULL;

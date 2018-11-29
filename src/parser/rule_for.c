@@ -1,3 +1,10 @@
+/**
+ ** \file parser/rule_for.c
+ ** \brief all about the rule_for as the grammar (see the subject)
+ ** \date 29 novembre 2018
+ **/
+
+
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
@@ -6,7 +13,11 @@
 #include "include/rule.h"
 #include "include/foo.h"
 #include <stdio.h>
-
+/**
+ ** \brief Execution of for node
+ ** \param the node for
+ ** \param fd a struct of file descriptor
+ **/
 void foo_for(struct AST *node, struct fds fd)
 {
     if (!node || node->nb_child < 3 || !node->child[0])
@@ -19,7 +30,11 @@ void foo_for(struct AST *node, struct fds fd)
         node->child[2]->foo(node->child[2], fd);
     }
 }
-
+/**
+ ** \brief initializate the for node but not fill with good node in child
+ ** \param token is the chain list of tokens
+ ** \return return the for node init
+**/
 struct AST *for_init(struct Token *token)
 {
     struct AST *node = AST_init(3);
@@ -29,6 +44,11 @@ struct AST *for_init(struct Token *token)
     node->foo = foo_for;
     return node;
 }
+/**
+ ** \brief initializate the in node not fill with good node in child
+ ** \param token is the chain list of tokens
+ ** \return the node in of the AST with not the good node in child
+ **/
 
 struct AST *in_init(struct Token *token)
 {
@@ -39,6 +59,12 @@ struct AST *in_init(struct Token *token)
     return node;
 }
 
+/**
+ ** \brief add a new node to the child of the node in
+ ** \param in the node AST of type in
+ ** \param token is the chain list of tokens
+ ** \return the node in of the AST with not the good node in child
+ **/
 void add_in(struct AST *in, struct Token *token)
 {
     struct AST *new = word_init(token);
@@ -46,7 +72,11 @@ void add_in(struct AST *in, struct Token *token)
     in->child = realloc(in->child, in->nb_child * sizeof(struct AST *));
     in->child[in->nb_child - 1] = new;
 }
-
+/**
+ ** \brief the rule for from the grammar and crete the associative AST node
+ ** \param t  is the chain list of tokens
+ ** \return the new node for with all his good child
+ **/
 struct AST *rule_for(struct Token **t)
 {
     struct AST *for_node;
