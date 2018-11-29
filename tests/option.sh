@@ -13,36 +13,41 @@ done
 
 OPTIND=1
 sanity=0
-timeout=0
+timeout=""
 category=""
-while getopts "lstc:" opt
+while getopts "lst:c:" opt
 do
   case "$opt" in
     "l")
           cd test_yml
           for folder in *; do
             echo $folder
-          done;;
-    "c") category+="$OPTARG "; echo "category $OPTARG";;
-    "s") sanity=1; echo "sanity";;
-    "t") timeout=1; echo "timeout";;
+          done; cd .. ;;
+    "c") category+="$OPTARG "; ;;
+    "s") sanity=1; ;;
+    "t") timeout+=$OPTARG; timeout+="s";;
   esac
 done
 
-if [ $category = "" ]; then
-  if [ $sanity -eq 1 ]; then
-      valgrind ./loadtest.sh
-  else
-      ./loadtest.sh
-  fi
-else
+arg=""
+
+if [ $timeout ]; then
+  arg+="timeout $timeout " 
+fi
+
+if [ $sanity -eq 1 ]; then
+  arg+="valgrind "
+fi
+arg+="./loadtest.sh "
+long=${#category}
+if [ $long -ne 0 ]; then
   for test in $category; do
-    if [ $sanity -eq 1 ]; then
-      valgrind ./loadtest.sh $test
-    else
-      ./loadtest.sh $test
-    fi 
+    echo $arg test_yml/$test
+    eval $arg test_yml/$test
   done
+else
+  echo $arg
+  eval $arg
 fi
 
 shift $(expr $OPTIND - 1)
