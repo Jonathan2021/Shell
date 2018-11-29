@@ -8,7 +8,7 @@ cmd_pwd:
 
 cmd_help:
     type: "command_diff"
-    command: "help"
+    command: "man"
 
 cmd_echo:
     type: "command_diff"
@@ -34,9 +34,17 @@ cmd_man_pwd:
     type: "command_diff"
     command: "man pwd"
 
+cmd_find_.:
+    type: "command_diff"
+    command: "find a"
+
 cmd_man_open:
     type: "command_diff"
     command: "man open"
+
+cmd_find_slash:
+    type: "command_diff"
+    command: "find b"
 
 cmd_man_close:
     type: "command_diff"
