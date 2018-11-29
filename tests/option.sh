@@ -22,10 +22,11 @@ do
           cd test_yml
           for folder in *; do
             echo $folder
-          done; cd .. ;;
+          done; cd .. ; exit ;;
     "c") category+="$OPTARG "; ;;
     "s") sanity=1; ;;
     "t") timeout+=$OPTARG; timeout+="s";;
+    *) exit; ;;
   esac
 done
 
@@ -43,11 +44,19 @@ long=${#category}
 if [ $long -ne 0 ]; then
   for test in $category; do
     echo $arg test_yml/$test
-    eval $arg test_yml/$test
+    if [ $sanity -eq 1 ] ; then
+      eval $arg test_yml/$test > /dev/null
+    else
+      eval $arg test_yml/$test
+    fi
   done
 else
   echo $arg
-  eval $arg
+  if [ $sanity -eq 1 ] ; then
+    eval $arg > /dev/null
+  else 
+    eval $arg
+  fi
 fi
 
 shift $(expr $OPTIND - 1)
