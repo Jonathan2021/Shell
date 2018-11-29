@@ -1,5 +1,0 @@
-if ls && cd ; then
-  pwd ;
-else
-  cd ;
-fi
