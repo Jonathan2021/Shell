@@ -11,8 +11,6 @@
 #include <fnmatch.h>
 #include <getopt.h>
 #include <glob.h>
-#include <readline/history.h>
-#include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,6 +19,8 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
+#include <readline/history.h>
+#include <readline/readline.h>
 #include "../include/shell.h"
 #include "../parser/include/lexer_struct.h"
 #include "../parser/include/my_tree.h"
