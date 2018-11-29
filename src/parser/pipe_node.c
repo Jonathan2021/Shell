@@ -39,6 +39,7 @@ void foo_pipe(struct AST *node, struct fds fd)
         struct fds newfd = { .in = pipefd[0], .err = fd.err, .out = fd.out};
         close(pipefd[1]);
         node->child[1]->foo(node->child[1], newfd);
+        node->res = node->child[1]->res;
         close(pipefd[0]);
     }
 }
