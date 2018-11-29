@@ -191,7 +191,10 @@ void DestroyToken(struct Token *t)
     if (t != NULL)
         DestroyToken(t->next);
     if (t && t->name)
+    {
+        printf("t->name = %s\n",t->name);
         free(t->name);
+    }
     free(t);
 }
 /**
