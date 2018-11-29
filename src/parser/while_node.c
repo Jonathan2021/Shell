@@ -1,9 +1,18 @@
+/**
+ ** \file parser/while_node.c
+ ** \brief all about the rule_while as the grammar (see the subject)
+ ** \date 29 novembre 2018
+ **/
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include "include/foo.h"
-
+/**
+ ** \brief Execution of while node
+ ** \param the node while
+ ** \param fd a struct of file descriptor
+ **/
 void foo_while(struct AST *node, struct fds fd)
 {
     if (!node || node->nb_child < 2 || !node->child[0] || !node->child[1])
@@ -17,7 +26,11 @@ void foo_while(struct AST *node, struct fds fd)
         node->res = node->child[0]->res;
     }
 }
-
+/**
+ ** \brief initializate the while node but not fill with good node in child
+ ** \param token is the chain list of tokens
+ ** \return return the while node init
+**/
 struct AST *while_init(struct Token *token)
 {
     struct AST *node = AST_init(2);
@@ -30,7 +43,11 @@ struct AST *while_init(struct Token *token)
     //node->child[1] = right_body
     return node;
 }
-
+/**
+ ** \brief the rule while from the grammar and crete the associative AST node
+ ** \param t  is the chain list of tokens
+ ** \return the new node while with all his good child
+ **/
 struct AST *rule_while(struct Token **t)
 {
     struct AST *condition;

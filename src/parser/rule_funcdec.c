@@ -7,6 +7,7 @@ void set_func(__attribute__((unused))char *a, __attribute__((unused))struct AST 
 {
     return;
 }
+
 void foo_func(struct AST *node, __attribute__((unused))struct fds fd)
 {
     if (!node || node->nb_child < 2 || !node->child[0] || !node->child[1])

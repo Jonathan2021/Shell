@@ -1,3 +1,8 @@
+/**
+ ** \file parser/rule_compound_list.c
+ ** \brief all about the compound_list say in the subject
+ ** \date 29 novembre 2018
+ **/
 #include <stdlib.h>
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
@@ -8,6 +13,12 @@
 #include <sys/wait.h>
 #include "include/rule.h"
 
+/**
+ ** \brief Execute the command pass in parameter and put in the good fd
+ ** \param cmd list of command to execute
+ ** \param fd the struture of file descrptor
+ ** \return The return of the command executed
+ **/
 int my_exec(char *cmd[], struct fds fd)
 {
     int res = 0;
@@ -47,7 +58,13 @@ int my_exec(char *cmd[], struct fds fd)
     }
     return res;
 }
-
+/**
+ ** \brief Execute the command present in the AST node
+ ** \param node the node to be evaluate
+ ** \param index of the child to execute
+ ** \param fd structure of file descriptor
+ ** \return The return of the command executed
+ **/
 int exec_init(struct AST *node, int *index, struct fds fd)
 {
     char *my_cmd[512];
@@ -75,18 +92,20 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         else
         {
             my_cmd[i] = getvalue(cur_name);
-            //printf("value of %s is %s\n", cur_name, getvalue(cur_name));
         }
     }
     (*index)++;
-    //i++;
     my_cmd[i] = NULL;
     if (!special)
         res = my_exec(my_cmd, fd);
     return res;
 
 }
-
+/**
+ ** \brief Execute the compound node
+ ** \param node the node to be evaluate
+ ** \param fd the struture of file descrptor
+ **/
 void foo_compound(struct AST *node, struct fds fd)
 {
     if(!node || !node->child[0])
@@ -98,6 +117,12 @@ void foo_compound(struct AST *node, struct fds fd)
     node->res = res;
 }
 
+
+/**
+ ** \brief Add the new node to the child of compound
+ ** \param compound is the node where we put the new child at the end
+ ** \param new the node to put in child
+ **/
 void add_compound(struct AST *compound, struct AST *new)
 {
     compound->nb_child++;
@@ -105,7 +130,10 @@ void add_compound(struct AST *compound, struct AST *new)
     compound->nb_child * sizeof(struct AST));
     compound->child[compound->nb_child-1] = new;
 }
-
+/**
+ ** \brief Initialization of the compound node
+ ** \return The compound node but not with his true child
+ **/
 struct AST *compound_init()
 {
     struct Token *token = malloc(sizeof(struct Token));
@@ -123,7 +151,11 @@ struct AST *compound_init()
     node->foo = foo_compound;
     return node;
 }
-
+/**
+ ** \brief Create the compound node with his child
+ ** \param t the chain list of tokens
+ ** \return The node case_clause with his good child
+ **/
 struct AST *compound_list(struct Token **t)
 {
     struct Token *tmp = *t;
