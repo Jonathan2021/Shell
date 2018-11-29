@@ -8,6 +8,16 @@
 #include <stdio.h>
 #include <unistd.h>
 
+void close_redirection(struct fds *fd)
+{
+    if (fd->in > 2)
+        close(fd->in);
+    if (fd->out > 2)
+        close(fd->out);
+    if (fd->err > 2)
+        close(fd->err);
+}
+
 int great_dgreat(struct AST *node, struct fds *fd, int file)
 {
     int io = 1;
@@ -103,6 +113,7 @@ struct AST *redirection_init(struct Token *token)
     struct AST *node = AST_init(2);
     if (!node)
         return NULL;
+    token->type = "REDIRECTION";
     node->self = token;
     return node;
 }
@@ -125,7 +136,7 @@ struct AST *redirection(struct Token **t)
             {"<>", "WORD"},
         };
     struct Token *tmp = *t;
-    if (strcmp("IONUMBER", tmp->type) == 0)
+    if (strcmp("IO_NUMBER", tmp->type) == 0)
     {
         io = tmp;
         tmp = tmp->next;
@@ -149,6 +160,8 @@ struct AST *redirection(struct Token **t)
                 if(io)
                     node->child[0] = word_init(io);
                 node->child[1] = word_init(type);
+                if(tmp->next)
+                    tmp = tmp->next;
                 *t = tmp;
                 return node;
             }
