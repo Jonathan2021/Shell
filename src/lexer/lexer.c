@@ -37,7 +37,7 @@ int is_ionumber(char *str)
     int i = 0;
     for(; str[i]; ++i)
     {
-        if(!(str[i] >= '0' || str[i] <= 9))
+        if(!(str[i] >= '0' && str[i] <= '9'))
             break;
     }
     return (i && (str[i] == '<' || str[i] == '>'));
@@ -46,13 +46,13 @@ int is_ionumber(char *str)
 void add_token(struct Token **token, char *str)
 {
     char *grammar[3][20] =
-    {{"SEMICOLON",";","\0"},
+    {{"SEMICOLON",";","&","\0"},
         {"OPERATOR","&&","||",";;", "<<", ">>", "<&", ">&", "<>", "<<-", ">|", 
             "\0"},
         {"NEW_LINE","\n","\0"}};
     struct Token *next = malloc(sizeof(struct Token));
     next->name = NULL;
-    for(int i = 0; i < 15; i++)
+    for(int i = 0; i < 3; i++)
     {
         for (int j = 0; grammar[i][j][0] != '\0'; j++ )
         {
@@ -63,6 +63,16 @@ void add_token(struct Token **token, char *str)
                 next->next = NULL;
             }
         }
+    }
+    if (is_ionumber(str))
+    {
+        char str1[4096];
+        char str2[4096];
+        sscanf(str,"%s %s",str1,str2);
+        next->name = str1;
+        next->type = "IO_NUMBER";
+        next->next = NULL;
+        add_token(&next,str2);
     }
     if (!next->name)
     {

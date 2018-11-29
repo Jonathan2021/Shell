@@ -34,6 +34,7 @@ void time_out(clock_t time);
 struct Token *lexer(struct Token *t);
 char *get_file(char *name);
 void set_file(char *name, char *value);
+int is_ionumber(char *str);
 void reset_file(void);
 
 #endif /* !SHELL_H */

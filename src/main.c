@@ -38,7 +38,6 @@ struct Token *carving(long argc, char **argv)
     while(1)
     {
         token = NULL;
-        clock_t begin=clock();
         if (i == 0)
         {
             i = 1;
@@ -60,7 +59,6 @@ struct Token *carving(long argc, char **argv)
             token = create_token(token,str);
         }
         lexer(token);
-        time_out(begin);
         if (check_option(token))
         {
             reset_value();

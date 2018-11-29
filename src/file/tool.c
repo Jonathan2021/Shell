@@ -120,21 +120,35 @@ void reset_value(void)
     free(ps);
 }
 
-
 struct Token *create_token(struct Token *token, char *str)
 {
     char *parse;
     char *delim = {"\t \n"};
     parse = strtok(str,delim);
+    char *grammar[20] = {"&&","||",";;", "<<", ">>", "<&", ">&", "<>", "<<-", ">|",";","&",">","<"};
     while (parse)
     {
-        if (strlen(parse) > 1 && parse[strlen(parse)-1] == ';')
+        for (int j = 0; parse[j] != '\0';)
         {
-            parse[strlen(parse)-1] = '\0';
-            add_token(&token,parse);
-            add_token(&token,";");
+            for (int i = 0; grammar[i]; i++)
+            {
+                if (strncmp(parse+j,grammar[i],strlen(grammar[i])) == 0)
+                {
+                    if (j != 0)
+                    {
+                       char cpy[40960];
+                        strncpy(cpy,parse,j);
+                        add_token(&token,cpy); 
+                    }
+                    add_token(&token,grammar[i]);
+                    parse = parse+j+strlen(grammar[i]);
+                    j = -1;
+                    break;
+                }
+            }
+            j++;
         }
-        else
+        if (parse[0] != '\0')
             add_token(&token,parse);
         parse = strtok(NULL,delim);
     }
