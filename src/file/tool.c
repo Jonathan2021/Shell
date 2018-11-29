@@ -9,6 +9,19 @@
 #include <sys/stat.h>
 #include "../include/shell.h"
 
+char *my_strncpy(char *dest, const char *src, size_t n)
+{
+    size_t i;
+
+    for (i = 0; i < n && src[i] != '\0'; i++)
+        dest[i] = src[i];
+    for ( ; i < n; i++)
+        dest[i] = '\0';
+
+    return dest;
+}
+
+
 
 char *get_value(char *name)
 {
@@ -70,20 +83,20 @@ long str_to_argv(char **argv, char *str)
     while (parse)
     {
         if (strlen(parse) > 1 && ((parse[0] == '\"' && parse[strlen(parse)-1] == '\"' ) ||
-            (parse[0] == '\'' && parse[strlen(parse)-1] == '\'')))
+                    (parse[0] == '\'' && parse[strlen(parse)-1] == '\'')))
         {
             argv[i] = parse+1;
             argv[i][strlen(argv[i])-1] = 0;
             i++;
         }
         else if (parse[0] == '\"' || strcmp(parse,"\"") == 0 ||
-            parse[0] == '\'' || strcmp(parse,"\'") == 0)
+                parse[0] == '\'' || strcmp(parse,"\'") == 0)
         {
             if (parse[0] == '\"' || parse[0] == '\'')
                 argv[i] = parse+1;
             parse = strtok(NULL,delim);
             while (parse && (parse[strlen(parse)-1] != '\"' && strcmp(parse,"\"") != 0 &&
-                parse[strlen(parse)-1] != '\'' && strcmp(parse,"\'") != 0))
+                        parse[strlen(parse)-1] != '\'' && strcmp(parse,"\'") != 0))
             {
                 strcpy(cpy,parse);
                 strcat(argv[i]," ");
@@ -136,11 +149,11 @@ struct Token *create_token(struct Token *token, char *str)
                 {
                     if (is_ionumber(parse+j) || j != 0)
                     {
-                       char cpy[4960];
-                       if (is_ionumber(parse+j))
-                            strncpy(cpy,parse,strlen(parse));
+                        char cpy[4960];
+                        if (is_ionumber(parse+j))
+                            my_strncpy(cpy,parse,strlen(parse));
                         else
-                            strncpy(cpy,parse,j);
+                            my_strncpy(cpy,parse,j);
                         add_token(&token,cpy); 
                     }
                     if (!is_ionumber(parse+j))
