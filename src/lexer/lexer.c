@@ -71,13 +71,9 @@ void add_token(struct Token **token, char *str)
         char *str1 = malloc(4096);
         char *str2 = malloc(4096);
         sscanf(str,"%[^'>','<']%s",str1,str2);
-        char *tok = malloc(4096);
-        strncpy(tok,str2,1);
-        strcpy(str2,str2+1);
         next->name = str1;
         next->type = "IO_NUMBER";
         next->next = NULL;
-        add_token(&next,tok);
         add_token(&next,str2);
     }
     if (!next->name)
