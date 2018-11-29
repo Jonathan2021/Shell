@@ -43,11 +43,7 @@ struct AST *case_clause(struct Token **t)
     struct Token *cpy = tmp;
     while (1)
     {
-        if (!cpy || strcmp(";", cpy->name))
-            break;
-        else
-            cpy = cpy->next;
-        if (!cpy || strcmp(";", cpy->name))
+        if (!cpy || strcmp(";;", cpy->name))
             break;
         else
             cpy = cpy->next;
@@ -61,14 +57,10 @@ struct AST *case_clause(struct Token **t)
         *t = cpy;
         tmp = cpy;
     }
-    if (tmp && !strcmp(";", tmp->name))
+    if(tmp && !strcmp(";;", tmp->name))
     {
         tmp = tmp->next;
-        if(tmp && !strcmp(";", tmp->name))
-        {
-            tmp = tmp->next;
-            *t = tmp;
-        }
+        *t = tmp;
     }
     while(tmp && !strcmp("\n", tmp->name))
     {

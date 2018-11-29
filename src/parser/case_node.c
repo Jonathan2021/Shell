@@ -29,9 +29,9 @@ struct AST *case_item(struct Token **t)
         tmp = tmp->next;
     if (tmp == NULL || strcmp(tmp->type,"WORD"))
         return NULL;
-    tmp = tmp->next;
     part1 = case_init();
     add_case(part1, word_init(tmp));
+    tmp = tmp->next;
     struct Token *cpy = tmp;
     while(strcmp(cpy->name,"|") == 0)
     {
@@ -50,6 +50,7 @@ struct AST *case_item(struct Token **t)
     }
     if (strcmp(tmp->name,")"))
         return NULL;
+    tmp = tmp->next;
     *t = tmp;
     if (tmp == NULL)
     {
@@ -66,10 +67,7 @@ struct AST *case_item(struct Token **t)
         }
     }
     struct AST *cpd_list = NULL;
-    if ((cpd_list = compound_list(&tmp)) != NULL)
-    {
-        tmp = tmp->next;
-    }
+    cpd_list = compound_list(&tmp);
     add_case(part1, cpd_list);
     *t = tmp;
     return part1;
