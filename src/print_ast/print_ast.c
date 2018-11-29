@@ -90,7 +90,21 @@ int check_option(struct Token *token)
         struct Token *tmp = token;
         while (tmp)
         {
-            printf("->%s",tmp->type);
+            printf("\033[35m-> %s \033[0m",tmp->type);
+            if (strcmp(tmp->type,"NEW_LINE") == 0)
+                printf("\n");
+            tmp = tmp->next;
+            if (!tmp)
+                printf("\n");
+        }
+    }
+    print = get_value("--name-print");
+    if (print && strcmp(print,"1") == 0)
+    {
+        struct Token *tmp = token;
+        while (tmp)
+        {
+            printf("\033[33m-> %s \033[0m",tmp->name);
             if (strcmp(tmp->type,"NEW_LINE") == 0)
                 printf("\n");
             tmp = tmp->next;

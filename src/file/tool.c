@@ -132,16 +132,26 @@ struct Token *create_token(struct Token *token, char *str)
         {
             for (int i = 0; grammar[i]; i++)
             {
-                if (strncmp(parse+j,grammar[i],strlen(grammar[i])) == 0)
+                if (is_ionumber(parse+j) || strncmp(parse+j,grammar[i],strlen(grammar[i])) == 0)
                 {
-                    if (j != 0)
+                    if (is_ionumber(parse+j) || j != 0)
                     {
-                       char cpy[40960];
-                        strncpy(cpy,parse,j);
+                       char cpy[4960];
+                       if (is_ionumber(parse+j))
+                            strncpy(cpy,parse,strlen(parse));
+                        else
+                            strncpy(cpy,parse,j);
                         add_token(&token,cpy); 
                     }
-                    add_token(&token,grammar[i]);
-                    parse = parse+j+strlen(grammar[i]);
+                    if (!is_ionumber(parse+j))
+                    {
+                        add_token(&token,grammar[i]);
+                        parse = parse+j+strlen(grammar[i]);
+                    }
+                    else
+                    {
+                        parse += strlen(parse);
+                    }
                     j = -1;
                     break;
                 }
@@ -168,7 +178,9 @@ struct Token *read_file(char *f, struct Token *token)
             parse = strtok(str,delim);
             while (parse)
             {
-                add_token(&token,parse);
+                char *tok = malloc(strlen(parse)*2);
+                strcpy(tok,parse);
+                add_token(&token,tok);
                 parse = strtok(NULL,delim);
             }
             add_token(&token,"\n");
@@ -187,7 +199,9 @@ struct Token *read_file(char *f, struct Token *token)
             parse = strtok(str,delim);
             while (parse)
             {
-                add_token(&token,parse);
+                char *tok = malloc(strlen(parse)*2);
+                strcpy(tok,parse);
+                add_token(&token,tok);
                 parse = strtok(NULL,delim);
             }
             add_token(&token,"\n");

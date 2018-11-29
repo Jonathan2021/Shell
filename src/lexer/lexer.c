@@ -58,7 +58,9 @@ void add_token(struct Token **token, char *str)
         {
             if (strcmp(grammar[i][j],str) == 0)
             {
-                next->name = str;
+                char *cpy = malloc(4096);
+                strcpy(cpy,str);
+                next->name = cpy;
                 next->type = grammar[i][0];
                 next->next = NULL;
             }
@@ -66,17 +68,23 @@ void add_token(struct Token **token, char *str)
     }
     if (is_ionumber(str))
     {
-        char str1[4096];
-        char str2[4096];
-        sscanf(str,"%s %s",str1,str2);
+        char *str1 = malloc(4096);
+        char *str2 = malloc(4096);
+        sscanf(str,"%[^'>','<']%s",str1,str2);
+        char *tok = malloc(4096);
+        strncpy(tok,str2,1);
+        strcpy(str2,str2+1);
         next->name = str1;
         next->type = "IO_NUMBER";
         next->next = NULL;
+        add_token(&next,tok);
         add_token(&next,str2);
     }
     if (!next->name)
     {
-        next->name = str;
+        char *cpy = malloc(4096);
+        strcpy(cpy,str);
+        next->name = cpy;
         next->type = "WORD";
         next->next = NULL;
     }
@@ -103,6 +111,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
           {"ast-print",  no_argument, 0, 1},
           {"type-print",  no_argument, 0, 2},
           {"timeout",  required_argument, 0, 5},
+          {"name-print",  no_argument, 0, 6},
           {0, 0, 0, 0},
         };
     int option_index = 0;
@@ -118,6 +127,8 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
         }
         else if (c == 1)
             set_value("--ast-print", "1");
+        else if (c == 6)
+            set_value("--name-print", "1");
         else if (c == 4)
             reset_file();
         else if (c == 3)
