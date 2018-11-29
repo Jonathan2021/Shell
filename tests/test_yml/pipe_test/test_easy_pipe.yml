@@ -1,0 +1,24 @@
+true_|_false_&&_ls:
+    type: "command_diff"
+    command: "true | false && ls"
+
+false_|_true_&&_ls:
+    type: "command_diff"
+    command: "false | true && ls"
+
+find_._|_xargs_grep_if:
+    type: "command_diff"
+    command: "find . | xargs grep if"
+
+ps_aux_|_grep_conky_|_grep_-v_grep:
+    type: "command_diff"
+    command: "ps aux | grep conky | grep -v grep"
+
+ls_|_echo:
+    type: "command_diff"
+    command: "ls | echo"
+
+ls_|_less:
+    type: "command_diff"
+    command: "ls | less"
+
