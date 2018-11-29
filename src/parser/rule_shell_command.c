@@ -89,8 +89,7 @@ struct AST *shell_command(struct Token **t)
                 AST_destroy(shell);
         }
     }
-    //C est degeu, deja j ai mis le return shell à la fin plutot que dans chaque else if, et en plus on peut factoriser cette mette en faisant des || et un seul else if et un seul *t = t2 mais flme alors que ca aurait été plus rapide que d ecrire ce message.
-    else if ((shell = rule_for(&t2)) != NULL)
+   else if ((shell = rule_for(&t2)) != NULL)
     {
         *t = t2;
     }

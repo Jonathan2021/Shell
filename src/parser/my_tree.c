@@ -17,18 +17,7 @@ struct AST *AST_init(int nb_child)
     new->res = 0;
     return new;
 }
-/*
-void AST_print_prefix(const struct AST *tree)
-{
-    if (tree != NULL)
-    {
-        printf("%s ",tree->self->name);
-        for (int i = 0; i < tree->nb_child; i++)
-        {
-            AST_print_infix(tree->child[i]);
-        }
-    }
-}*/
+
 
 void AST_destroy(struct AST *s)
 {
