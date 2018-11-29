@@ -3,16 +3,16 @@
  ** \brief all about the compound_list say in the subject
  ** \date 29 novembre 2018
  **/
+#include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include "../include/shell.h"
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
-#include "../include/shell.h"
-#include <unistd.h>
-#include <sys/types.h>
-#include <stdio.h>
-#include <sys/wait.h>
-#include "include/rule.h"
 #include "include/redirection.h"
+#include "include/rule.h"
 
 /**
  ** \brief Execute the command pass in parameter and put in the good fd
@@ -26,7 +26,7 @@ int my_exec(char *cmd[], struct fds fd)
     pid_t pid = fork();
     if (pid == -1)
         fprintf(stderr, "fork failed in compound\n");
-    if(!pid)
+    if (!pid)
     {
         if (fd.in)
         {
@@ -38,12 +38,12 @@ int my_exec(char *cmd[], struct fds fd)
             dup2(fd.out, 1);
             close(fd.out);
         }
-        if(fd.err != 2)
+        if (fd.err != 2)
         {
             dup2(fd.err, 2);
             close(fd.err);
         }
-        if(execvp(cmd[0], cmd) < 0)
+        if (execvp(cmd[0], cmd) < 0)
         {
             fprintf(stderr, "execvp failed\n");
         }
@@ -74,24 +74,26 @@ int exec_init(struct AST *node, int *index, struct fds fd)
     char *cur_type;
     int special = 0;
     int res;
-    struct fds redir = {.in = -1, .out = -1, .err=-1};
+    struct fds redir = {.in = -1, .out = -1, .err = -1};
     get_redirection(node, &redir, *index);
     merge_redirection(&fd, redir);
-    for(; *index < node->nb_child && node->child[*index] && i < 511; (*index)++, ++i)
+    for (; *index < node->nb_child && node->child[*index] && i < 511;
+         (*index)++, ++i)
     {
         cur_name = node->child[*index]->self->name;
         cur_type = node->child[*index]->self->type;
-        if (!strcmp(cur_name, ";") || !strcmp(cur_name, "&") 
+        if (!strcmp(cur_name, ";") || !strcmp(cur_name, "&")
             || !strcmp(cur_name, "\n") || !strcmp(cur_type, "REDIRECTION"))
         {
             break;
         }
         if (strcmp(cur_type, "WORD"))
         {
-            if(!node->child[*index]->foo)
-                fprintf(stderr, "node : %s has no foo\n", node->child[*index]->self->type);
+            if (!node->child[*index]->foo)
+                fprintf(stderr, "node : %s has no foo\n",
+                    node->child[*index]->self->type);
             node->child[*index]->foo(node->child[*index], fd);
-            res =  node->child[*index]->res;
+            res = node->child[*index]->res;
             special = 1;
         }
         else
@@ -113,15 +115,15 @@ int exec_init(struct AST *node, int *index, struct fds fd)
  **/
 void foo_compound(struct AST *node, struct fds fd)
 {
-    if(!node || !node->child[0])
+    if (!node || !node->child[0])
         return;
     int index = 0;
     int res = 0;
-    while(index < node->nb_child && strcmp(node->child[index]->self->type, "REDIRECTION"))
+    while (index < node->nb_child
+           && strcmp(node->child[index]->self->type, "REDIRECTION"))
         res = exec_init(node, &index, fd);
     node->res = res;
 }
-
 
 /**
  ** \brief Add the new node to the child of compound
@@ -131,9 +133,9 @@ void foo_compound(struct AST *node, struct fds fd)
 void add_compound(struct AST *compound, struct AST *new)
 {
     compound->nb_child++;
-    compound->child = realloc(compound->child, \
-    compound->nb_child * sizeof(struct AST));
-    compound->child[compound->nb_child-1] = new;
+    compound->child
+        = realloc(compound->child, compound->nb_child * sizeof(struct AST));
+    compound->child[compound->nb_child - 1] = new;
 }
 /**
  ** \brief Initialization of the compound node
@@ -147,7 +149,7 @@ struct AST *compound_init()
     token->type = "COMPOUND";
     token->name = "compound";
     struct AST *node = AST_init(0);
-    if(!node)
+    if (!node)
     {
         free(token);
         return NULL;
@@ -168,7 +170,7 @@ struct AST *compound_list(struct Token **t)
     struct AST *separator;
     struct AST *compound = NULL;
     struct Token *cpy;
-    while(strcmp(tmp->name,"\n") == 0)
+    while (strcmp(tmp->name, "\n") == 0)
     {
         tmp = tmp->next;
         if (tmp == NULL)
@@ -180,16 +182,16 @@ struct AST *compound_list(struct Token **t)
     compound = compound_init();
     add_compound(compound, and_or_ast);
     *t = tmp;
-    while(1)
+    while (1)
     {
         cpy = tmp;
-        if (cpy && (!strcmp(cpy->name,";") ||
-            !strcmp(cpy->name,"&") ||
-            !strcmp(cpy->name,"\n")))
+        if (cpy
+            && (!strcmp(cpy->name, ";") || !strcmp(cpy->name, "&")
+                   || !strcmp(cpy->name, "\n")))
         {
             separator = word_init(cpy);
             cpy = cpy->next;
-            while (cpy && !strcmp(cpy->name,"\n"))
+            while (cpy && !strcmp(cpy->name, "\n"))
                 cpy = cpy->next;
             if (!cpy || !(and_or_ast = and_or(&cpy)))
             {
@@ -204,13 +206,13 @@ struct AST *compound_list(struct Token **t)
         else
             break;
     }
-    if (tmp && (!strcmp(tmp->name,"&") ||
-        !strcmp(tmp->name,";") ||
-        !strcmp(tmp->name,"\n")))
+    if (tmp
+        && (!strcmp(tmp->name, "&") || !strcmp(tmp->name, ";")
+               || !strcmp(tmp->name, "\n")))
     {
         add_compound(compound, word_init(tmp));
         tmp = tmp->next;
-        while(tmp && !strcmp(tmp->name,"\n"))
+        while (tmp && !strcmp(tmp->name, "\n"))
         {
             tmp = tmp->next;
         }

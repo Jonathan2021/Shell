@@ -1,12 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "include/my_tree.h"
-#include "include/rule.h"
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
+#include "include/my_tree.h"
+#include "include/rule.h"
 
 void close_redirection(struct fds *fd)
 {
@@ -23,21 +22,21 @@ int great_dgreat(struct AST *node, struct fds *fd, int file)
     int io = 1;
     if (node->child[0])
         io = atoi(getvalue(node->child[0]->self->name));
-    if(!io)
+    if (!io)
     {
-        if(fd->in > 2)
+        if (fd->in > 2)
             close(fd->in);
         fd->in = file;
     }
-    else if(io == 1)
+    else if (io == 1)
     {
-        if(fd->out > 2)
+        if (fd->out > 2)
             close(fd->out);
         fd->out = file;
     }
-    else if(io == 2)
+    else if (io == 2)
     {
-        if(fd->err > 2)
+        if (fd->err > 2)
             close(fd->err);
         fd->err = file;
     }
@@ -52,29 +51,27 @@ void greater(struct AST *node, struct fds *fd)
     int file = open(getvalue(path), O_WRONLY | O_TRUNC | O_CREAT, 0666);
     if (file == -1)
         fprintf(stderr, "greater: open failed\n");
-    if(!great_dgreat(node, fd, file))
+    if (!great_dgreat(node, fd, file))
     {
         close(file);
         return;
     }
-    
 }
 
 void dgreat(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
     int file = open(getvalue(path), O_WRONLY | O_APPEND | O_CREAT, 0666);
-    if(file == -1)
+    if (file == -1)
         fprintf(stderr, "dgreat: open failed\n");
-    if(!great_dgreat(node, fd, file))
+    if (!great_dgreat(node, fd, file))
     {
         close(file);
         return;
     }
-
 }
 
-//void less(struct AST *node, struct fds *fd)
+// void less(struct AST *node, struct fds *fd)
 //{
 
 //}
@@ -83,19 +80,18 @@ void redirect_word(struct AST *node, struct fds *fd)
 {
     if (!strcmp(node->self->name, ">"))
         greater(node, fd);
-    //else if (!strcmp(node->self->name, "<"))
+    // else if (!strcmp(node->self->name, "<"))
     //    less(node, fd);
     else if (!strcmp(node->self->name, ">>"))
         dgreat(node, fd);
-    //else if (!strcmp(node->self->name, ">&"))
+    // else if (!strcmp(node->self->name, ">&"))
     //    greatand(node, fd);
-    //else if (!strcmp(node->self->name, "<&"))
+    // else if (!strcmp(node->self->name, "<&"))
     //    lessand(node, fd);
-    //else if (!strcmp(node->self->name, ">|"))
+    // else if (!strcmp(node->self->name, ">|"))
     //    clobber(node, fd);
-    //else if (!strcmp(node->self->name, "<>"))
+    // else if (!strcmp(node->self->name, "<>"))
     //    lessgreat(node, fd);
-    
 }
 
 void my_redirection(struct AST *node, struct fds *fd)
@@ -104,19 +100,19 @@ void my_redirection(struct AST *node, struct fds *fd)
         return;
     if (!strcmp("WORD", node->child[1]->self->type))
         redirect_word(node, fd);
-    //else if (!strcmp("HEREDOC", node->child[1]->self->type))
+    // else if (!strcmp("HEREDOC", node->child[1]->self->type))
     //    redirect_heredoc(node, fd);
 }
 
 void get_redirection(struct AST *node, struct fds *fd, int index)
 {
-    if(!node)
+    if (!node)
         return;
     struct AST *cur_child;
     for (int i = index; i < node->nb_child && node->child[i]; ++i)
     {
         cur_child = node->child[i];
-        if (!strcmp(cur_child->self->name, ";") 
+        if (!strcmp(cur_child->self->name, ";")
             || !strcmp(cur_child->self->name, "&")
             || !strcmp(cur_child->self->name, "\n"))
             break;
@@ -128,11 +124,11 @@ void get_redirection(struct AST *node, struct fds *fd, int index)
 
 void merge_redirection(struct fds *fd, struct fds to_add)
 {
-    if(to_add.in != -1)
+    if (to_add.in != -1)
         fd->in = to_add.in;
-    if(to_add.out != -1)
+    if (to_add.out != -1)
         fd->out = to_add.out;
-    if(to_add.err != -1)
+    if (to_add.err != -1)
         fd->err = to_add.err;
 }
 
@@ -151,18 +147,17 @@ struct AST *redirection(struct Token **t)
     struct Token *pipe;
     struct Token *io = NULL;
     struct Token *type;
-    char *list[9][2] =
-        {
-            {">", "WORD"},
-            {"<", "WORD"},
-            {">>", "WORD"},
-            {"<<", "HEREDOC"},
-            {"<<-", "HEREDOC"},
-            {">&", "WORD"},
-            {"<&", "WORD"},
-            {">|", "WORD"},
-            {"<>", "WORD"},
-        };
+    char *list[9][2] = {
+        {">", "WORD"},
+        {"<", "WORD"},
+        {">>", "WORD"},
+        {"<<", "HEREDOC"},
+        {"<<-", "HEREDOC"},
+        {">&", "WORD"},
+        {"<&", "WORD"},
+        {">|", "WORD"},
+        {"<>", "WORD"},
+    };
     struct Token *tmp = *t;
     if (strcmp("IO_NUMBER", tmp->type) == 0)
     {
@@ -185,15 +180,15 @@ struct AST *redirection(struct Token **t)
             {
                 type = tmp;
                 struct AST *node = redirection_init(pipe);
-                if(io)
+                if (io)
                     node->child[0] = word_init(io);
                 node->child[1] = word_init(type);
-                if(tmp->next)
+                if (tmp->next)
                     tmp = tmp->next;
                 *t = tmp;
                 return node;
             }
-        }    
+        }
     }
     return NULL;
 }

@@ -7,9 +7,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include <unistd.h>
 #define _GNU_SOURCE
 #include <fcntl.h>
 #include <sys/types.h>
@@ -23,16 +23,16 @@
 
 void foo_pipe(struct AST *node, struct fds fd)
 {
-    if(!node || !node->child[0] || !node->child[1])
+    if (!node || !node->child[0] || !node->child[1])
         return;
     int pipefd[2];
-    if(pipe(pipefd) == -1)
+    if (pipe(pipefd) == -1)
     {
         fprintf(stderr, "pipe went wrong\n");
         return;
     }
     pid_t cpid = fork();
-    if  (cpid == -1)
+    if (cpid == -1)
     {
         close(pipefd[0]);
         close(pipefd[1]);
@@ -41,7 +41,7 @@ void foo_pipe(struct AST *node, struct fds fd)
     }
     else if (!cpid)
     {
-        struct fds newfd = { .in = fd.in, .err = fd.err, .out = pipefd[1]};
+        struct fds newfd = {.in = fd.in, .err = fd.err, .out = pipefd[1]};
         close(pipefd[0]);
         node->child[0]->foo(node->child[0], newfd);
         close(pipefd[1]);
@@ -49,7 +49,7 @@ void foo_pipe(struct AST *node, struct fds fd)
     }
     else
     {
-        struct fds newfd = { .in = pipefd[0], .err = fd.err, .out = fd.out};
+        struct fds newfd = {.in = pipefd[0], .err = fd.err, .out = fd.out};
         close(pipefd[1]);
         node->child[1]->foo(node->child[1], newfd);
         node->res = node->child[1]->res;
@@ -84,7 +84,7 @@ struct AST *pipeline(struct Token **t)
     struct AST *origin = NULL;
     struct AST *tmp_ast;
     struct AST *rattach;
-    //struct AST *first_cmd;
+    // struct AST *first_cmd;
 
     struct Token *tmp = *t;
     if (tmp && !strcmp("!", tmp->name))
@@ -97,7 +97,7 @@ struct AST *pipeline(struct Token **t)
         AST_destroy(origin);
         return NULL;
     }
-    //first_cmd = rattach;
+    // first_cmd = rattach;
     *t = tmp;
     while (1)
     {
@@ -125,4 +125,3 @@ struct AST *pipeline(struct Token **t)
         origin = rattach;
     return origin;
 }
-

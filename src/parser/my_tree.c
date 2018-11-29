@@ -41,11 +41,11 @@ void AST_destroy(struct AST *s)
 {
     if (s == NULL)
         return;
-    if(strcmp(s->self->name, "list") == 0
-            || strcmp(s->self->name, "simple command") == 0
-            || strcmp(s->self->name, "command") == 0
-            || strcmp(s->self->name, "compound") == 0
-            || strcmp(s->self->name, "SHELL COMMAND") == 0)
+    if (strcmp(s->self->name, "list") == 0
+        || strcmp(s->self->name, "simple command") == 0
+        || strcmp(s->self->name, "command") == 0
+        || strcmp(s->self->name, "compound") == 0
+        || strcmp(s->self->name, "SHELL COMMAND") == 0)
         free(s->self);
     for (int i = 0; i < s->nb_child; i++)
     {
@@ -59,7 +59,7 @@ void AST_destroy(struct AST *s)
 /**
  ** \brief add a child on l node
  ** \param  l node ast
-  ** \param  a node ast
+ ** \param  a node ast
  **/
 
 void add_list(struct AST *l, struct AST *a)

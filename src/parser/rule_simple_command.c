@@ -4,12 +4,11 @@
  ** \date 29 novembre 32018
  **/
 
-
 #include <stdio.h>
 #include <stdlib.h>
+#include "include/foo.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include "include/foo.h"
 /**
  ** \brief Function chack if it is a reserve word
  ** \param token the chain list of tokens
@@ -19,26 +18,15 @@ int reserve(struct Token *token)
 {
     if (!token)
         return 0;
-    char *reserved[16][3] = 
-    {{"IF", "if", "\0"},
-    {"THEN", "then", "\0"},
-    {"ELSE" , "else" , "\0"},
-    {"ELIF", "elif", "\0"},
-    {"FI", "fi", "\0"},
-    {"DO", "do", "\0"},
-    {"DONE", "done", "\0"},
-    {"CASE", "case", "\0"},
-    {"ESAC", "esac", "\0"},
-    {"WHILE", "while", "\0"},
-    {"UNTIL", "until", "\0"},
-    {"FOR", "for", "\0"},
-    {"LBRACE", "{", "\0"},
-    {"Rbrace", "}", "\0"},
-    {"BANG", "!", "\0"},
-    {"IN", "in", "\0"}};
+    char *reserved[16][3] = {{"IF", "if", "\0"}, {"THEN", "then", "\0"},
+        {"ELSE", "else", "\0"}, {"ELIF", "elif", "\0"}, {"FI", "fi", "\0"},
+        {"DO", "do", "\0"}, {"DONE", "done", "\0"}, {"CASE", "case", "\0"},
+        {"ESAC", "esac", "\0"}, {"WHILE", "while", "\0"},
+        {"UNTIL", "until", "\0"}, {"FOR", "for", "\0"}, {"LBRACE", "{", "\0"},
+        {"Rbrace", "}", "\0"}, {"BANG", "!", "\0"}, {"IN", "in", "\0"}};
     for (int i = 0; i < 16; ++i)
     {
-        if(!strcmp(reserved[i][1], token->name))
+        if (!strcmp(reserved[i][1], token->name))
         {
             token->type = reserved[i][0];
             break;

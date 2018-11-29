@@ -1,7 +1,7 @@
 #ifndef SHELL_H
-# define SHELL_H
+#define SHELL_H
+#include <time.h>
 #include "../parser/include/lexer_struct.h"
-#include<time.h>
 struct PS
 {
     char *name;

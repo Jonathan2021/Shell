@@ -5,10 +5,9 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
+#include "include/foo.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include "include/foo.h"
-
 
 /**
  ** \brief Execution of until node
@@ -36,11 +35,11 @@ void foo_until(struct AST *node, struct fds fd)
  ** \brief initializate the until node but not fill with good node in child
  ** \param token is the chain list of tokens
  ** \return return the until node init
-**/
+ **/
 struct AST *until_init(struct Token *token)
 {
     struct AST *node = AST_init(2);
-    if(!node)
+    if (!node)
         return NULL;
     node->self = token;
     node->foo = foo_until;
@@ -70,10 +69,10 @@ struct AST *rule_until(struct Token **t)
 
     if (!(do_body = do_group(&tmp)))
         return NULL;
-    //Pas besoin  de tmp->next?
+    // Pas besoin  de tmp->next?
     struct AST *node = until_init(name);
     node->child[0] = condition;
     node->child[1] = do_body;
     *t = tmp;
     return node;
-} 
+}

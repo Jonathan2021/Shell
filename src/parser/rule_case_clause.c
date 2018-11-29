@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include <stdio.h>
 /**
  ** \brief Initialization of the case_clause node
  ** \return The node case_clause but not with his good child
@@ -36,9 +35,9 @@ struct AST *case_clause_init()
 void add_case(struct AST *case_clause, struct AST *case_item)
 {
     case_clause->nb_child++;
-    case_clause->child = realloc(case_clause->child, \
-    case_clause->nb_child*sizeof(struct AST));
-    case_clause->child[case_clause->nb_child-1] = case_item;
+    case_clause->child = realloc(
+        case_clause->child, case_clause->nb_child * sizeof(struct AST));
+    case_clause->child[case_clause->nb_child - 1] = case_item;
 }
 /**
  ** \brief Create the case_clause node with his child
@@ -53,7 +52,7 @@ struct AST *case_clause(struct Token **t)
     struct AST *cur_case_item;
     struct Token *tmp = *t;
 
-    if  (tmp == NULL || (cur_case_item = case_item(&tmp)) == NULL)
+    if (tmp == NULL || (cur_case_item = case_item(&tmp)) == NULL)
         return NULL;
     add_case(origin, cur_case_item);
     *t = tmp;
@@ -64,22 +63,22 @@ struct AST *case_clause(struct Token **t)
             break;
         else
             cpy = cpy->next;
-        while(cpy && !strcmp("\n", cpy->name))
+        while (cpy && !strcmp("\n", cpy->name))
         {
             cpy = cpy->next;
         }
-        if(!cpy || !(cur_case_item = case_item(&cpy)))
+        if (!cpy || !(cur_case_item = case_item(&cpy)))
             break;
         add_case(origin, cur_case_item);
         *t = cpy;
         tmp = cpy;
     }
-    if(tmp && !strcmp(";;", tmp->name))
+    if (tmp && !strcmp(";;", tmp->name))
     {
         tmp = tmp->next;
         *t = tmp;
     }
-    while(tmp && !strcmp("\n", tmp->name))
+    while (tmp && !strcmp("\n", tmp->name))
     {
         tmp = tmp->next;
         *t = tmp;

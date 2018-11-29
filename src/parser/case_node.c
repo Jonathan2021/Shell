@@ -12,7 +12,7 @@
 struct AST *case_init(void)
 {
     struct Token *token = malloc(sizeof(struct Token));
-    if(!token)
+    if (!token)
         return NULL;
     struct AST *node = AST_init(0);
     if (!node)
@@ -27,7 +27,8 @@ struct AST *case_init(void)
 }
 
 /**
- ** \brief check case_item grammar and create node with token given in parameter 
+ ** \brief check case_item grammar and create node with token given in
+ *parameter
  ** \param linked list of token
  ** \return node case_item
  **/
@@ -37,18 +38,18 @@ struct AST *case_item(struct Token **t)
     struct AST *part1 = NULL;
     struct AST *part2 = NULL;
     struct Token *tmp = *t;
-    if (strcmp(tmp->name,"(") == 0)
+    if (strcmp(tmp->name, "(") == 0)
         tmp = tmp->next;
-    if (tmp == NULL || strcmp(tmp->type,"WORD"))
+    if (tmp == NULL || strcmp(tmp->type, "WORD"))
         return NULL;
     part1 = case_init();
     add_case(part1, word_init(tmp));
     tmp = tmp->next;
     struct Token *cpy = tmp;
-    while(strcmp(cpy->name,"|") == 0)
+    while (strcmp(cpy->name, "|") == 0)
     {
         cpy = cpy->next;
-        if (strcmp(cpy->type,"WORD") != 0)
+        if (strcmp(cpy->type, "WORD") != 0)
             break;
         part2 = word_init(cpy);
         add_case(part1, part2);
@@ -60,7 +61,7 @@ struct AST *case_item(struct Token **t)
         }
         tmp = cpy;
     }
-    if (strcmp(tmp->name,")"))
+    if (strcmp(tmp->name, ")"))
         return NULL;
     tmp = tmp->next;
     *t = tmp;
@@ -69,7 +70,7 @@ struct AST *case_item(struct Token **t)
         AST_destroy(part1);
         return NULL;
     }
-    while(strcmp(tmp->name,"\n") == 0)
+    while (strcmp(tmp->name, "\n") == 0)
     {
         tmp = tmp->next;
         if (tmp == NULL)

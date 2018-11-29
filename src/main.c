@@ -8,21 +8,21 @@
  **
  **/
 #define _GNU_SOURCE
-#include <stdio.h>
+#include <err.h>
+#include <errno.h>
 #include <fcntl.h>
-#include <unistd.h>
+#include <getopt.h>
+#include <glob.h>
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
-#include <err.h>
-#include <stdlib.h>
 #include <sys/stat.h>
-#include <getopt.h>
 #include <sys/wait.h>
-#include <errno.h>
-#include <glob.h>
-#include<time.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include <time.h>
+#include <unistd.h>
 #include "include/shell.h"
 #include "parser/include/lexer_struct.h"
 #include "parser/include/my_tree.h"
@@ -43,28 +43,28 @@ struct Token *carving(long argc, char **argv)
     struct Token *token = NULL;
     init_ps();
     int i = 0;
-    while(1)
+    while (1)
     {
         token = NULL;
         if (i == 0)
         {
             i = 1;
-            token = parse_path(token,argv,argc);
+            token = parse_path(token, argv, argc);
         }
         else
         {
-            printf("%s",get_file("PS1"));
-            char *check = fgets(str,4095,stdin);
+            printf("%s", get_file("PS1"));
+            char *check = fgets(str, 4095, stdin);
             if (!check)
                 continue;
-            if (strncmp(str,"exit",4) == 0)
+            if (strncmp(str, "exit", 4) == 0)
                 return 0;
             if (check && (check[0] != '\n' && check[0] != '\0'))
             {
                 add_history(check);
-                append_history(1,".42sh_history");
+                append_history(1, ".42sh_history");
             }
-            token = create_token(token,str);
+            token = create_token(token, str);
         }
         lexer(token);
         if (check_option(token))
@@ -85,15 +85,15 @@ struct Token *carving(long argc, char **argv)
  **
  ** \param argc number of argument
  ** \param argv the list of argument
- ** \return The value 0 
+ ** \return The value 0
  **/
 int main(int argc, char *argv[])
 {
-    FILE *file = fopen("/tmp/42shrc","w+");
-    fprintf(file,"PS1 \"42sh$ \"\nPS2 \">\"");
+    FILE *file = fopen("/tmp/42shrc", "w+");
+    fprintf(file, "PS1 \"42sh$ \"\nPS2 \">\"");
     fclose(file);
     delete_history();
     init_history();
-    carving(argc,argv);
+    carving(argc, argv);
     return 0;
 }

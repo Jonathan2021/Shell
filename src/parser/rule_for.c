@@ -4,15 +4,13 @@
  ** \date 29 novembre 2018
  **/
 
-
+#include <stdio.h>
+#include <stdlib.h>
+#include "../include/shell.h"
+#include "include/foo.h"
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include "../include/shell.h"
-#include <stdlib.h>
-#include "include/rule.h"
-#include "include/foo.h"
-#include <stdio.h>
 /**
  ** \brief Execution of for node
  ** \param the node for
@@ -26,7 +24,8 @@ void foo_for(struct AST *node, struct fds fd)
         return;
     for (int i = 0; i < node->child[1]->nb_child; ++i)
     {
-        setvalue(node->child[0]->self->name, getvalue(node->child[1]->child[i]->self->name));
+        setvalue(node->child[0]->self->name,
+            getvalue(node->child[1]->child[i]->self->name));
         node->child[2]->foo(node->child[2], fd);
     }
 }
@@ -34,7 +33,7 @@ void foo_for(struct AST *node, struct fds fd)
  ** \brief initializate the for node but not fill with good node in child
  ** \param token is the chain list of tokens
  ** \return return the for node init
-**/
+ **/
 struct AST *for_init(struct Token *token)
 {
     struct AST *node = AST_init(3);
@@ -83,16 +82,16 @@ struct AST *rule_for(struct Token **t)
     struct Token *tmp = *t;
     struct AST *do_group_ast;
     struct Token *checkpoint;
-    if (!tmp || strcmp(tmp->name,"for"))
+    if (!tmp || strcmp(tmp->name, "for"))
         return NULL;
     next_token(&tmp);
-    if (!tmp || strcmp(tmp->type,"WORD"))
+    if (!tmp || strcmp(tmp->type, "WORD"))
         return NULL;
     for_node = for_init(*t);
     for_node->child[0] = word_init(tmp);
     next_token(&tmp);
     checkpoint = tmp;
-    if (!strcmp(tmp->name,";"))
+    if (!strcmp(tmp->name, ";"))
     {
         for_node->child[1] = word_init(tmp);
         tmp = tmp->next;
@@ -101,34 +100,33 @@ struct AST *rule_for(struct Token **t)
     else
     {
         struct AST *in;
-        while(tmp && !strcmp(tmp->name,"\n"))
+        while (tmp && !strcmp(tmp->name, "\n"))
         {
             next_token(&tmp);
         }
-        if (tmp && !strcmp(tmp->name,"in"))
+        if (tmp && !strcmp(tmp->name, "in"))
         {
-           in = in_init(tmp); 
+            in = in_init(tmp);
             next_token(&tmp);
-            while(tmp && !strcmp(tmp->type,"WORD"))
+            while (tmp && !strcmp(tmp->type, "WORD"))
             {
                 add_in(in, tmp);
                 next_token(&tmp);
             }
-            if (tmp && (!strcmp(tmp->name,";") ||
-                !strcmp(tmp->name,"\n")))
-                {
-                    next_token(&tmp);
-                    checkpoint = tmp;
-                    for_node->child[1] = in;
-                }
+            if (tmp && (!strcmp(tmp->name, ";") || !strcmp(tmp->name, "\n")))
+            {
+                next_token(&tmp);
+                checkpoint = tmp;
+                for_node->child[1] = in;
+            }
         }
     }
     tmp = checkpoint;
-    while(tmp && !strcmp(tmp->name,"\n"))
+    while (tmp && !strcmp(tmp->name, "\n"))
     {
         next_token(&tmp);
     }
-    if(!tmp || !(do_group_ast = do_group(&tmp)))
+    if (!tmp || !(do_group_ast = do_group(&tmp)))
     {
         AST_destroy(for_node);
         return NULL;

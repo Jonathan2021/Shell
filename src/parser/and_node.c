@@ -12,11 +12,11 @@
 
 void foo_and(struct AST *node, struct fds fd)
 {
-    if(!node || !node->child[0] || !node->child[1])
+    if (!node || !node->child[0] || !node->child[1])
         return;
     node->child[0]->foo(node->child[0], fd);
     node->res = node->child[0]->res;
-    if(!node->res)
+    if (!node->res)
         return;
     node->child[1]->foo(node->child[1], fd);
     node->res = node->child[1]->res;
@@ -30,7 +30,7 @@ void foo_and(struct AST *node, struct fds fd)
 
 void foo_or(struct AST *node, struct fds fd)
 {
-    if(!node || !node->child[0] || !node->child[1])
+    if (!node || !node->child[0] || !node->child[1])
         return;
     node->child[0]->foo(node->child[0], fd);
     node->res = node->child[0]->res;
@@ -52,7 +52,7 @@ struct AST *operator_init(struct Token *token)
     if (!node)
         return NULL;
     node->self = token;
-    if(!strcmp(token->name, "&&"))
+    if (!strcmp(token->name, "&&"))
         node->foo = foo_and;
     else
         node->foo = foo_or;
@@ -60,7 +60,7 @@ struct AST *operator_init(struct Token *token)
 }
 
 /**
- ** \brief check and_or grammar and create node with token given in parameter 
+ ** \brief check and_or grammar and create node with token given in parameter
  ** \param linked list of token
  ** \return node and_or
  **/
@@ -72,7 +72,7 @@ struct AST *and_or(struct Token **t)
     struct Token *name;
 
     struct Token *cpy = *t;
-    //int check = 2;
+    // int check = 2;
     if ((left_body = pipeline(&cpy)) == NULL)
         return NULL;
     *t = cpy;
@@ -109,4 +109,3 @@ struct AST *and_or(struct Token **t)
     }
     return left_body;
 }
-

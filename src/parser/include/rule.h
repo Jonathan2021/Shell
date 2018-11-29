@@ -1,7 +1,7 @@
 #pragma once
 #include <string.h>
-#include "my_tree.h"
 #include "lexer_struct.h"
+#include "my_tree.h"
 
 struct AST *and_or(struct Token **t);
 struct AST *else_clause(struct Token **t);

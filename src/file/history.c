@@ -5,21 +5,20 @@
  **
  **/
 #define _GNU_SOURCE
-#include <termios.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <err.h>
+#include <errno.h>
 #include <fcntl.h>
-#include <unistd.h>
+#include <glob.h>
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
-#include <err.h>
-#include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
-#include <errno.h>
-#include <glob.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include <termios.h>
+#include <unistd.h>
 #include "../include/shell.h"
 
 int line = 0;
@@ -32,18 +31,18 @@ void writehistory(char *str)
     FILE *file = fopen(".42sh_history", "a+");
     char *parse;
     char *delim = {"\t "};
-    parse = strtok(str,delim);
+    parse = strtok(str, delim);
     int i = 0;
     while (parse)
     {
         if (i == 0)
-            fprintf(file,"(%i)",line);
-        fprintf(file," %s",parse);
-        parse = strtok(NULL,delim);
+            fprintf(file, "(%i)", line);
+        fprintf(file, " %s", parse);
+        parse = strtok(NULL, delim);
         i++;
     }
     fclose(file);
-    line ++;
+    line++;
 }
 /**
  ** \brief Come back to the last command.
@@ -52,9 +51,9 @@ void writehistory(char *str)
  **/
 int up_arrow()
 {
-    HIST_ENTRY *historique=history_get(history_length);
-    rl_replace_line(historique->line,0);
-    rl_end_of_line(0,0);
+    HIST_ENTRY *historique = history_get(history_length);
+    rl_replace_line(historique->line, 0);
+    rl_end_of_line(0, 0);
     return 0;
 }
 
@@ -64,9 +63,9 @@ int up_arrow()
 void init_history(void)
 {
     using_history();
-    FILE *handle=fopen(".42sh_history","r");
-    if (handle==NULL) 
-        handle=fopen(".42sh_history","w+");
+    FILE *handle = fopen(".42sh_history", "r");
+    if (handle == NULL)
+        handle = fopen(".42sh_history", "w+");
     fclose(handle);
 }
 
@@ -77,4 +76,3 @@ void delete_history(void)
 {
     remove(".42sh_history");
 }
-

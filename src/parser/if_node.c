@@ -7,9 +7,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "include/foo.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include "include/foo.h"
 
 /**
  ** \brief execute if function
@@ -23,9 +23,9 @@ void foo_if(struct AST *node, struct fds fd)
         return;
     node->child[0]->foo(node->child[0], fd);
     node->res = node->child[0]->res;
-    if(node->res && node->nb_child > 1 && node->child[1])
+    if (node->res && node->nb_child > 1 && node->child[1])
         node->child[1]->foo(node->child[1], fd);
-    else if(!node->res && node->nb_child > 2 && node->child[2])
+    else if (!node->res && node->nb_child > 2 && node->child[2])
         node->child[2]->foo(node->child[2], fd);
 }
 
@@ -38,7 +38,7 @@ void foo_if(struct AST *node, struct fds fd)
 struct AST *if_init(struct Token *token)
 {
     struct AST *node = AST_init(3);
-    if(!node)
+    if (!node)
         return NULL;
     node->self = token;
     token->type = "IF";

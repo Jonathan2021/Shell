@@ -3,12 +3,13 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-void set_func(__attribute__((unused))char *a, __attribute__((unused))struct AST *b)
+void set_func(
+    __attribute__((unused)) char *a, __attribute__((unused)) struct AST *b)
 {
     return;
 }
 
-void foo_func(struct AST *node, __attribute__((unused))struct fds fd)
+void foo_func(struct AST *node, __attribute__((unused)) struct fds fd)
 {
     if (!node || node->nb_child < 2 || !node->child[0] || !node->child[1])
         return;
@@ -46,7 +47,7 @@ struct AST *funcdec(struct Token **t)
     }
     if (strcmp("WORD", tmp->type) == 0)
     {
-        //a verifier avec regex
+        // a verifier avec regex
         name = tmp;
         tmp = tmp->next;
         if (tmp == NULL)

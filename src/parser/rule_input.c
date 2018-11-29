@@ -4,7 +4,6 @@
  ** \date 29 novembre 2018
  **/
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
@@ -24,7 +23,7 @@ struct AST *input(struct Token **t)
         return NULL;
     if ((node = list(&tmp)) != NULL)
     {
-        if (tmp == NULL || strcmp(tmp->name,"\n") == 0)
+        if (tmp == NULL || strcmp(tmp->name, "\n") == 0)
         {
             *t = tmp;
             return node;

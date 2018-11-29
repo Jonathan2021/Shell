@@ -4,13 +4,11 @@
  ** \date 29 novembre 2018
  **/
 
-
+#include <stdlib.h>
+#include "include/foo.h"
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include "include/foo.h"
-#include <stdlib.h>
-
 
 /**
  ** \brief Init the node command not fill with child
@@ -43,7 +41,8 @@ void add_cmd(struct AST *cmd, struct AST *new)
 }
 
 /**
- ** \brief Rule of the grammar command create the node command wit all the good child
+ ** \brief Rule of the grammar command create the node command wit all the good
+ *child
  ** \param t is the chain list of tokens
  ** \return the good command name with his good child
  **/
@@ -71,4 +70,3 @@ struct AST *command(struct Token **t)
     AST_destroy(res);
     return NULL;
 }
-

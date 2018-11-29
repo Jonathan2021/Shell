@@ -5,10 +5,9 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/shell.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include "../include/shell.h"
-
 
 /**
  ** \brief Execution of case node
@@ -26,18 +25,19 @@ void foo_rule_case(struct AST *node, struct fds fd)
         cur_item = node->child[1]->child[i];
         if (!cur_item)
             return;
-        if(cur_item->nb_child < 2)
+        if (cur_item->nb_child < 2)
             continue;
         nbchild = cur_item->nb_child;
         for (int j = 0; j < nbchild - 1; ++j)
         {
-            if(!strcmp(getvalue(cur_item->child[j]->self->name), 
+            if (!strcmp(getvalue(cur_item->child[j]->self->name),
                     getvalue(node->child[0]->self->name)))
             {
-                if (!strcmp(cur_item->child[nbchild - 1]->self->type,
-                        "COMPOUND"))
+                if (!strcmp(
+                        cur_item->child[nbchild - 1]->self->type, "COMPOUND"))
                 {
-                    cur_item->child[nbchild - 1]->foo(cur_item->child[nbchild], fd);
+                    cur_item->child[nbchild - 1]->foo(
+                        cur_item->child[nbchild], fd);
                     return;
                 }
             }
@@ -51,10 +51,10 @@ void foo_rule_case(struct AST *node, struct fds fd)
 struct AST *rule_case_init()
 {
     struct Token *token = malloc(sizeof(struct Token));
-    if(!token)
+    if (!token)
         return NULL;
     struct AST *node = AST_init(2);
-    if(!node)
+    if (!node)
     {
         free(token);
         return NULL;
@@ -75,27 +75,27 @@ struct AST *rule_case(struct Token **t)
     struct Token *condition;
     struct AST *case_body = NULL;
     struct Token *tmp = *t;
-    if (strcmp(tmp->name,"case"))
+    if (strcmp(tmp->name, "case"))
         return NULL;
     tmp = tmp->next;
-    if (tmp == NULL || strcmp(tmp->type,"WORD"))
+    if (tmp == NULL || strcmp(tmp->type, "WORD"))
         return NULL;
     condition = tmp;
     tmp = tmp->next;
     if (tmp == NULL)
         return NULL;
-    while(strcmp(tmp->name,"\n") == 0)
+    while (strcmp(tmp->name, "\n") == 0)
     {
         tmp = tmp->next;
         if (tmp == NULL)
             break;
     }
-    if (tmp == NULL || strcmp(tmp->name,"in"))
-            return NULL;
+    if (tmp == NULL || strcmp(tmp->name, "in"))
+        return NULL;
     tmp = tmp->next;
     if (tmp == NULL)
         return NULL;
-    while(strcmp(tmp->name,"\n") == 0)
+    while (strcmp(tmp->name, "\n") == 0)
     {
         tmp = tmp->next;
         if (tmp == NULL)
@@ -104,7 +104,7 @@ struct AST *rule_case(struct Token **t)
         }
     }
     case_body = case_clause(&tmp);
-    if (tmp == NULL || strcmp(tmp->name,"esac"))
+    if (tmp == NULL || strcmp(tmp->name, "esac"))
     {
         if (case_body)
             AST_destroy(case_body);
@@ -112,7 +112,7 @@ struct AST *rule_case(struct Token **t)
     }
     tmp = tmp->next;
     *t = tmp;
-    struct AST *node = rule_case_init(); 
+    struct AST *node = rule_case_init();
     node->child[0] = word_init(condition);
     node->child[1] = case_body;
     return node;

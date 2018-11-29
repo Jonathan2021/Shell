@@ -5,9 +5,9 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
+#include "include/foo.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include "include/foo.h"
 /**
  ** \brief Execution of while node
  ** \param the node while
@@ -30,17 +30,17 @@ void foo_while(struct AST *node, struct fds fd)
  ** \brief initializate the while node but not fill with good node in child
  ** \param token is the chain list of tokens
  ** \return return the while node init
-**/
+ **/
 struct AST *while_init(struct Token *token)
 {
     struct AST *node = AST_init(2);
-    if(!node)
+    if (!node)
         return NULL;
     node->self = token;
     node->foo = foo_while;
     token->type = "WHILE";
-    //node->child[0] = left_body
-    //node->child[1] = right_body
+    // node->child[0] = left_body
+    // node->child[1] = right_body
     return node;
 }
 /**

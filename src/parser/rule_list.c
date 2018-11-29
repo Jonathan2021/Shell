@@ -4,12 +4,11 @@
  ** \date 29 novembre 2018
  **/
 
-
 #include <stdio.h>
 #include <stdlib.h>
+#include "include/foo.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
-#include "include/foo.h"
 
 /**
  ** \brief Function which init a list AST node
@@ -28,11 +27,12 @@ struct AST *list_init(void)
     return node;
 }
 /**
- ** \brief Grammar function which create and fill the AST list node with the good grammar rule
+ ** \brief Grammar function which create and fill the AST list node with the
+ *good grammar rule
  ** \param t The chain list of tokens
  **/
 struct AST *list(struct Token **t)
-{ 
+{
     struct AST *node = NULL;
     struct Token *t2 = *t;
     if ((node = and_or(&t2)) == NULL)
