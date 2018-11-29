@@ -28,27 +28,28 @@
 #include "../parser/include/my_tree.h"
 #include "../parser/include/rule.h"
 #include "../print_ast/include/print_ast.h"
+#include <fnmatch.h>
 
 struct PS *ps;
 
+int is_ionumber(char *str)
+{
+    int i = 0;
+    for(; str[i]; ++i)
+    {
+        if(!(str[i] >= '0' || str[i] <= 9))
+            break;
+    }
+    return (i && (str[i] == '<' || str[i] == '>'));
+}
+
 void add_token(struct Token **token, char *str)
 {
-    char *grammar[21][20] =
+    char *grammar[3][20] =
     {{"SEMICOLON",";","\0"},
-        {"OP_LOGIQUE","&&","||",";;","\0"},
-        {"NEW_LINE","\n","\0"},
-        {"OP_IO","<<",">>","<&",">&","<>","<<-","\0"},
-        {"CLOBBER",">|","\0"},
-        {"IF","if","\0"},
-        {"FI","fi","\0"},
-        {"THEN","then","\0"},
-        {"ELIF","elif","\0"},
-        {"ELSE","else","\0"},
-        {"DO","do","\0"},
-        {"DONE","done","\0"},
-        {"LOOP","case","esac","while","until","for","\0"},
-        {"BRACE","{","}","!","\0"},
-        {"IN","in","\0"}};
+        {"OPERATOR","&&","||",";;", "<<", ">>", "<&", ">&", "<>", "<<-", ">|", 
+            "\0"},
+        {"NEW_LINE","\n","\0"}};
     struct Token *next = malloc(sizeof(struct Token));
     next->name = NULL;
     for(int i = 0; i < 15; i++)
