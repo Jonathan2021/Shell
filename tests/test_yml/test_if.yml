@@ -46,4 +46,3 @@ if_false_then_false:
     type: "command_diff"
     command: "if false ; then false ; fi"
 
-
