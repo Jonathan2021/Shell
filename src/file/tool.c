@@ -21,8 +21,6 @@ char *my_strncpy(char *dest, const char *src, size_t n)
     return dest;
 }
 
-
-
 char *get_value(char *name)
 {
     struct PS *tmp = ps;

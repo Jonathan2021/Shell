@@ -158,7 +158,9 @@ struct Token *lexer(struct Token *t)
         return t;
     struct fds fd = {.in = 0, .out = 1, .err = 2};
     ast->foo(ast, fd);
-    create_dot(ast, "output.gv");
+    char *print = get_value("--ast-print");
+    if (print && t && strcmp(print,"1") == 0)
+        create_dot(ast, "output.gv");
     AST_destroy(ast);
     return t;
 }
@@ -166,6 +168,8 @@ void DestroyToken(struct Token *t)
 {
     if (t != NULL)
         DestroyToken(t->next);
+    if (t && t->name)
+        free(t->name);
     free(t);
 }
 
