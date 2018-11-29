@@ -1,19 +1,20 @@
+/**
+ ** \file parser/rule_command.c
+ ** \brief File for the rule command (see subject)
+ ** \date 29 novembre 2018
+ **/
+
+
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include <stdlib.h>
-/*
-void foo_command(struct AST *node, struct fds fd)
-{
-    if (!node)
-        return;
-    for (int i = 0; i < node->nb_child; ++i)
-    {
-        if (!node->child[i])
-            return;
-    }
-}
-*/
+
+
+/**
+ ** \brief Init the node command not fill with child
+ ** \return The node command initializied
+ **/
 struct AST *command_init()
 {
     struct Token *token = malloc(sizeof(struct Token));
@@ -27,7 +28,11 @@ struct AST *command_init()
     node->self = token;
     return node;
 }
-
+/**
+ ** \brief Add a new command to the child of the command node
+ ** \param cmd is the node command to add the child
+ ** \param new is the new node to add  to the child of cmd
+ **/
 void add_cmd(struct AST *cmd, struct AST *new)
 {
     cmd->nb_child++;
@@ -35,6 +40,11 @@ void add_cmd(struct AST *cmd, struct AST *new)
     cmd->child[cmd->nb_child - 1] = new;
 }
 
+/**
+ ** \brief Rule of the grammar command create the node command wit all the good child
+ ** \param t is the chain list of tokens
+ ** \return the good command name with his good child
+ **/
 struct AST *command(struct Token **t)
 {
     struct Token *tmp = *t;
