@@ -14,7 +14,8 @@ pip install pytest > /dev/null
 pip install pytest_yaml > /dev/null
 if [ -f conftest.py ] ; then
     ##pytest conftest.py testsuit.py
-    pytest conftest.py test_command.yml
+   # pytest conftest.py test_command.yml
+   ./execpython.sh "pytest conftest.py" $1
 else
 #     pytest tests/conftest.py tests/testsuit.py
      pytest tests/conftest.py tests/test_command.yml
@@ -22,7 +23,8 @@ fi
 deactivate
 if [ -f output.gv ] ; then
     rm output.gv
-else
+fi
+if [ -f tests/output.gv ] ; then
     rm tests/output.gv
 fi
 rm -rf env/
