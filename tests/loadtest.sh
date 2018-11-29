@@ -10,7 +10,7 @@ fi
 python3 -m venv env > /dev/null
 source env/bin/activate
 #pip install requirement.txt
-pip install pytest > /dev/null
+pip install pytest > /dev/null 2>/dev/null
 pip install pytest_yaml > /dev/null 2> /dev/null
 if [ -f conftest.py ] ; then
     ##pytest conftest.py testsuit.py
