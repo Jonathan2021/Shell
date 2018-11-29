@@ -84,7 +84,6 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         if (!strcmp(cur_name, ";") || !strcmp(cur_name, "&") 
             || !strcmp(cur_name, "\n") || !strcmp(cur_type, "REDIRECTION"))
         {
-            my_cmd[i] = NULL;
             break;
         }
         if (strcmp(cur_type, "WORD"))
@@ -118,7 +117,7 @@ void foo_compound(struct AST *node, struct fds fd)
         return;
     int index = 0;
     int res = 0;
-    while(index < node->nb_child)
+    while(index < node->nb_child && strcmp(node->child[index]->self->type, "REDIRECTION"))
         res = exec_init(node, &index, fd);
     node->res = res;
 }

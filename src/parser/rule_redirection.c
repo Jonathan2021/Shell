@@ -25,19 +25,19 @@ int great_dgreat(struct AST *node, struct fds *fd, int file)
         io = atoi(getvalue(node->child[0]->self->name));
     if(!io)
     {
-        if(fd->in != -1)
+        if(fd->in > 2)
             close(fd->in);
         fd->in = file;
     }
     else if(io == 1)
     {
-        if(fd->out != -1)
+        if(fd->out > 2)
             close(fd->out);
         fd->out = file;
     }
     else if(io == 2)
     {
-        if(fd->err != -1)
+        if(fd->err > 2)
             close(fd->err);
         fd->err = file;
     }
