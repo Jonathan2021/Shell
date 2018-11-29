@@ -18,7 +18,7 @@ if [ -f conftest.py ] ; then
    ./execpython.sh "pytest conftest.py" $1
 else
 #     pytest tests/conftest.py tests/testsuit.py
-     pytest tests/conftest.py tests/test_command.yml
+     pytest tests/conftest.py tests/test_yml/cmd.yml
 fi
 deactivate
 if [ -f output.gv ] ; then
