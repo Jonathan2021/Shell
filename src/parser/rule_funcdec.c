@@ -16,7 +16,7 @@ void foo_func(struct AST *node, __attribute__((unused)) struct fds fd)
     set_func(node->child[0]->self->name, node->child[1]);
 }
 
-struct AST *func_init()
+struct AST *func_init(void)
 {
     struct Token *token = malloc(sizeof(struct Token));
     if (!token)

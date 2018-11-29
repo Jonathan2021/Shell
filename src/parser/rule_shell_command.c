@@ -72,7 +72,6 @@ struct AST *shell_command(struct Token **t)
         {
             if (t1 == NULL)
             {
-                // get_token();
                 AST_destroy(shell);
             }
             if ((!strcmp("}", t1->name) || !strcmp(")", t1->name))
