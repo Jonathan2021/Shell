@@ -41,11 +41,18 @@ The following definitions are used throughout the rest of this document.
 \f
 .TP
 \fBWORD\fP
-A  sequence  of characters considered as a single unit by the shell. Also known
+A \fBsequence  of characters\fP considered as a single unit by the shell. Also known
 as a \fBtoken\fP.
 .TP
-\fBHEREDOC\fP
-
+\fBSEMICOLON\fP
+This represent the character \fB';'\fP or the character \fB'&'\fP.
+.TP
+\fBOPERATOR\fP
+This represent this differents kind of symbols:
+ \fB"&&" "||" ";;" "<<" ">>" "<&" ">&" "<>" "<<-" ">|" "|"\fP
+.TP
+\fBNEW_LINE\fP
+This represent only the character \fB'\\n'\fP which is a new line.
 .SH RESERVED WORDS
 \fIReserved words\fP are words that have a special meaning to the shell. The
 following words are recognized as reserved when unquoted and either the first

@@ -1,3 +1,9 @@
+/**
+ ** \file print_ast/print_ast.c
+ ** \brief Everything for creating the DOT file from the AST
+ ** \date 29 novembre 2018
+ **/
+
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <fcntl.h>
