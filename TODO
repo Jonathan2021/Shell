@@ -13,10 +13,15 @@ DONE:
     - Shell parser
     - Autotools
     - “If” commands
-
-
-TODO:
-    - redirection
+    - move folder tests to the root
+    - write man page
+    - remove the env of test
+    - write test in python
+    - do the PS2
+    - PIPE
+    - exec of the AST
+    - debbug case rule
+    - verify the foo && ||
     - prefix
     - element-
     - counpound_list
@@ -28,3 +33,24 @@ TODO:
     - Tests suite
     - “While” and “until” commands
     - “For” commands
+    - option testsuit
+    - Autotool
+    - clean Doxyfile
+    - func of node
+    - option of 42sh
+    
+
+TODO:
+    - redirection
+    - valgrind
+    - remove dead code
+    - doxygene
+    - push on the branch on the epita's git
+    - finish testsuit
+    - one folder by categorie of test
+    - unitaire test
+    - review of ps2
+    - Time out of the testsuit
+    - coding style
+    - verif zombie
+

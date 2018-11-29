@@ -24,7 +24,7 @@ if_find_then_pwd:
 
 if_find_then_pwd_else_echo:
     type: "command_diff"
-    command: "if find *.yml ; then pwd ; else echo ceci est une testsuite fi"
+    command: "if find *.yml ; then pwd ; else echo ceci est une testsuite ; fi"
 
 if_true_or_false_then_true_else_false:
     type: "command_diff"
