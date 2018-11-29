@@ -24,7 +24,8 @@ void AST_destroy(struct AST *s)
     if (s == NULL)
         return;
     if(strcmp(s->self->name, "list") == 0
-            || strcmp(s->self->name, "simple command") == 0)
+            || strcmp(s->self->name, "simple command") == 0
+            || strcmp(s->self->name, "compound") == 0)
         free(s->self);
     for (int i = 0; i < s->nb_child; i++)
     {
