@@ -1,7 +1,20 @@
+/**
+ ** \file parser/my_tree.c
+ ** \brief tools for ast
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+
+/**
+ ** \brief create node ast with number of child
+ ** \param  child number of child
+ ** \return node ast
+ **/
 
 struct AST *AST_init(int nb_child)
 {
@@ -18,6 +31,10 @@ struct AST *AST_init(int nb_child)
     return new;
 }
 
+/**
+ ** \brief free ast
+ ** \param  s ast tree
+ **/
 
 void AST_destroy(struct AST *s)
 {
@@ -36,12 +53,23 @@ void AST_destroy(struct AST *s)
     free(s);
 }
 
+/**
+ ** \brief add a child on l node
+ ** \param  l node ast
+  ** \param  a node ast
+ **/
+
 void add_list(struct AST *l, struct AST *a)
 {
     l->nb_child++;
     l->child = realloc(l->child, l->nb_child * sizeof(struct AST *));
     l->child[l->nb_child - 1] = a;
 }
+
+/**
+ ** \brief free child and name
+ ** \param ast tree
+ **/
 
 void free_l(struct AST *ast)
 {

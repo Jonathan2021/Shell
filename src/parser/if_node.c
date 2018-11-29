@@ -1,8 +1,21 @@
+/**
+ ** \file parser/if_node.c
+ ** \brief check if grammar and create if node
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include "include/foo.h"
+
+/**
+ ** \brief execute if function
+ ** \param node ast tree for execution
+ ** \param file descriptor
+ **/
 
 void foo_if(struct AST *node, struct fds fd)
 {
@@ -16,6 +29,12 @@ void foo_if(struct AST *node, struct fds fd)
         node->child[2]->foo(node->child[2], fd);
 }
 
+/**
+ ** \brief init if node
+ ** \param token linked list
+ ** \return node if
+ **/
+
 struct AST *if_init(struct Token *token)
 {
     struct AST *node = AST_init(3);
@@ -24,11 +43,14 @@ struct AST *if_init(struct Token *token)
     node->self = token;
     token->type = "IF";
     node->foo = foo_if;
-    //node->child[0] = condition
-    //node->child[1] = ifbody
-    //node->child[2] = else body
     return node;
 }
+
+/**
+ ** \brief check grammar if and create if node
+ ** \param token linked list
+ ** \return node if
+ **/
 
 struct AST *rule_if(struct Token **t)
 {

@@ -1,3 +1,10 @@
+/**
+ ** \file parser/pipe_node.c
+ ** \brief tools for ast
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
@@ -7,6 +14,12 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+
+/**
+ ** \brief execute with pipe
+ ** \param node ast tree for execution
+ ** \param file descriptor
+ **/
 
 void foo_pipe(struct AST *node, struct fds fd)
 {
@@ -44,6 +57,12 @@ void foo_pipe(struct AST *node, struct fds fd)
     }
 }
 
+/**
+ ** \brief init pipe node
+ ** \param token linked list
+ ** \return node pipe
+ **/
+
 struct AST *pipe_init(struct Token *token)
 {
     struct AST *node = AST_init(2);
@@ -53,6 +72,12 @@ struct AST *pipe_init(struct Token *token)
     node->foo = foo_pipe;
     return node;
 }
+
+/**
+ ** \brief check grammar pipeline and create pipe node
+ ** \param token linked list
+ ** \return node pipe
+ **/
 
 struct AST *pipeline(struct Token **t)
 {
