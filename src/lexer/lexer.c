@@ -53,7 +53,7 @@ void add_token(struct Token **token, char *str)
     char *grammar[3][20] =
     {{"SEMICOLON",";","&","\0"},
         {"OPERATOR","&&","||",";;", "<<", ">>", "<&", ">&", "<>", "<<-", ">|", 
-            "|", "\0"},
+            "|", ">", "<", "\0"},
         {"NEW_LINE","\n","\0"}};
     struct Token *next = malloc(sizeof(struct Token));
     next->name = NULL;

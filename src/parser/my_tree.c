@@ -28,6 +28,7 @@ struct AST *AST_init(int nb_child)
         new->child[i] = NULL;
     }
     new->res = 0;
+    new->foo = NULL;
     return new;
 }
 

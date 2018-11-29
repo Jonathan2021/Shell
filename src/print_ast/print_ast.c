@@ -80,8 +80,10 @@ int print_ast(struct AST *cur, FILE *file, int j)
     int cpy = j;
     char *type = color(cur);
     fprintf(file,"\"(%d)%s\"%s\n",j,cur->self->name,type);
-    for (int i = 0; i < cur->nb_child && cur->child[i]; i++)
+    for (int i = 0; i < cur->nb_child; i++)
     {
+        if(!cur->child[i])
+            continue;
         char *type_child = color(cur->child[i]);
         fprintf(file,"\"(%d)%s\"%s\n",cpy+1,cur->child[i]->self->name,type_child);
         fprintf(file,"\"(%d)%s\" -> \"(%d)%s\"\n",j,cur->self->name,cpy+1,cur->child[i]->self->name);

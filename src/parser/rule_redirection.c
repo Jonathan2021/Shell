@@ -108,6 +108,34 @@ void my_redirection(struct AST *node, struct fds *fd)
     //    redirect_heredoc(node, fd);
 }
 
+void get_redirection(struct AST *node, struct fds *fd, int index)
+{
+    if(!node)
+        return;
+    struct AST *cur_child;
+    for (int i = index; i < node->nb_child && node->child[i]; ++i)
+    {
+        cur_child = node->child[i];
+        if (!strcmp(cur_child->self->name, ";") 
+            || !strcmp(cur_child->self->name, "&")
+            || !strcmp(cur_child->self->name, "\n"))
+            break;
+
+        if (!strcmp(cur_child->self->type, "REDIRECTION"))
+            my_redirection(cur_child, fd);
+    }
+}
+
+void merge_redirection(struct fds *fd, struct fds to_add)
+{
+    if(to_add.in != -1)
+        fd->in = to_add.in;
+    if(to_add.out != -1)
+        fd->out = to_add.out;
+    if(to_add.err != -1)
+        fd->err = to_add.err;
+}
+
 struct AST *redirection_init(struct Token *token)
 {
     struct AST *node = AST_init(2);

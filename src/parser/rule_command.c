@@ -8,6 +8,7 @@
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "include/foo.h"
 #include <stdlib.h>
 
 
@@ -26,6 +27,7 @@ struct AST *command_init()
     token->name = "command";
     token->type = "COMMAND";
     node->self = token;
+    node->foo = foo_compound;
     return node;
 }
 /**

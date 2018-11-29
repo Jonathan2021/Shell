@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <sys/wait.h>
 #include "include/rule.h"
+#include "include/redirection.h"
 
 /**
  ** \brief Execute the command pass in parameter and put in the good fd
@@ -73,6 +74,9 @@ int exec_init(struct AST *node, int *index, struct fds fd)
     char *cur_type;
     int special = 0;
     int res;
+    struct fds redir = {.in = -1, .out = -1, .err=-1};
+    get_redirection(node, &redir, *index);
+    merge_redirection(&fd, redir);
     for(; *index < node->nb_child && node->child[*index] && i < 511; (*index)++, ++i)
     {
         cur_name = node->child[*index]->self->name;
@@ -85,6 +89,8 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         }
         if (strcmp(cur_type, "WORD"))
         {
+            if(!node->child[*index]->foo)
+                fprintf(stderr, "node : %s has no foo\n", node->child[*index]->self->type);
             node->child[*index]->foo(node->child[*index], fd);
             res =  node->child[*index]->res;
             special = 1;
@@ -98,8 +104,8 @@ int exec_init(struct AST *node, int *index, struct fds fd)
     my_cmd[i] = NULL;
     if (!special)
         res = my_exec(my_cmd, fd);
+    close_redirection(&redir);
     return res;
-
 }
 /**
  ** \brief Execute the compound node
