@@ -147,7 +147,7 @@ struct Token *create_token(struct Token *token, char *str)
                 {
                     if (is_ionumber(parse+j) || j != 0)
                     {
-                        char cpy[4960];
+                        char *cpy = malloc(4096);
                         if (is_ionumber(parse+j))
                             my_strncpy(cpy,parse,strlen(parse));
                         else
