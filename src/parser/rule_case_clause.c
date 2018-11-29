@@ -34,31 +34,41 @@ struct AST *case_clause(struct Token **t)
     if (!origin)
         return NULL;
     struct AST *cur_case_item;
-    struct Token *tmp = *t = NULL;
+    struct Token *tmp = *t;
 
     if  (tmp == NULL || (cur_case_item = case_item(&tmp)) == NULL)
         return NULL;
     add_case(origin, cur_case_item);
     *t = tmp;
+    struct Token *cpy = tmp;
     while (1)
     {
-        if(!tmp || strcmp(";;", tmp->name))
+        if (!cpy || strcmp(";", cpy->name))
             break;
         else
-            tmp = tmp->next;
-        while(tmp && !strcmp("\n", tmp->name))
+            cpy = cpy->next;
+        if (!cpy || strcmp(";", cpy->name))
+            break;
+        else
+            cpy = cpy->next;
+        while(cpy && !strcmp("\n", cpy->name))
         {
-            tmp = tmp->next;
+            cpy = cpy->next;
         }
-        if(!tmp || !(cur_case_item = case_item(&tmp)))
+        if(!cpy || !(cur_case_item = case_item(&cpy)))
             break;
         add_case(origin, cur_case_item);
-        *t = tmp;
+        *t = cpy;
+        tmp = cpy;
     }
-    if(tmp && !strcmp(";;", tmp->name))
+    if (tmp && !strcmp(";", tmp->name))
     {
         tmp = tmp->next;
-        *t = tmp;
+        if(tmp && !strcmp(";", tmp->name))
+        {
+            tmp = tmp->next;
+            *t = tmp;
+        }
     }
     while(tmp && !strcmp("\n", tmp->name))
     {

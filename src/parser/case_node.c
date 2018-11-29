@@ -29,19 +29,24 @@ struct AST *case_item(struct Token **t)
         tmp = tmp->next;
     if (tmp == NULL || strcmp(tmp->type,"WORD"))
         return NULL;
+    tmp = tmp->next;
     part1 = case_init();
     add_case(part1, word_init(tmp));
-    while(strcmp(tmp->name,"|") == 0 ||
-            strcmp(tmp->type,"WORD") == 0)
+    struct Token *cpy = tmp;
+    while(strcmp(cpy->name,"|") == 0)
     {
-        part2 = word_init(tmp); 
+        cpy = cpy->next;
+        if (strcmp(cpy->type,"WORD") != 0)
+            break;
+        part2 = word_init(cpy);
         add_case(part1, part2);
-        tmp = tmp->next;
-        if (tmp == NULL)
+        cpy = cpy->next;
+        if (cpy == NULL)
         {
             AST_destroy(part1);
             return NULL;
         }
+        tmp = cpy;
     }
     if (strcmp(tmp->name,")"))
         return NULL;
