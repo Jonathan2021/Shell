@@ -1,8 +1,22 @@
+/**
+ ** \file parser/foo_token.c
+ ** \brief give next token to ast and ask for a PS2 when it's incomplete
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include "../include/shell.h"
+
+/**
+ ** \brief init else node
+ ** \param token linked list
+ ** \return node else
+ **/
+
 
 void next_token(struct Token **tmp)
 {

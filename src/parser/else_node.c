@@ -1,8 +1,21 @@
+/**
+ ** \file parser/else_node.c
+ ** \brief check else grammar and create else node
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include "include/foo.h"
+
+/**
+ ** \brief init else node
+ ** \param token linked list
+ ** \return node else
+ **/
 
 struct AST *else_init(struct Token *token)
 {
@@ -12,6 +25,13 @@ struct AST *else_init(struct Token *token)
     node->self = token;
     return node;
 }
+
+/**
+ ** \brief init elif node
+ ** \param token linked list
+ ** \return node elif
+ **/
+
 struct AST *elif_init(struct Token *token)
 {
     struct AST *node = AST_init(3);
@@ -21,6 +41,12 @@ struct AST *elif_init(struct Token *token)
     return node;
 }
 
+/**
+ ** \brief execute elif function
+ ** \param node ast tree for execution
+ ** \param file descriptor
+ **/
+
 void foo_elif(struct AST *node, struct fds fd)
 {
     if (!node || !node->child)
@@ -28,6 +54,12 @@ void foo_elif(struct AST *node, struct fds fd)
     node->child[0]->foo(node->child[0], fd);
     node->res = node->child[0]->res;
 }
+
+/**
+ ** \brief check grammar else_clause and create else_clause node
+ ** \param token linked list
+ ** \return node else_clause
+ **/
 
 struct AST *else_clause(struct Token **t)
 {

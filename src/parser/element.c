@@ -1,7 +1,20 @@
+/**
+ ** \file parser/element.c
+ ** \brief check element grammar and create element node
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+
+/**
+ ** \brief init element node
+ ** \param token linked list
+ ** \return node element
+ **/
 
 struct AST *element_init(struct Token *token)
 {
@@ -11,6 +24,12 @@ struct AST *element_init(struct Token *token)
     node->self = token;
     return node;
 }
+
+/**
+ ** \brief check grammar element and create element node
+ ** \param token linked list
+ ** \return node element
+ **/
 
 struct AST *element(struct Token **t)
 {

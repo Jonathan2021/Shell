@@ -1,8 +1,21 @@
+/**
+ ** \file parser/do_group.c
+ ** \brief do grammar and create node "do"
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include "include/foo.h"
+
+/**
+ ** \brief init do node
+ ** \param token linked list
+ ** \return node do
+ **/
 
 struct AST *do_init(struct Token *token)
 {
@@ -12,6 +25,12 @@ struct AST *do_init(struct Token *token)
     node->self = token;
     return node;
 }
+
+/**
+ ** \brief check grammar do_group and create do node
+ ** \param token linked list
+ ** \return node do
+ **/
 
 struct AST *do_group(struct Token **t)
 {

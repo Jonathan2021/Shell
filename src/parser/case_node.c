@@ -1,3 +1,10 @@
+/**
+ ** \file parser/case_node.c
+ ** \brief case_node grammar and create node "case"
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
@@ -19,7 +26,12 @@ struct AST *case_init(void)
     return node;
 }
 
-//Case_item on top and all words are its children, last child is cmp_list
+/**
+ ** \brief check case_item grammar and create node with token given in parameter 
+ ** \param linked list of token
+ ** \return node case_item
+ **/
+
 struct AST *case_item(struct Token **t)
 {
     struct AST *part1 = NULL;

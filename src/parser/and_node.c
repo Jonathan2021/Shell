@@ -1,17 +1,15 @@
+/**
+ ** \file parser/and_node.c
+ ** \brief and_node grammar and create node "and"
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
-/**
- ** \file parser/and_node.c
- ** \brief The grammar rule for the and_or rule (see subject). This create the good associated ast node.
- ** \date 29 novembre 2018
- **/
 
-/**
- ** \brief build the and node for the ast
- ** \param node the node of the ast 
- **/
 void foo_and(struct AST *node, struct fds fd)
 {
     if(!node || !node->child[0] || !node->child[1])
@@ -23,6 +21,12 @@ void foo_and(struct AST *node, struct fds fd)
     node->child[1]->foo(node->child[1], fd);
     node->res = node->child[1]->res;
 }
+
+/**
+ ** \brief execution of node or
+ ** \param node ast tree for execution
+ ** \param fd  file descriptor for execution
+ **/
 
 void foo_or(struct AST *node, struct fds fd)
 {
@@ -36,6 +40,12 @@ void foo_or(struct AST *node, struct fds fd)
     node->res = node->child[1]->res;
 }
 
+/**
+ ** \brief init operator for and_or function and check binary operator
+ ** \param node ast tree for execution
+ ** \return node init of operator
+ **/
+
 struct AST *operator_init(struct Token *token)
 {
     struct AST *node = AST_init(2);
@@ -46,10 +56,14 @@ struct AST *operator_init(struct Token *token)
         node->foo = foo_and;
     else
         node->foo = foo_or;
-    //node->child[0] = left_body
-    //node->child[1] = right_body
     return node;
 }
+
+/**
+ ** \brief check and_or grammar and create node with token given in parameter 
+ ** \param linked list of token
+ ** \return node and_or
+ **/
 
 struct AST *and_or(struct Token **t)
 {
