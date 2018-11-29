@@ -106,7 +106,7 @@ int check_option(struct Token *token)
     if (print && strcmp(print,"1") == 0)
     {
         struct Token *tmp = token;
-        while (tmp)
+        while (tmp && tmp->name)
         {
             printf("\033[33m-> %s \033[0m",tmp->name);
             if (strcmp(tmp->type,"NEW_LINE") == 0)
