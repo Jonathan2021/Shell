@@ -17,9 +17,8 @@ void close_redirection(struct fds *fd)
         close(fd->err);
 }
 
-int great_dgreat(struct AST *node, struct fds *fd, int file)
+int replace_fd(struct AST *node, struct fds *fd, int file, int io)
 {
-    int io = 1;
     if (node->child[0])
         io = atoi(getvalue(node->child[0]->self->name));
     if (!io)
@@ -48,27 +47,52 @@ int great_dgreat(struct AST *node, struct fds *fd, int file)
 void greater(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
-    int file = open(getvalue(path), O_WRONLY | O_TRUNC | O_CREAT, 0666);
+    int file = open(getvalue(path), O_WRONLY | O_TRUNC | O_CREAT, 0644);
     if (file == -1)
         fprintf(stderr, "greater: open failed\n");
-    if (!great_dgreat(node, fd, file))
-    {
+    else if (!replace_fd(node, fd, file, 1))
         close(file);
-        return;
-    }
 }
 
 void dgreat(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
-    int file = open(getvalue(path), O_WRONLY | O_APPEND | O_CREAT, 0666);
+    int file = open(getvalue(path), O_WRONLY | O_APPEND | O_CREAT, 0644);
     if (file == -1)
         fprintf(stderr, "dgreat: open failed\n");
-    if (!great_dgreat(node, fd, file))
-    {
+    else if (!replace_fd(node, fd, file, 1))
         close(file);
+}
+
+void less(struct AST *node, struct fds *fd)
+{
+    char *path = node->child[1]->self->name;
+    int file = open(getvalue(path), O_RDONLY);
+    if (file == -1)
+    {
+        perror("");
         return;
     }
+    replace_fd(node, fd, file, 0);
+}
+
+void lessgreat(struct AST *node, struct fds *fd)
+{
+    char *path = node->child[1]->self->name;
+    int file = -1;
+    int io = 0;
+    if (node->child[0])
+        io = atoi(getvalue(node->child[0]->self->name));
+    if(io)
+        file = open(getvalue(path), O_RDWR | O_TRUNC | O_CREAT, 0644);
+    else
+        file = open(getvalue(path), O_RDWR | O_CREAT, 0644); 
+    if (file == -1)
+    {
+        perror("");
+    }
+    else if(!replace_fd(node, fd, file, 0))
+        close(file);
 }
 
 // void less(struct AST *node, struct fds *fd)
@@ -80,8 +104,8 @@ void redirect_word(struct AST *node, struct fds *fd)
 {
     if (!strcmp(node->self->name, ">"))
         greater(node, fd);
-    // else if (!strcmp(node->self->name, "<"))
-    //    less(node, fd);
+    else if (!strcmp(node->self->name, "<"))
+        less(node, fd);
     else if (!strcmp(node->self->name, ">>"))
         dgreat(node, fd);
     // else if (!strcmp(node->self->name, ">&"))
@@ -90,8 +114,8 @@ void redirect_word(struct AST *node, struct fds *fd)
     //    lessand(node, fd);
     // else if (!strcmp(node->self->name, ">|"))
     //    clobber(node, fd);
-    // else if (!strcmp(node->self->name, "<>"))
-    //    lessgreat(node, fd);
+    else if (!strcmp(node->self->name, "<>"))
+        lessgreat(node, fd);
 }
 
 void my_redirection(struct AST *node, struct fds *fd)
