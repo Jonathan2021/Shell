@@ -29,6 +29,7 @@ char *getvalue(char *name);
 void delete_history(void);
 void writehistory(char *str);
 void init_history(void);
+int check_rl(void);
 int up_arrow();
 void time_out(clock_t time);
 struct Token *lexer(struct Token *t);

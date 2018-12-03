@@ -30,6 +30,7 @@
 #include "parser/include/rule.h"
 #include "print_ast/include/print_ast.h"
 
+
 /**
  ** \fn struct Token *carving(long argc, char **argv)
  ** \brief Carving the user input.
@@ -40,12 +41,12 @@
  **/
 struct Token *carving(long argc, char **argv)
 {
-    char str[4095] = {0};
     struct Token *token = NULL;
     init_ps();
     int i = 0;
     while (1)
     {
+        check_rl();
         token = NULL;
         if (i == 0)
         {
@@ -54,15 +55,14 @@ struct Token *carving(long argc, char **argv)
         }
         else
         {
-            printf("%s", get_file("PS1"));
-            char *check = fgets(str, 4095, stdin);
-            if (!check)
+            char *str = readline("42sh$ ");
+            if (!str)
                 continue;
             if (strncmp(str, "exit", 4) == 0)
                 return 0;
-            if (check && (check[0] != '\n' && check[0] != '\0'))
+            if (str && (str[0] != '\n' && str[0] != '\0'))
             {
-                add_history(check);
+                add_history(str);
                 append_history(1, ".42sh_history");
             }
             token = create_token(token, str);
