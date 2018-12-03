@@ -54,7 +54,8 @@ void writehistory(char *str)
 int check_rl(void)
 {
     rl_initialize();
-    while(rl_bind_keyseq("\\e[A",up_arrow));
+    while(rl_bind_keyseq("\\e[a",up_arrow) ||
+        rl_bind_keyseq("\\e[b",down_arrow));
     line_history = 0;
     return 0;
 }
@@ -67,6 +68,17 @@ int up_arrow(void)
     rl_replace_line(historique->line, 0);
     rl_end_of_line(0, 0);
     line_history ++;
+    return 0;
+}
+
+int down_arrow(void)
+{
+    if (history_length-line_history == 0)
+        return 0;
+    HIST_ENTRY *historique = history_get(history_length-line_history);
+    rl_replace_line(historique->line, 0);
+    rl_end_of_line(0, 0);
+    line_history --;
     return 0;
 }
 

@@ -31,6 +31,7 @@ void writehistory(char *str);
 void init_history(void);
 int check_rl(void);
 int up_arrow();
+int down_arrow();
 void time_out(clock_t time);
 struct Token *lexer(struct Token *t);
 char *get_file(char *name);
