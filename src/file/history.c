@@ -24,28 +24,6 @@
 static int line_history = 0;
 
 /**
- ** \brief Write the str in the .42sh_history file.
- ** \param str command write in the history
- **/
-void writehistory(char *str)
-{
-    FILE *file = fopen(".42sh_history", "a+");
-    char *parse;
-    char *delim = {"\t "};
-    parse = strtok(str, delim);
-    int i = 0;
-    while (parse)
-    {
-        if (i == 0)
-            fprintf(file, "(%i)", line_history);
-        fprintf(file, " %s", parse);
-        parse = strtok(NULL, delim);
-        i++;
-    }
-    fclose(file);
-    line_history++;
-}
-/**
  ** \brief Come back to the last command.
  ** \bug Don't use this function some problems
  ** \return The value 0;
@@ -92,6 +70,19 @@ void init_history(void)
     if (handle == NULL)
         handle = fopen(".42sh_history", "w+");
     fclose(handle);
+}
+
+void history(void)
+{
+    FILE *file = fopen(".42sh_history","r");
+    char ligne[4096];
+    int i = 1;
+    while (fgets(ligne,4096,file) != NULL)
+    {
+        printf("%d %s\n",i,ligne);
+        i ++;
+    }
+    fclose(file);
 }
 
 /**
