@@ -20,8 +20,8 @@ else
     if [ -f "output.gv" ] ; then
         rm output.gv
     fi
-    if [ -f "outfile.ps" ] ; then
-        rm outfile.ps
+    if [ -f *.ps ] ; then
+        rm *.ps
     fi
 
     if [ -f ".42sh_history" ] ; then

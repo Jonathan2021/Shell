@@ -43,3 +43,5 @@ clean:
 	rm 42sh
 42sh_LDADD= -lreadline
 42sh_CFLAGS = -Wall -Wextra -Werror -std=c99 -pedantic
+
+man1_MANS = doc/42sh.1
