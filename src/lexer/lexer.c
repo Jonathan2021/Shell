@@ -79,6 +79,7 @@ void add_token(struct Token **token, char *str)
         next->type = "IO_NUMBER";
         next->next = NULL;
         add_token(&next, str2);
+        free(str2);
     }
     if (!next->name)
     {
