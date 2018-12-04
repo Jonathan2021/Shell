@@ -224,9 +224,7 @@ struct Token *create_token(struct Token *token, char *str)
                         parse = parse + j + strlen(grammar[i]);
                     }
                     else
-                    {
                         parse += strlen(parse);
-                    }
                     j = -1;
                     break;
                 }
