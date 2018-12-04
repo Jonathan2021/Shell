@@ -211,7 +211,10 @@ struct Token *create_token(struct Token *token, char *str)
                             cpy[strlen(parse)] = '\0';
                         }
                         else
+                        {
                             my_strncpy(cpy, parse, j);
+                            cpy[j] = '\0';
+                        }
                         add_token(&token, cpy);
                         free(cpy);
                     }
