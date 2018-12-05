@@ -10,6 +10,7 @@ bin_PROGRAMS = 42sh
 			   src/parser/rule_compound_list.c \
 			   src/parser/rule_for.c \
 			   src/main.c \
+			   src/built-in/cd.c \ 
 			   src/lexer/lexer.c \
 			   src/file/history.c\
 			   src/print_ast/print_ast.c \
