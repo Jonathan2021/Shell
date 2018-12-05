@@ -66,14 +66,6 @@ char *getvalue(char *name)
     if (name[0] == '$')
     {
         return getenv(name + 1);
-        /*
-        char *cpy = malloc(strlen(name) * 10);
-        strcpy(cpy, name + 1);
-        char *value = get_value(cpy);
-        free(cpy);
-        if (value)
-            return value;
-        */
     }
     return name;
 }
@@ -86,7 +78,6 @@ char *getvalue(char *name)
 void setvalue(char *name, char *value)
 {
     setenv(name, value, 1);
-    //set_value(name, value);
 }
 
 /**
