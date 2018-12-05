@@ -61,8 +61,6 @@ static char *replace(char *str)
     tmp[j] = '\0';
     char *rslt = malloc(4096);
     strcpy(rslt, getenv("HOME"));
-    printf("FDP = %ld\n",strlen(rslt));
-    printf("FDP2 = %ld\n",my_strlen(tmp));
     my_strncat(rslt, tmp, my_strlen(tmp));
     free(tmp);
     return rslt;
@@ -102,11 +100,9 @@ int my_cd(char **cd_argv)
     else
     {
         char tmp[2048];
-        printf("OLDPWD  = %s\n",getenv("OLDPWD"));
-        printf("PWD  = %s\n",getenv("PWD"));
         if (strncmp(cd_argv[0], "-",1) == 0)
         {
-            printf("chdir(%s) = %d\n" \
+            printf("change on %s = %d\n" \
                     , cd_argv[0], chdir(getenv("OLDPWD")));
             return 0;
 
@@ -127,12 +123,10 @@ int my_cd(char **cd_argv)
                 return -1;
             }
             setenv("OLDPWD", getcwd(tmp, 2048), !0);
-            printf("chdir(%s) = %d\n", cd_argv[0] \
+            printf("chnge on %s = %d\n", cd_argv[0] \
                     , chdir(cd_argv[0]));
 
             setenv("PWD", getcwd(tmp, 2048), !0);
-            printf("PWD = %s\n",getenv("PWD"));
-            printf("OLDPWD  = %s\n",getenv("OLDPWD"));
             if (before[0] == '~')
                 free(cd_argv[0]);
             closedir(dir);
