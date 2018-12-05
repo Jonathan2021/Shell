@@ -4,8 +4,33 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <errno.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+
+int isnumber(char *str)
+{
+    int i = 0;
+    for (; str[i] != 0; ++i)
+    {
+        if(!(str[i] >= '0' && str[i] <= '9'))
+            break;
+    }
+    return (!str[i]);
+}
+
+int get_fd(char *str)
+{
+    int fd;
+    if(isnumber(str))
+        fd = atoi(str);
+    else
+    {
+        fprintf(stderr, "IONUMBER isn't a number\n");
+        return -1;
+    }
+    return fd;
+}
 
 void close_redirection(struct fds *fd)
 {
@@ -20,7 +45,7 @@ void close_redirection(struct fds *fd)
 int replace_fd(struct AST *node, struct fds *fd, int file, int io)
 {
     if (node->child[0])
-        io = atoi(getvalue(node->child[0]->self->name));
+        io = get_fd(getvalue(node->child[0]->self->name));
     if (!io)
     {
         if (fd->in > 2)
@@ -82,11 +107,11 @@ void lessgreat(struct AST *node, struct fds *fd)
     int file = -1;
     int io = 0;
     if (node->child[0])
-        io = atoi(getvalue(node->child[0]->self->name));
+        io = get_fd(getvalue(node->child[0]->self->name));
     if(io)
         file = open(getvalue(path), O_RDWR | O_TRUNC | O_CREAT, 0644);
     else
-        file = open(getvalue(path), O_RDWR | O_CREAT, 0644); 
+        file = open(getvalue(path), O_RDWR | O_CREAT, 0644);
     if (file == -1)
     {
         perror("");
@@ -95,10 +120,70 @@ void lessgreat(struct AST *node, struct fds *fd)
         close(file);
 }
 
-// void less(struct AST *node, struct fds *fd)
-//{
+void my_close(struct fds *fd, int io)
+{
+    if (!io)
+    {
+        if (fd->in > 2)
+            close(fd->in);
+    }
+    else if (io == 1)
+    {
+        if (fd->out > 2)
+            close(fd->out);
+    }
+    else if(io == 2)
+    {
+        if (fd->err > 2)
+            close(fd->err);
+    }
 
-//}
+}
+
+void something_and(struct AST *node, struct fds *fd, int io)
+{
+    int file = -1;
+    //int old_io = io;
+    if(node->child[0])
+        io = get_fd(getvalue(node->child[0]->self->name));    
+    if (isnumber(node->child[1]->self->name))
+    {
+        file = get_fd(node->child[1]->self->name);
+        errno = 0;
+        if(file < 0 || file > 2 || (!file && (io > 0)) || (file && !io))
+        {
+            fprintf(stderr, "%d isn't open for the input or output\n", file);
+            return;
+        }
+        if (!io)
+        {
+            if (fd->in > 2)
+                close(fd->in);
+            fd->in = (file == 1) ? fd->out : fd->err;
+        }
+        else if (io == 1)
+        {
+            if (fd->out > 2)
+                close(fd->out);
+            fd->out = (!file) ? fd->in : fd->err;
+        }
+        else if (io == 2)
+        {
+            if (fd->err > 2)
+                close(fd->err);
+            fd->err = (!file) ? fd->in : fd->err;
+        }
+        else
+        {
+            fprintf(stderr, "IONUMBER is invalid, should be 0, 1 or 2\n");
+        }
+    }
+    else if (!strcmp(node->child[1]->self->name, "-"))
+    {
+        my_close(fd, io);
+    }
+    //else behaviour is not specified
+}
 
 void redirect_word(struct AST *node, struct fds *fd)
 {
@@ -108,12 +193,12 @@ void redirect_word(struct AST *node, struct fds *fd)
         less(node, fd);
     else if (!strcmp(node->self->name, ">>"))
         dgreat(node, fd);
-    // else if (!strcmp(node->self->name, ">&"))
-    //    greatand(node, fd);
-    // else if (!strcmp(node->self->name, "<&"))
-    //    lessand(node, fd);
-    // else if (!strcmp(node->self->name, ">|"))
-    //    clobber(node, fd);
+    else if (!strcmp(node->self->name, ">&"))
+        something_and(node, fd, 1);
+    else if (!strcmp(node->self->name, "<&"))
+        something_and(node, fd, 0);
+    else if (!strcmp(node->self->name, ">|"))
+        greater(node, fd);
     else if (!strcmp(node->self->name, "<>"))
         lessgreat(node, fd);
 }

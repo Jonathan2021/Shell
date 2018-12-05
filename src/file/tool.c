@@ -206,9 +206,15 @@ struct Token *create_token(struct Token *token, char *str)
                     {
                         char *cpy = malloc(4096);
                         if (is_ionumber(parse + j))
+                        {
                             my_strncpy(cpy, parse, strlen(parse));
+                            cpy[strlen(parse)] = '\0';
+                        }
                         else
+                        {
                             my_strncpy(cpy, parse, j);
+                            cpy[j] = '\0';
+                        }
                         add_token(&token, cpy);
                         free(cpy);
                     }
@@ -218,9 +224,7 @@ struct Token *create_token(struct Token *token, char *str)
                         parse = parse + j + strlen(grammar[i]);
                     }
                     else
-                    {
                         parse += strlen(parse);
-                    }
                     j = -1;
                     break;
                 }
