@@ -3,6 +3,7 @@
  ** \brief Functions for cutting the user input
  ** \date 29 novembre 2018
  **/
+#define _XOPEN_SOURCE 600
 #define _GNU_SOURCE
 #include <err.h>
 #include <fcntl.h>
@@ -64,12 +65,15 @@ char *getvalue(char *name)
 {
     if (name[0] == '$')
     {
+        return getenv(name + 1);
+        /*
         char *cpy = malloc(strlen(name) * 10);
         strcpy(cpy, name + 1);
         char *value = get_value(cpy);
         free(cpy);
         if (value)
             return value;
+        */
     }
     return name;
 }
@@ -81,7 +85,8 @@ char *getvalue(char *name)
  **/
 void setvalue(char *name, char *value)
 {
-    set_value(name, value);
+    setenv(name, value, 1);
+    //set_value(name, value);
 }
 
 /**
