@@ -148,6 +148,57 @@ int my_exec(char *cmd[], struct fds fd)
     return res;
 }
 
+void zero_fill(char arr[], size_t len)
+{
+    for (size_t i = 0; i < len; ++i)
+        arr[i] = 0;
+}
+
+void double_quotes(char *cur_name, char fill[], size_t len)
+{
+    size_t j = 0;
+    for (size_t i = 0; cur_name[i] && j < len - 1; ++i)
+    {
+        if (cur_name[i] == ' ')
+            fill[j++] = ' ';
+        else
+        {
+            size_t old_i = i;
+            for (; cur_name[i + 1] && cur_name[i + 1] != ' '; ++i);
+            char c = cur_name[i + 1];
+            cur_name[i + 1] = 0;
+            char *tmp = getvalue(cur_name + old_i);
+            size_t tmp_len = strlen(tmp);
+            for (size_t k = 0; k < tmp_len; ++k)
+            {
+                fill[j++] = tmp[k];
+            }
+            cur_name[i + 1] = c;
+        }
+    }
+    fill[j] = 0;
+}
+
+int quotes(char *cur_name, char fill[], size_t len)
+{
+    char f = cur_name[0];
+    char l = cur_name[strlen(cur_name) - 1];
+    if (!((f == 39 || f == '"') && l == f && strlen(cur_name) > 2))
+        return 0;
+    cur_name[strlen(cur_name) - 1] = 0;
+    cur_name[0] = 0;
+    if (f == 39)
+    {
+        memmove(fill, cur_name + 1, strlen(cur_name + 1));
+        fill[strlen(cur_name + 1)] = 0;
+    }
+    else
+    {
+        double_quotes(cur_name + 1, fill, len);
+    }
+    return 1;
+}
+
 /**
  ** \brief Execute the command present in the AST node
  ** \param node the node to be evaluate
@@ -172,9 +223,7 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         cur_type = node->child[*index]->self->type;
         if (!strcmp(cur_name, ";") || !strcmp(cur_name, "&")
             || !strcmp(cur_name, "\n") || !strcmp(cur_type, "REDIRECTION"))
-        {
             break;
-        }
         if (strcmp(cur_type, "WORD"))
         {
             if (!node->child[*index]->foo)
@@ -185,7 +234,12 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         }
         else
         {
-            my_cmd[i] = getvalue(cur_name);
+            size_t len = 20 * strlen(cur_name);
+            char quote[len];
+            if (quotes(cur_name, quote, len))
+                my_cmd[i] = quote;
+            else
+                my_cmd[i] = getvalue(cur_name);
         }
     }
     (*index)++;
