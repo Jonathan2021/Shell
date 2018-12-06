@@ -85,12 +85,13 @@ void malloc_list(char *list[])
     }
 }
 
-void free_list(char *list[])
+void free_list(char *list[], int size)
 {
-    for (int i = 0; list[i]; ++i)
+    for (int i = 0; i < size && list[i] ; ++i)
     {
         free(list[i]);
     }
+    free(list);
 }
 
 int builtin(char *cmd[])
@@ -153,7 +154,7 @@ int my_exec(char *cmd[], struct fds fd)
  **/
 int exec_init(struct AST *node, int *index, struct fds fd)
 {
-    char *my_cmd[512];
+    char **my_cmd = calloc(512, sizeof(char *));
     int i = 0;
     char *cur_name;
     char *cur_type;
@@ -186,10 +187,9 @@ int exec_init(struct AST *node, int *index, struct fds fd)
             my_cmd[i] = getvalue(cur_name);
         }
     }
-    (*index)++;
-    my_cmd[i] = NULL;
     if (!special)
         res = my_exec(my_cmd, fd);
+    free_list(my_cmd, 512);
     close_redirection(&redir);
     return res;
 }
