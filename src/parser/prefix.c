@@ -28,9 +28,9 @@ void fill_assigment(struct AST *node, char *str)
     struct Token *left = malloc(sizeof(struct Token));
     struct Token *right = malloc(sizeof(struct Token));
     left->name = str;
-    left->type = "WORD";
+    left->type = "ASSIGMENT_WORD";
     right->name = str +  i + 1;
-    right->type = "WORD";
+    right->type = "ASSIGMENT_WORD";
     node->child[0] = AST_init(0);
     node->child[1] = AST_init(0);
     node->child[0]->self = left;
