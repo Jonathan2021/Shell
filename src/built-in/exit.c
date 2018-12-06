@@ -22,3 +22,14 @@ int my_exit(struct AST *ast, struct Token *token)
     reset_value();
     exit(0);
 }
+
+
+int exit_value(void)
+{
+    char *print = get_value("--exit");
+    if (print && strcmp(print, "1") == 0)
+    {
+        return 1;
+    }
+    return 0;
+}
