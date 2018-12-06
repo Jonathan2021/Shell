@@ -100,6 +100,11 @@ int builtin(char *cmd[], struct fds fd)
         return my_cd(cmd + 1);
     if (!strcmp(cmd[0], "echo"))
         return my_echo(cmd + 1, fd);
+    if (!strcmp(cmd[0], "exit") && !cmd[1])
+    {
+        set_value("exit", "1");
+        return 1;
+    }
     return -1;
 }
 
