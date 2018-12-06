@@ -64,6 +64,8 @@ void expand_tilde(char *name)
  **/
 char *copy_str(char *str)
 {
+    if (!str)
+        return NULL;
     char *res = calloc(strlen(str) + 1, sizeof(char));
     memmove(res, str, strlen(str));
     return res;
@@ -288,7 +290,10 @@ int exec_init(struct AST *node, int *index, struct fds fd)
             else
             {
                 my_cmd[i] = copy_str(getvalue(cur_name));
-                expand_tilde(my_cmd[i]);
+                if (!my_cmd[i])
+                    --i;
+                else
+                    expand_tilde(my_cmd[i]);
             }
         }
     }
@@ -299,6 +304,7 @@ int exec_init(struct AST *node, int *index, struct fds fd)
     close_redirection(&redir);
     return res;
 }
+
 /**
  ** \brief Execute the compound node
  ** \param node the node to be evaluate
@@ -328,6 +334,7 @@ void add_compound(struct AST *compound, struct AST *new)
         = realloc(compound->child, compound->nb_child * sizeof(struct AST));
     compound->child[compound->nb_child - 1] = new;
 }
+
 /**
  ** \brief Initialization of the compound node
  ** \return The compound node but not with his true child
