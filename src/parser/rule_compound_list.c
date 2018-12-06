@@ -14,7 +14,7 @@
 #include "include/my_tree.h"
 #include "include/redirection.h"
 #include "include/rule.h"
-#include "../built-in/built-in.h"
+#include "../built-in/include/built-in.h"
 
 /**
  ** \brief Expands tilde accordingly to the SCL

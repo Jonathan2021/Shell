@@ -14,7 +14,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "../include/shell.h"
-#include "../built-in/built-in.h"
+#include "../built-in/include/built-in.h"
 
 /**
  ** \brief our strncpy

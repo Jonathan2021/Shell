@@ -1,5 +1,5 @@
 /**
- ** \file parser/my_tree.c
+ ** \file built-in/echo.c
  ** \brief tools for ast
  ** \date 29 novembre 2018
  **
@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "built-in.h"
+#include "include/built-in.h"
 
 char special[8][2] = {
     {'\\', '\\'},

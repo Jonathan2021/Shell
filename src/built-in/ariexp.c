@@ -1,8 +1,20 @@
+/**
+ ** \file built-in/ariexp.c
+ ** \brief tools for ast
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #define _XOPEN_SOURCE 600
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ ** \brief same behavior as strtok
+ ** \param  str to split
+ ** \param  delim char to split str
+ **/
 
 char **split(char *str, char delim)
 {
@@ -28,6 +40,11 @@ char **split(char *str, char delim)
     rslt[gi] = '\0';
     return rslt;
 }
+
+/**
+ ** \brief same behavior as expen
+ ** \param  str to expen
+ **/
 
 int expen(char *str)
 {

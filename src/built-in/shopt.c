@@ -1,3 +1,10 @@
+/**
+ ** \file built-in/shopt.c
+ ** \brief tools for ast
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #define _GNU_SOURCE
 #include <err.h>
 #include <fcntl.h>
@@ -8,9 +15,14 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "../include/shell.h"
-#include "built-in.h"
+#include "include/built-in.h"
 #include "../parser/include/lexer_struct.h"
 #include "../parser/include/my_tree.h"
+
+/**
+ ** \brief print if str shopt is ON
+ ** \param str shopt
+ **/
 
 void print_if_on(char *str)
 {
@@ -28,6 +40,10 @@ void print_if_on(char *str)
     }
 }
 
+/**
+ ** \brief print all shopt ON
+ **/
+
 void print_on(void)
 {
     print_if_on("ast_print");
@@ -39,6 +55,11 @@ void print_on(void)
     print_if_on("sourcepath");
     print_if_on("xpg_echo");
 }
+
+/**
+ ** \brief print if str shopt is OFF
+ ** \param str shopt
+ **/
 
 void print_if_off(char *str)
 {
@@ -56,6 +77,10 @@ void print_if_off(char *str)
     }
 }
 
+/**
+ ** \brief print all shopt OFF
+ **/
+
 void print_off(void)
 {
     print_if_off("ast_print");
@@ -67,6 +92,12 @@ void print_off(void)
     print_if_off("sourcepath");
     print_if_off("xpg_echo");
 }
+
+/**
+ ** \brief check option of shopt
+ ** \param argv list of arg
+ ** \param i index of list
+ **/
 
 int check_shopt(char **argv, int *i)
 {
@@ -81,6 +112,11 @@ int check_shopt(char **argv, int *i)
     }
     return 1;
 }
+
+/**
+ ** \brief same behavior as shopt builtins
+ ** \param argv list of arg
+ **/
 
 int my_shopt(char **argv)
 {
