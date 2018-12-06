@@ -317,7 +317,8 @@ void foo_compound(struct AST *node, struct fds fd)
     int index = 0;
     int res = 0;
     while (index < node->nb_child
-           && strcmp(node->child[index]->self->type, "REDIRECTION"))
+           && strcmp(node->child[index]->self->type, "REDIRECTION")
+           && !exit_value())
         res = exec_init(node, &index, fd);
     node->res = res;
 }
