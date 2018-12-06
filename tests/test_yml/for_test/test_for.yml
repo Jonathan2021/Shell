@@ -1,63 +1,63 @@
 for_i_in_one:
     type: "command_diff"
-    command: "for i in 1 ; do echo bonjour ; done"
+    command: "for i in 1 ; do echo bonjour ; done ;"
 
 for_keyword:
     type: "command_diff"
-    command: "echo for"
+    command: "echo for ;"
 
 
 for_keyword_composed:
     type: "command_diff"
-    command: "echo for i"
+    command: "echo for i ;"
 
 for_i_in_one_two:
     type: "command_diff"
-    command: "for i in 1 2 ; do echo bonjour ; done"
+    command: "for i in 1 2 ; do echo bonjour ; done ;"
 
 
 for_i_in_one_two_three:
     type: "command_diff"
-    command: "for i in 1 2 3 ; do echo bonjour ; done"
+    command: "for i in 1 2 3 ; do echo bonjour ; done ;"
 
 
 for_i_in_p_one:
     type: "command_diff"
-    command: "for i in 1 ; do echo $i ; done"
+    command: "for i in 1 ; do echo $i ; done ;"
 
 
 for_i_in_p_one_two_three:
     type: "command_diff"
-    command: "for i in 1 2 3 ; do echo $i ; done"
+    command: "for i in 1 2 3 ; do echo $i ; done ;"
 
 for_i_in_p_one_ls:
     type: "command_diff"
-    command: "for i in 1 ; do ls ; done"
+    command: "for i in 1 ; do ls ; done ;"
 
 for_i_in_p_one_two_ls:
     type: "command_diff"
-    command: "for i in 1 ; do ls ; done"
+    command: "for i in 1 ; do ls ; done ;"
 
 for_i_in_p_one_two_ls:
     type: "command_diff"
-    command: "for i in 1 ; do ls ; done"
+    command: "for i in 1 ; do ls ; done ;"
 
 for_i_in_p_one_ls_inside:
     type: "command_diff"
-    command: "for i in ls ; do echo $i ; done"
+    command: "for i in ls ; do echo $i ; done ;"
 
 for_i_in_one_ls_inside:
     type: "command_diff"
-    command: "for i in ls ; do $i ; done"
+    command: "for i in ls ; do $i ; done ;"
 
 for_i_in_p_one_echo_inside:
     type: "command_diff"
-    command: "for i in echo hello ; do echo $i ; done"
+    command: "for i in echo hello ; do echo $i ; done ;"
 
 for_i_in_p_one_echo_ls_inside:
     type: "command_diff"
-    command: "for i in echo ls ; do $i ; done"
+    command: "for i in echo ls ; do $i ; done ;"
 
 for_for_in_for:
     type: "command_diff"
-    command: "for for in for ; do echo $for ; done"
+    command: "for for in for ; do echo $for ; done ;"

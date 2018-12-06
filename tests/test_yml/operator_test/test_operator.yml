@@ -1,48 +1,48 @@
 operator_true_&&_pwd:
     type: "command_diff"
-    command: "if true && pwd ; then echo oui ; else echo non ; fi"
+    command: "if true && pwd ; then echo oui ; else echo non ; fi;"
 
 operator_||_&&:
     type: "command_diff"
-    command: "if false || true && false ; then echo oui ; else echo non ; fi"
+    command: "if false || true && false ; then echo oui ; else echo non ; fi;"
 
 operator_||_||:
     type: "command_diff"
-    command: "if false || true || false ; then echo oui ; else echo non ; fi"
+    command: "if false || true || false ; then echo oui ; else echo non ; fi;"
 
 operator_&&_&&:
     type: "command_diff"
-    command: "if false && true && false ; then echo oui ; else echo non ; fi"
+    command: "if false && true && false ; then echo oui ; else echo non ; fi;"
 
 operator_&&_||:
     type: "command_diff"
-    command: "if false && true || false ; then echo oui ; else echo non ; fi"
+    command: "if false && true || false ; then echo oui ; else echo non ; fi;"
 
 operator_pwd_&&_ls:
     type: "command_diff"
-    command: "pwd && ls"
+    command: "pwd && ls;"
 
 operator_ls_||_echo:
     type: "command_diff"
-    command: "ls || echo oui"
+    command: "ls || echo oui;"
 
 operator_ls_&&_ls_&&_ls:
     type: "command_diff"
-    command: "ls && ls && ls"
+    command: "ls && ls && ls;"
 
 operator_ls_||_pwd_&&_ls:
     type: "command_diff"
-    command: "ls || pwd || ls"
+    command: "ls || pwd || ls;"
 
 operator_ls_||_echo_||_echo:
     type: "command_diff"
-    command: "ls || echo oui || echo non"
+    command: "ls || echo oui || echo non;"
 
 operator_ls_||:
     type: "command_diff"
-    command: "ls || "
+    command: "ls || ;"
 
 operator_echo_&&_||_ls:
     type: "command_diff"
-    command: "echo && || ls"
+    command: "echo && || ls;"
 

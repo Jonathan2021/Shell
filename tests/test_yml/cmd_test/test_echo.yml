@@ -1,47 +1,47 @@
 echo_backslash_n:
     type: "output_diff"
-    command: "echo hello"
+    command: "echo hello ;"
     expected:
         stdout: "hello\n"
         rvalue: 0
 
 echo_error:
     type: "output_diff"
-    command: "echo if if"
+    command: "echo if if ;"
     expected:
         stdout: "if if\n"
         rvalue: 0
 
 echo_long_sentence:
     type: "output_diff"
-    command: "echo my name is marco polo"
+    command: "echo my name is marco polo ;"
     expected:
         stdout: "my name is marco polo\n"
         rvalue: 0
 
 echo_pwd:
     type: "output_diff"
-    command: "echo pwd"
+    command: "echo pwd ;"
     expected:
         stdout: "pwd\n"
         rvalue: 0
 
 echo_ls:
     type: "output_diff"
-    command: "echo ls"
+    command: "echo ls ;"
     expected:
         stdout: "ls\n"
         rvalue: 0
 
 echo_$ls:
     type: "output_diff"
-    command: "echo $ls"
+    command: "echo $ls ;"
     expected:
         stdout: "$ls\n"
         rvalue: 0
 
 echo_42:
-    type: "output_diff"
+    type: "output_diff ;"
     command: "echo 42"
     expected:
         stdout: "42\n"
@@ -49,35 +49,35 @@ echo_42:
 
 echo_echo:
     type: "output_diff"
-    command: "echo echo"
+    command: "echo echo ;"
     expected:
         stdout: "echo\n"
         rvalue: 0
 
 echo_hello_word:
     type: "output_diff"
-    command: "echo hello word"
+    command: "echo hello word ;"
     expected:
         stdout: "hello word\n"
         rvalue: 0
 
 echo_epita:
     type: "output_diff"
-    command: "echo epita"
+    command: "echo epita ;"
     expected:
         stdout: "epita\n"
         rvalue: 0
 
 echo_42sh:
     type: "output_diff"
-    command: "echo 42sh"
+    command: "echo 42sh ;"
     expected:
         stdout: "42sh\n"
         rvalue: 0
 
 echo_team:
     type: "output_diff"
-    command: "echo team souder"
+    command: "echo team souder ;"
     expected:
         stdout: "team souder\n"
         rvalue: 0

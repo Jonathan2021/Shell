@@ -1,85 +1,85 @@
 cmd_ls:
     type: "command_diff"
-    command: "ls"
+    command: "ls;"
 
 cmd_pwd:
     type: "command_diff"
-    command: "pwd"
+    command: "pwd;"
 
 cmd_help:
     type: "command_diff"
-    command: "man"
+    command: "man ;"
 
 cmd_echo:
     type: "command_diff"
-    command: "echo"
+    command: "echo ;"
 
 cmd_echo1:
     type: "command_diff"
-    command: "echo if if"
+    command: "echo if if ;"
 
 cmd_ls_pipe_echo:
     type: "command_diff"
-    command: "ls | echo"
+    command: "ls | echo ;"
 
 cmd_if_true_ls:
     type: "command_diff"
-    command: "if true ; then ls ; fi"
+    command: "if true ; then ls ; fi ;"
 
 cmd_man_ls:
     type: "command_diff"
-    command: "man ls"
+    command: "man ls ;"
 
 cmd_man_pwd:
     type: "command_diff"
-    command: "man pwd"
+    command: "man pwd ;"
 
 cmd_find_.:
     type: "command_diff"
-    command: "find a"
+    command: "find a ;"
 
 cmd_man_open:
     type: "command_diff"
-    command: "man open"
+    command: "man open ;"
 
 cmd_find_slash:
     type: "command_diff"
-    command: "find b"
+    command: "find b ;"
 
 cmd_man_close:
     type: "command_diff"
-    command: "man close"
+    command: "man close ;"
 
 cmd_man_fopen:
     type: "command_diff"
-    command: "man fopen"
+    command: "man fopen ;"
 
 cmd_gcc:
     type: "command_diff"
-    command: "gcc"
+    command: "gcc ;"
 
 cmd_gdb:
     type: "command_diff"
-    command: "gdb"
+    command: "gdb ;"
 
 cmd_ls_;_ls:
     type: "command_diff"
-    command: "ls ; ls"
+    command: "ls ; ls ;"
 
 cmd_ls_&&_ls:
     type: "command_diff"
-    command: "ls && ls"
+    command: "ls && ls ;"
 
 cmd_echo:
     type: "command_diff"
-    command: "echo"
+    command: "echo ;"
 
 cmd_git_help:
     type: "command_diff"
-    command: "git --help"
+    command: "git --help ;"
 
 cmd_man_man:
     type: "command_diff"
-    command: "man man"
+    command: "man man ;"
 
 
