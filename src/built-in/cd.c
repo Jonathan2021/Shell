@@ -77,7 +77,6 @@ static int settohome(void)
     const char *const home = getenv("HOME");
     if (home)
     {
-        printf("chdir(%s) = %d\n", home, chdir(home));
         if(chdir(home))
             return 0;
         return 1;
@@ -102,8 +101,8 @@ int my_cd(char **cd_argv)
         char tmp[2048];
         if (strncmp(cd_argv[0], "-",1) == 0)
         {
-            printf("change on %s = %d\n" \
-                    , cd_argv[0], chdir(getenv("OLDPWD")));
+            if (chdir(getenv("OLDPWD")))
+                return 0;
             return 1;
 
         }
@@ -123,8 +122,13 @@ int my_cd(char **cd_argv)
                 return 0;
             }
             setenv("OLDPWD", getcwd(tmp, 2048), !0);
-            printf("chnge on %s = %d\n", cd_argv[0] \
-                    , chdir(cd_argv[0]));
+            if (chdir(cd_argv[0]))
+            {
+                if (before[0] == '~')
+                    free(cd_argv[0]);
+                closedir(dir);
+                return 0;
+            }
 
             setenv("PWD", getcwd(tmp, 2048), !0);
             if (before[0] == '~')
