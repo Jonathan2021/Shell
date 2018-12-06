@@ -24,7 +24,7 @@ static char *my_strncat(char *dest, const char *src, size_t n)
     size_t dest_len = strlen(dest);
     size_t i;
 
-    for (i = 0 ; i < n && src[i] != '\0' ; i++)
+    for (i = 0; i < n && src[i] != '\0'; i++)
         dest[dest_len + i] = src[i];
     dest[dest_len + i] = '\0';
 
@@ -39,12 +39,14 @@ static char *my_strncat(char *dest, const char *src, size_t n)
 static size_t my_strlen(char *s)
 {
     size_t len = 0;
-    for (; s[len] != '\0'; len++);
+    for (; s[len] != '\0'; len++)
+        ;
     return len;
 }
 
 /**
- ** \brief The function witch replace the ~ by the good path of the variable $HOME
+ ** \brief The function witch replace the ~ by the good path of the variable
+ *$HOME
  ** \param the string to put replace
  ** \return the new string
  **/
@@ -67,19 +69,19 @@ static char *replace(char *str)
 }
 
 /**
- ** \brief the function which put you in the $HOME directory if no args pass in argument
+ ** \brief the function which put you in the $HOME directory if no args pass in
+ *argument
  ** \return if the operation pass good or not
  **/
-
 
 static int settohome(void)
 {
     const char *const home = getenv("HOME");
     if (home)
     {
-        char tmp [2048];
+        char tmp[2048];
         setenv("OLDPWD", getcwd(tmp, 2048), !0);
-        if(chdir(home))
+        if (chdir(home))
             return 0;
         setenv("PWD", getcwd(tmp, 2048), !0);
         return 1;
@@ -94,24 +96,22 @@ static int settohome(void)
  **/
 int my_cd(char **cd_argv)
 {
-    if (cd_argv == NULL || cd_argv[0] == NULL \
-            || cd_argv[0][0] == '\0')
+    if (cd_argv == NULL || cd_argv[0] == NULL || cd_argv[0][0] == '\0')
     {
         return settohome();
     }
     else
     {
         char tmp[2048];
-        if (strncmp(cd_argv[0], "-",1) == 0)
+        if (strncmp(cd_argv[0], "-", 1) == 0)
         {
             char *tt = getenv("PWD");
             if (chdir(getenv("OLDPWD")))
                 return 0;
             setenv("PWD", getcwd(tmp, 2048), !0);
-            setenv("OLDPWD", tt , !0);
+            setenv("OLDPWD", tt, !0);
             printf("%s\n", getenv("PWD"));
             return 1;
-
         }
         else
         {
@@ -122,8 +122,7 @@ int my_cd(char **cd_argv)
             DIR *dir = opendir(cd_argv[0]);
             if (!dir)
             {
-                fprintf(stdout, \
-                        "42sh: cd: %s Not a directory\n", before);
+                fprintf(stdout, "42sh: cd: %s Not a directory\n", before);
                 if (before[0] == '~')
                     free(cd_argv[0]);
                 return 0;
@@ -146,4 +145,3 @@ int my_cd(char **cd_argv)
         return 0;
     }
 }
-

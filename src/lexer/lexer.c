@@ -75,14 +75,14 @@ void add_token(struct Token **token, char *str)
         char *str1 = malloc(4096);
         char *str2 = malloc(4096);
         char *str3 = malloc(4096);
-        sscanf(str, "%[^'>','<']%[^A-Za-z0-9]%s", str1, str2,str3);
+        sscanf(str, "%[^'>','<']%[^A-Za-z0-9]%s", str1, str2, str3);
         str1[strlen(str1)] = '\0';
         str1[strlen(str2)] = '\0';
         next->name = str1;
         next->type = "IO_NUMBER";
         next->next = NULL;
         add_token(&next, str2);
-        if (str3 && str3[0] != '\0' && strncmp(str3," ",1) != 0)
+        if (str3 && str3[0] != '\0' && strncmp(str3, " ", 1) != 0)
             add_token(&next, str3);
         free(str3);
         free(str2);
@@ -142,12 +142,12 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
         else if (c == '0' && argv[i][0] == '+')
         {
             set_value(optarg, "1");
-            i ++;
+            i++;
         }
-        else if (c == '0'&& argv[i][0] == '-')
+        else if (c == '0' && argv[i][0] == '-')
         {
             set_value(optarg, "0");
-            i ++;
+            i++;
         }
         else if (c == 1)
             set_value("--ast-print", "1");

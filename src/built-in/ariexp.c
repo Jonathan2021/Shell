@@ -53,13 +53,13 @@ int expen(char *str)
         printf("NOT GOOD\n");
     else
         printf("%s add %s", getvalue(cut[0]), cut[1]);
-    for (int i = 0; cut[i] != '\0' ; i++)
+    for (int i = 0; cut[i] != '\0'; i++)
         free(cut[i]);
     free(cut);
     return 0;
 }
 int main(int argc, char *argv[])
 {
-  expen("i    + w");
-  return 0;
+    expen("i    + w");
+    return 0;
 }

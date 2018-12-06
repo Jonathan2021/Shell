@@ -23,7 +23,6 @@ int my_exit(struct AST *ast, struct Token *token)
     exit(0);
 }
 
-
 int exit_value(void)
 {
     char *print = get_value("--exit");

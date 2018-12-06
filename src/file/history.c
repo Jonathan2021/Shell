@@ -32,31 +32,32 @@ static int line_history = 0;
 int check_rl(void)
 {
     rl_initialize();
-    while(rl_bind_keyseq("\\e[a",up_arrow) ||
-        rl_bind_keyseq("\\e[b",down_arrow));
+    while (rl_bind_keyseq("\\e[a", up_arrow)
+           || rl_bind_keyseq("\\e[b", down_arrow))
+        ;
     line_history = 0;
     return 0;
 }
 
 int up_arrow(void)
 {
-    if (history_length-line_history == 0)
+    if (history_length - line_history == 0)
         return 0;
-    HIST_ENTRY *historique = history_get(history_length-line_history);
+    HIST_ENTRY *historique = history_get(history_length - line_history);
     rl_replace_line(historique->line, 0);
     rl_end_of_line(0, 0);
-    line_history ++;
+    line_history++;
     return 0;
 }
 
 int down_arrow(void)
 {
-    if (history_length-line_history == 0)
+    if (history_length - line_history == 0)
         return 0;
-    HIST_ENTRY *historique = history_get(history_length-line_history);
+    HIST_ENTRY *historique = history_get(history_length - line_history);
     rl_replace_line(historique->line, 0);
     rl_end_of_line(0, 0);
-    line_history --;
+    line_history--;
     return 0;
 }
 
@@ -74,13 +75,13 @@ void init_history(void)
 
 void history(void)
 {
-    FILE *file = fopen(".42sh_history","r");
+    FILE *file = fopen(".42sh_history", "r");
     char ligne[4096];
     int i = 1;
-    while (fgets(ligne,4096,file) != NULL)
+    while (fgets(ligne, 4096, file) != NULL)
     {
-        printf("%d %s\n",i,ligne);
-        i ++;
+        printf("%d %s\n", i, ligne);
+        i++;
     }
     fclose(file);
 }

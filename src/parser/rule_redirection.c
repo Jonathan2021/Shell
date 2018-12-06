@@ -18,7 +18,7 @@ int isnumber(char *str)
     int i = 0;
     for (; str[i] != 0; ++i)
     {
-        if(!(str[i] >= '0' && str[i] <= '9'))
+        if (!(str[i] >= '0' && str[i] <= '9'))
             break;
     }
     return (!str[i]);
@@ -27,13 +27,13 @@ int isnumber(char *str)
 /**
  ** \brief converts a string to an int if it is a number
  ** \param str string to be converted
- ** \return returns the corresponding converted int on sucess (>=0), 
+ ** \return returns the corresponding converted int on sucess (>=0),
  *-1 on failure
  **/
 int get_fd(char *str)
 {
     int fd;
-    if(isnumber(str))
+    if (isnumber(str))
         fd = atoi(str);
     else
     {
@@ -44,7 +44,7 @@ int get_fd(char *str)
 }
 
 /**
- ** \brief closes file descriptors if they are correct and different from 
+ ** \brief closes file descriptors if they are correct and different from
  *STRDIN_FILENO, STDOUT_FILENO or STDERR_FILENO
  ** \param fd struct containing context dependent
  *input, output, and err file descriptors
@@ -61,7 +61,7 @@ void close_redirection(struct fds *fd)
 
 /**
  ** \brief Replaces input, output or error with a new file descriptor
- ** \param node pointer to the corresponding redirection node from the AST 
+ ** \param node pointer to the corresponding redirection node from the AST
  ** \param fd pointer to struct fds to modify with new file descriptor
  ** \param file new file descriptor
  ** \param io 0 to replace input, 1 for output and 2 for err
@@ -152,7 +152,7 @@ void lessgreat(struct AST *node, struct fds *fd)
     int io = 0;
     if (node->child[0])
         io = get_fd(getvalue(node->child[0]->self->name));
-    if(io)
+    if (io)
         file = open(getvalue(path), O_RDWR | O_TRUNC | O_CREAT, 0644);
     else
         file = open(getvalue(path), O_RDWR | O_CREAT, 0644);
@@ -160,13 +160,13 @@ void lessgreat(struct AST *node, struct fds *fd)
     {
         perror("");
     }
-    else if(!replace_fd(node, fd, file, 0))
+    else if (!replace_fd(node, fd, file, 0))
         close(file);
 }
 
 /**
  ** \brief close input, output or error in fd depending on io
- ** \param fd pointer to the struct containing input, output and error file 
+ ** \param fd pointer to the struct containing input, output and error file
  *descriptors
  ** \param io 0 for input, 1 for output and 2 for error
  **/
@@ -182,31 +182,31 @@ void my_close(struct fds *fd, int io)
         if (fd->out > 2)
             close(fd->out);
     }
-    else if(io == 2)
+    else if (io == 2)
     {
         if (fd->err > 2)
             close(fd->err);
     }
-
 }
 
 /**
  ** \brief evaluation of the >& or <& redirection to a file;
  ** \param node pointer to the >& or <& node of the AST
  ** \param fd pointer to a structure containing file descriptors to modify
- ** \param io the default file descriptor to change depending on the redirection
+ ** \param io the default file descriptor to change depending on the
+ *redirection
  **/
 void something_and(struct AST *node, struct fds *fd, int io)
 {
     int file = -1;
-    //int old_io = io;
-    if(node->child[0])
-        io = get_fd(getvalue(node->child[0]->self->name));    
+    // int old_io = io;
+    if (node->child[0])
+        io = get_fd(getvalue(node->child[0]->self->name));
     if (isnumber(node->child[1]->self->name))
     {
         file = get_fd(node->child[1]->self->name);
         errno = 0;
-        if(file < 0 || file > 2 || (!file && (io > 0)) || (file && !io))
+        if (file < 0 || file > 2 || (!file && (io > 0)) || (file && !io))
         {
             fprintf(stderr, "%d isn't open for the input or output\n", file);
             return;
@@ -238,7 +238,7 @@ void something_and(struct AST *node, struct fds *fd, int io)
     {
         my_close(fd, io);
     }
-    //else behaviour is not specified
+    // else behaviour is not specified
 }
 
 /**
@@ -265,7 +265,7 @@ void redirect_word(struct AST *node, struct fds *fd)
 }
 
 /**
- ** \brief checks sanity of the redirection node and calls the appropriate 
+ ** \brief checks sanity of the redirection node and calls the appropriate
  *function depending on if it redirect to a heredoc or not
  ** \param node pointer to the redirection node in the AST
  ** \param fd pointer to a struct containing file descriptors modifies later on
@@ -283,7 +283,7 @@ void my_redirection(struct AST *node, struct fds *fd)
 /**
  ** \brief Evaluates all the redirections until the next ;, \n or &
  ** \param node pointer to a node containing a bunch of redirections
- ** \param fds pointer to a struct containing file descriptors modified along 
+ ** \param fds pointer to a struct containing file descriptors modified along
  *all the redirections
  ** \param index indicates from which child of node we should start evaluating
  **/
@@ -307,7 +307,8 @@ void get_redirection(struct AST *node, struct fds *fd, int index)
 
 /**
  ** \brief load file descriptors from on structure to another
- ** \param fd pointer to the struct that will have its file descriptors modified
+ ** \param fd pointer to the struct that will have its file descriptors
+ *modified
  ** \param to_add struct containing file descriptors to load into the other
  **/
 void merge_redirection(struct fds *fd, struct fds to_add)
@@ -338,7 +339,8 @@ struct AST *redirection_init(struct Token *token)
 /**
  ** \brief evaluation of the grammar rule for redirections
  ** \param t pointer to an element of the chained list of tokens
- ** \return a redirection node if it verified the grammar rule or NULL otherwise
+ ** \return a redirection node if it verified the grammar rule or NULL
+ *otherwise
  **/
 struct AST *redirection(struct Token **t)
 {

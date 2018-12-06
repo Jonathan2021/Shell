@@ -116,11 +116,10 @@ void reset_value(void)
 
 int end_string(char *parse)
 {
-    if (parse && (strncmp(parse,"\"",1) == 0 || strncmp(parse,"\'",1) == 0)
-        && strncmp(parse-1,"\\",1)!=0)
+    if (parse && (strncmp(parse, "\"", 1) == 0 || strncmp(parse, "\'", 1) == 0)
+        && strncmp(parse - 1, "\\", 1) != 0)
         return 1;
     return 0;
-
 }
 
 static int my_strlen(char *str)
@@ -131,28 +130,28 @@ static int my_strlen(char *str)
     return i;
 }
 
-char *create_word(char **parse,char **str2)
+char *create_word(char **parse, char **str2)
 {
-    char *cpy = calloc(4096,1);
+    char *cpy = calloc(4096, 1);
     char *check = *parse;
-    int len = my_strlen(*str2)-1;
-    strncat(cpy,*parse,1);
-    *parse = *parse +1;
+    int len = my_strlen(*str2) - 1;
+    strncat(cpy, *parse, 1);
+    *parse = *parse + 1;
     while (len != 0 && *parse && !end_string(*parse))
     {
         if (*parse[0] == '\0')
-            strcat(cpy," ");
+            strcat(cpy, " ");
         else
-            strncat(cpy,*parse,1);
-        *parse = *parse +1;
-        len --;
+            strncat(cpy, *parse, 1);
+        *parse = *parse + 1;
+        len--;
     }
     if (len == 0)
         *parse = NULL;
     else if (*parse)
     {
-        strncat(cpy,*parse,1);
-        *parse = *parse +1;
+        strncat(cpy, *parse, 1);
+        *parse = *parse + 1;
     }
     *parse = check;
     cpy[my_strlen(cpy)] = '\0';
@@ -163,8 +162,7 @@ static int check_quote(char *str)
 {
     for (int i = 0; i < my_strlen(str); i++)
     {
-        if (i > 0 && str[i-1] == '\\' && 
-            (str[i] == '\"' || str[i] == '\''))
+        if (i > 0 && str[i - 1] == '\\' && (str[i] == '\"' || str[i] == '\''))
             continue;
         if (str[i] == '\"' || str[i] == '\'')
             return 1;
@@ -175,13 +173,14 @@ static int check_quote(char *str)
 char *parse_quote(char **parse, char **pt)
 {
     char *delim = {"\t \n"};
-    char *cpy = create_word(parse,pt);
-    if (*parse[0] == parse[0][strlen(*parse)-1] && 
-        ((*parse[0] == '\"' && strlen(*parse)>1) ||
-        (*parse[0] == '\'' && strlen(*parse)>1)))
+    char *cpy = create_word(parse, pt);
+    if (*parse[0] == parse[0][strlen(*parse) - 1]
+        && ((*parse[0] == '\"' && strlen(*parse) > 1)
+               || (*parse[0] == '\'' && strlen(*parse) > 1)))
     {
         *parse = strtok(NULL, delim);
-        return cpy;;
+        return cpy;
+        ;
     }
     *parse = strtok(NULL, delim);
     while (*parse && check_quote(*parse) == 0)
@@ -203,9 +202,9 @@ struct Token *create_token(struct Token *token, char *str)
 {
     char *parse;
     char *delim = {"\t \n"};
-    char *str2 = calloc(40960,1);
+    char *str2 = calloc(40960, 1);
     char *pt = str2;
-    strcpy(str2,str);
+    strcpy(str2, str);
     parse = strtok(str, delim);
     char *grammar[20] = {")", "(", "&&", "||", ";;", "<<", ">>", "<&", ">&",
         "<>", "<<-", ">|", ";", "&", ">", "<"};
@@ -246,7 +245,7 @@ struct Token *create_token(struct Token *token, char *str)
                 }
                 else if (parse[0] == '\"' || parse[0] == '\'')
                 {
-                    char *quote = parse_quote(&parse,&pt);
+                    char *quote = parse_quote(&parse, &pt);
                     add_token(&token, quote);
                     free(quote);
                     j = 0;

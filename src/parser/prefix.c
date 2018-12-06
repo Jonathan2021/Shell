@@ -10,32 +10,31 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-void foo_assigment(struct AST *node, __attribute__((unused))struct fds fd)
+void foo_assigment(struct AST *node, __attribute__((unused)) struct fds fd)
 {
-    if(!node || node->nb_child < 2 || !node->child[0] || !node->child[1])
+    if (!node || node->nb_child < 2 || !node->child[0] || !node->child[1])
         return;
-    setvalue(node->child[0]->self->name, 
-            getvalue(node->child[1]->self->name));
-
-    
+    setvalue(node->child[0]->self->name, getvalue(node->child[1]->self->name));
 }
 
 void fill_assigment(struct AST *node, char *str)
 {
     int i = 0;
-    for(; str[i] != '='; ++i);
+    for (; str[i] != '='; ++i)
+        ;
     str[i] = 0;
     struct Token *left = malloc(sizeof(struct Token));
     struct Token *right = malloc(sizeof(struct Token));
     left->name = str;
     left->type = "ASSIGMENT_WORD";
-    right->name = str +  i + 1;
+    right->name = str + i + 1;
     right->type = "ASSIGMENT_WORD";
     node->child[0] = AST_init(0);
     node->child[1] = AST_init(0);
     node->child[0]->self = left;
     node->child[1]->self = right;
-    //Risque de poser probleme quand on free puisque free left revient à free right
+    // Risque de poser probleme quand on free puisque free left revient à free
+    // right
 }
 /**
  ** \brief init assigment node
@@ -49,12 +48,13 @@ struct AST *assigment_init()
     if (!token)
         return NULL;
     struct AST *node = AST_init(2);
-    if(!node)
+    if (!node)
     {
         free(token);
         return NULL;
     }
-    token->name = "="; //FIXME should maybe malloc it to facilitate freeing the tree
+    token->name
+        = "="; // FIXME should maybe malloc it to facilitate freeing the tree
     token->type = "ASSIGMENT_WORD";
     node->self = token;
     node->foo = foo_assigment;
@@ -71,7 +71,8 @@ int is_assigment(char *str)
     if (!str || str[0] == '=' || (str[0] > '0' && str[0] < '9'))
         return 0;
     int i = 0;
-    for (; str[i] != '=' && str[i] != 0; ++i);
+    for (; str[i] != '=' && str[i] != 0; ++i)
+        ;
     return (str[i] == '=');
 }
 

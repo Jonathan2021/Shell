@@ -30,17 +30,17 @@ void expand_tilde(char *name)
     }
     char old = name[j];
     name[j] = 0;
-    if(!strcmp(name, "~"))
+    if (!strcmp(name, "~"))
     {
         name[j] = old;
         size_t new_size = strlen(name) + strlen(getenv("HOME"));
         name = realloc(name, new_size);
-        memmove(name + new_size - 1 - strlen(name + 1), name + 1, 
-                strlen(name + 1));
+        memmove(name + new_size - 1 - strlen(name + 1), name + 1,
+            strlen(name + 1));
         memmove(name, getenv("HOME"), strlen(getenv("HOME")));
         name[new_size - 1] = 0;
     }
-    else if(!strcmp(name, "~+") || !strcmp(name, "~-"))
+    else if (!strcmp(name, "~+") || !strcmp(name, "~-"))
     {
         const char *var = "OLDPWD";
         if (!strcmp(name, "~+"))
@@ -48,8 +48,8 @@ void expand_tilde(char *name)
         name[j] = old;
         size_t new_size = strlen(name) + strlen(getenv(var)) - 1;
         name = realloc(name, new_size);
-        memmove(name + new_size - 1 - strlen(name + 2), name + 2, 
-                strlen(name + 2));
+        memmove(name + new_size - 1 - strlen(name + 2), name + 2,
+            strlen(name + 2));
         memmove(name, getenv(var), strlen(getenv(var)));
         name[new_size - 1] = 0;
     }
@@ -72,7 +72,7 @@ char *copy_str(char *str)
 }
 
 /**
- ** \brief copies all the elements of a char ** list 
+ ** \brief copies all the elements of a char ** list
  ** \param list list of elements to be copied
  **/
 void malloc_list(char *list[])
@@ -90,7 +90,7 @@ void malloc_list(char *list[])
  **/
 void free_list(char *list[], size_t size)
 {
-    for (size_t i = 0; i < size && list[i] ; ++i)
+    for (size_t i = 0; i < size && list[i]; ++i)
     {
         free(list[i]);
     }
@@ -99,7 +99,8 @@ void free_list(char *list[], size_t size)
 
 /**
  ** \brief Calls the project's reimplementation of the builtin if it exists
- ** \param cmd char* array with the name of the binary/builtin and its arguments
+ ** \param cmd char* array with the name of the binary/builtin and its
+ *arguments
  ** \param fd struct contain input, output and error file descriptors
  ** \return return 1 if successful execution, 0 if not and -1 if the
  *binary/builtin was not reimplemented
@@ -111,7 +112,7 @@ int builtin(char *cmd[], struct fds fd)
     if (!strcmp(cmd[0], "echo"))
         return my_echo(cmd + 1, fd);
     if (!strcmp(cmd[0], "shopt"))
-        return my_shopt(cmd + 1,fd);
+        return my_shopt(cmd + 1, fd);
     if (!strcmp(cmd[0], "exit") && !cmd[1])
     {
         set_value("--exit", "1");
@@ -123,7 +124,8 @@ int builtin(char *cmd[], struct fds fd)
 /**
  ** \brief Executes the binary/builtin using execvp if not reimplemented
  *in the project
- ** \param cmd char* array with the name of the binary/builtin and its arguments
+ ** \param cmd char* array with the name of the binary/builtin and its
+ *arguments
  ** \param fd struct contain input, output and error file descriptors
  ** \return return 1 if successful execution, 0 otherwise
  *otherwise returns NULL
@@ -175,7 +177,7 @@ int my_exec(char *cmd[], struct fds fd)
 /**
  ** \brief checks if the string is quoted and calls the adequate function
  ** \param cur_name string to be checked
- ** \return The modified function if the string was quoted, 
+ ** \return The modified function if the string was quoted,
  *otherwise returns NULL
  **/
 char *double_quotes(char *cur_name)
@@ -185,7 +187,7 @@ char *double_quotes(char *cur_name)
     char *fill = calloc(len, sizeof(char));
     for (size_t i = 0; cur_name[i] && j < len - 1; ++i)
     {
-        if(j + 1 >= len - 1)
+        if (j + 1 >= len - 1)
         {
             len *= 2;
             fill = realloc(fill, len);
@@ -195,12 +197,13 @@ char *double_quotes(char *cur_name)
         else
         {
             size_t old_i = i;
-            for (; cur_name[i + 1] && cur_name[i + 1] != ' '; ++i);
+            for (; cur_name[i + 1] && cur_name[i + 1] != ' '; ++i)
+                ;
             char c = cur_name[i + 1];
             cur_name[i + 1] = 0;
             char *tmp = getvalue(cur_name + old_i);
             if (tmp)
-            { 
+            {
                 size_t tmp_len = strlen(tmp);
                 for (size_t k = 0; k < tmp_len; ++k)
                 {
@@ -218,7 +221,7 @@ char *double_quotes(char *cur_name)
 /**
  ** \brief checks if the string is quoted and calls the adequate function
  ** \param cur_name string to be checked
- ** \return The modified function if the string was quoted, 
+ ** \return The modified function if the string was quoted,
  *otherwise returns NULL
  **/
 char *quotes(char *cur_name)
@@ -227,7 +230,7 @@ char *quotes(char *cur_name)
     char l = cur_name[strlen(cur_name) - 1];
     if (!((f == 39 || f == '"') && l == f && strlen(cur_name) > 2))
         return NULL;
-    size_t cur_len = strlen(cur_name) - 1; 
+    size_t cur_len = strlen(cur_name) - 1;
     cur_name[cur_len] = 0;
     cur_name[0] = 0;
     char *fill = NULL;
@@ -246,8 +249,6 @@ char *quotes(char *cur_name)
     cur_name[cur_len] = f;
     return fill;
 }
-
-
 
 /**
  ** \brief Execute the command present in the AST node
