@@ -1,3 +1,10 @@
+/**
+ ** \file parser/my_tree.c
+ ** \brief tools for ast
+ ** \date 29 novembre 2018
+ **
+ **/
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,6 +20,13 @@ char special[8][2] = {
     {'t', '\t'},
     {'v', '\v'}
 };
+
+/**
+ ** \brief change special caractere for -e
+ ** \param  txt string to be replace
+ ** \param  i index of the special caractere
+ ** \param  replace special caractere
+ **/
 
 void change_backslash(char *txt, int i, char replace)
 {
@@ -31,6 +45,14 @@ void change_backslash(char *txt, int i, char replace)
     txt = realloc(txt, (j-1)*sizeof(char));
 }
 
+/**
+ ** \brief replace hex or oct to char in string
+ ** \param  txt string to be replace
+ ** \param  i index of element
+ ** \param  nb size of element to be replace
+ ** \param  new element to add
+ ** \return char*
+ **/
 
 char *replace(char *txt, int i, int nb, char new)
 {
@@ -51,6 +73,13 @@ char *replace(char *txt, int i, int nb, char new)
     return txt;
 }
 
+/**
+ ** \brief replace octal to char in the string
+ ** \param  txt string to be replace
+ ** \param  i index
+ ** \return char*
+ **/
+
 char *oct_find(char *txt, int i)
 {
     char oct[3] = {0};
@@ -66,6 +95,13 @@ char *oct_find(char *txt, int i)
     char new = strtol(oct, 0, 8);
     return replace(txt, i, j+1, new);
 }
+
+/**
+ ** \brief replace hex to char in the string
+ ** \param  txt string to be replace
+ ** \param  i index
+ ** \return char*
+ **/
 
 char* hex_find(char *txt, int i)
 {
@@ -87,6 +123,13 @@ char* hex_find(char *txt, int i)
     return replace(txt, i, j+1, new);
 }
 
+/**
+ ** \brief remove a char at index i to a string txt
+ ** \param  txt string to be replace
+ ** \param  i index to the char
+ ** \return char*
+ **/
+
 char *remove_next(char *txt, int i)
 {
     int j = 0;
@@ -100,6 +143,13 @@ char *remove_next(char *txt, int i)
     txt = realloc(txt, (j-1)*sizeof(char));
     return txt;
 }
+
+/**
+ ** \brief find the index to the next alphanum
+ ** \param  txt string to be replace
+ ** \param  i index
+ ** \return int
+ **/
 
 int find_e(char *txt, int i)
 {
@@ -148,6 +198,12 @@ int find_e(char *txt, int i)
     return j;
 }
 
+/**
+ ** \brief if option -e, replace all the special caractere
+ ** \param  txt string
+ ** \return char*
+ **/
+
 char *change_txt(char *txt)
 {
     for (int i = 0; txt[i] != '\0'; i++)
@@ -184,6 +240,13 @@ char *change_txt(char *txt)
     return txt;
 }
 
+/**
+ ** \brief parse the option
+ ** \param  args list of string
+ ** \param  flag option of the function
+ ** \return int
+ **/
+
 int option(char **args, int *flag)
 {
     int i = 0;
@@ -201,6 +264,12 @@ int option(char **args, int *flag)
     }
     return i;
 }
+
+/**
+ ** \brief function echo
+ ** \param  args options and string to be print
+ ** \return int
+ **/
 
 int my_echo(char **args)
 {
@@ -230,25 +299,3 @@ int my_echo(char **args)
         fprintf(stdout, "\n");
     return 0;
 }
-
-/*
-int main(int argc, char *argv[])
-{
-    char **list = malloc((argc+1)*sizeof(char*));
-    list[argc] = NULL;
-    int s = 0;
-    int i = 1;
-    int j = 0;
-    while (i < argc)
-    {
-        s = 0;
-        for (; argv[i][s] != '\0'; s++);
-        list[j] = malloc(s);
-        list[j] = memcpy(list[j], argv[i], s);
-        list[j][s] = '\0';
-        i++;
-        j++;
-    }
-    my_echo(list);
-    return 1;
-}*/
