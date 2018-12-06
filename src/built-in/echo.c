@@ -229,7 +229,7 @@ int my_echo(char **args)
         fprintf(stdout, "\n");
     return 0;
 }
-//mai
+//main
 /*
 int main(int argc, char *argv[])
 {
