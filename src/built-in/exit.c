@@ -1,11 +1,11 @@
+#include <stdlib.h>
 #include "built-in.h"
+#include "../include/shell.h"
 
-int exit(void)
+int my_exit(struct AST *ast, struct Token *token)
 {
-  int exit_val = 0; // a recuperer plus tard
-
-  // tout free
-
-  exit(exit_val);
-  return 0;
+    AST_destroy(ast);
+    DestroyToken(token);
+    reset_value();
+    exit(0);
 }

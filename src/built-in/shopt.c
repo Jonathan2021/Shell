@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "../include/shell.h"
+#include "built-in.h"
 #include "../parser/include/lexer_struct.h"
 #include "../parser/include/my_tree.h"
 
@@ -81,7 +82,7 @@ int check_shopt(char **argv, int *i)
     return 1;
 }
 
-int shopt(char **argv)
+int my_shopt(char **argv)
 {
     int i = 0;
     if (argv[0] == NULL)
