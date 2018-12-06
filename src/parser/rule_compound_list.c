@@ -50,7 +50,7 @@ void expand_tilde(char *name)
     else if(!strcmp(name, "~+"))
     {
         name[j] = old;
-        size_t new_size = strlen(name) + strlen(getenv("PWD"));
+        size_t new_size = strlen(name) + strlen(getenv("PWD")) - 1;
         name = realloc(name, new_size);
         memmove(name + new_size - 1 - strlen(name + 2), name + 2, 
                 strlen(name + 2));
@@ -60,7 +60,7 @@ void expand_tilde(char *name)
     else if(!strcmp(name, "~-"))
     {
         name[j] = old;
-        size_t new_size = strlen(name) + strlen(getenv("OLDPWD"));
+        size_t new_size = strlen(name) + strlen(getenv("OLDPWD")) - 1;
         name = realloc(name, new_size);
         memmove(name + new_size - 1 - strlen(name + 2), name + 2, 
                 strlen(name + 2));
