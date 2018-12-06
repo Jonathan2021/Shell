@@ -187,7 +187,8 @@ char *quotes(char *cur_name)
     char l = cur_name[strlen(cur_name) - 1];
     if (!((f == 39 || f == '"') && l == f && strlen(cur_name) > 2))
         return NULL;
-    cur_name[strlen(cur_name) - 1] = 0;
+    size_t cur_len = strlen(cur_name) - 1; 
+    cur_name[cur_len] = 0;
     cur_name[0] = 0;
     char *fill = NULL;
     if (f == 39)
@@ -201,6 +202,8 @@ char *quotes(char *cur_name)
     {
         fill = double_quotes(cur_name + 1);
     }
+    cur_name[0] = f;
+    cur_name[cur_len] = f;
     return fill;
 }
 
