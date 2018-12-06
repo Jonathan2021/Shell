@@ -158,7 +158,6 @@ int exec_init(struct AST *node, int *index, struct fds fd)
     int i = 0;
     char *cur_name;
     char *cur_type;
-    int special = 0;
     int res;
     struct fds redir = {.in = -1, .out = -1, .err = -1};
     get_redirection(node, &redir, *index);
@@ -180,14 +179,14 @@ int exec_init(struct AST *node, int *index, struct fds fd)
                     node->child[*index]->self->type);
             node->child[*index]->foo(node->child[*index], fd);
             res = node->child[*index]->res;
-            special = 1;
         }
         else
         {
             my_cmd[i] = getvalue(cur_name);
         }
     }
-    if (!special)
+    (*index)++;
+    if (my_cmd[0])
         res = my_exec(my_cmd, fd);
     free_list(my_cmd, 512);
     close_redirection(&redir);
