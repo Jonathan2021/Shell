@@ -32,7 +32,8 @@ bin_PROGRAMS = 42sh
 			   src/parser/rule_case.c \
 			   src/parser/rule_shell_command.c \
 			   src/parser/foo_token.c \
-			   src/parser/rule_simple_command.c
+			   src/parser/rule_simple_command.c \
+                           src/built-in/echo.c
 
 check:
 	cd tests/

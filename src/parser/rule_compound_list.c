@@ -98,6 +98,8 @@ int builtin(char *cmd[])
 {
     if (!strcmp(cmd[0], "cd"))
         return my_cd(cmd + 1);
+    if (!strcmp(cmd[0], "echo"))
+        return my_echo(cmd + 1);
     return -1;
 }
 

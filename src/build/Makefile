@@ -30,7 +30,8 @@ SRC = src/parser/and_node.c \
 	src/parser/rule_shell_command.c \
 	src/parser/foo_token.c \
 	src/parser/rule_simple_command.c \
-        src/built-in/cd.c
+        src/built-in/cd.c \
+        src/built-in/echo.c
 EXEC = 42SH
 
 all: 
