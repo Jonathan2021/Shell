@@ -129,8 +129,8 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
     };
     int option_index = 0;
     optind = 0;
-    int i = 0;
-    while ((c = getopt_long(argc, argv, "c:t:0:", long_options, &option_index))
+    int i = 1;
+    while ((c = getopt_long(argc, argv, "c:0:", long_options, &option_index))
            != -1)
     {
         if (c == 'c')
@@ -138,10 +138,10 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
             token = create_token(token, optarg);
             set_value("--exit", "1");
         }
-        else if (c == '0')
+        else if (c == '0' && argv[i][0] == '+')
             set_value(optarg, "1");
-        else if (c == '0')
-            set_value(optarg, "1");
+        else if (c == '0'&& argv[i][0] == '-')
+            set_value(optarg, "0");
         else if (c == 1)
             set_value("--ast-print", "1");
         else if (c == 6)
@@ -152,8 +152,6 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
             set_value("version", "1");
         else if (c == 2)
             set_value("--type-print", "1");
-        else if (optarg && (c == 5 || c == 't'))
-            set_value("--timeout", optarg);
         else
             fprintf(stderr, "[GNU long options] [options] [file]\n");
         i++;
@@ -185,10 +183,6 @@ struct Token *lexer(struct Token *t)
         return t;
     struct fds fd = {.in = 0, .out = 1, .err = 2};
     ast->foo(ast, fd);
-    if (ast->res)
-        setvalue("?", "0");
-    else
-        setvalue("?", "1");
     char *print = get_value("--ast-print");
     if (print && t && strcmp(print, "1") == 0)
         create_dot(ast, "output.gv");
