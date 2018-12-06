@@ -14,6 +14,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "../include/shell.h"
+#include "../built-in/built-in.h"
 
 /**
  ** \brief our strncpy
@@ -115,7 +116,8 @@ void reset_value(void)
 
 int end_string(char *parse)
 {
-    if (parse && strncmp(parse,"\"",1) == 0 && strncmp(parse-1,"\\",1)!=0)
+    if (parse && (strncmp(parse,"\"",1) == 0 || strncmp(parse,"\'",1) == 0)
+        && strncmp(parse-1,"\\",1)!=0)
         return 1;
     return 0;
 
@@ -161,25 +163,25 @@ static int check_quote(char *str)
 {
     for (int i = 0; i < my_strlen(str); i++)
     {
-        if (i > 0 && str[i-1] == '\\' && str[i] == '\"')
+        if (i > 0 && str[i-1] == '\\' && 
+            (str[i] == '\"' || str[i] == '\''))
             continue;
-        if (str[i] == '\"')
+        if (str[i] == '\"' || str[i] == '\'')
             return 1;
     }
     return 0;
 }
 
-void parse_quote(char **parse, char **pt, struct Token *token)
+char *parse_quote(char **parse, char **pt)
 {
     char *delim = {"\t \n"};
     char *cpy = create_word(parse,pt);
-    add_token(&token, cpy);
-    free(cpy);
-    if (*parse[0] == parse[0][strlen(*parse)-1] &&
-        *parse[0] == '\"' && strlen(*parse)>1)
+    if (*parse[0] == parse[0][strlen(*parse)-1] && 
+        ((*parse[0] == '\"' && strlen(*parse)>1) ||
+        (*parse[0] == '\'' && strlen(*parse)>1)))
     {
         *parse = strtok(NULL, delim);
-        return;
+        return cpy;;
     }
     *parse = strtok(NULL, delim);
     while (*parse && check_quote(*parse) == 0)
@@ -188,6 +190,7 @@ void parse_quote(char **parse, char **pt, struct Token *token)
     }
     if (*parse && check_quote(*parse) == 1)
         *parse = strtok(NULL, delim);
+    return cpy;
 }
 
 /**
@@ -241,9 +244,11 @@ struct Token *create_token(struct Token *token, char *str)
                     j = -1;
                     break;
                 }
-                else if (parse[0] == '\"')
+                else if (parse[0] == '\"' || parse[0] == '\'')
                 {
-                    parse_quote(&parse,&pt,token);
+                    char *quote = parse_quote(&parse,&pt);
+                    add_token(&token, quote);
+                    free(quote);
                     j = 0;
                     break;
                 }

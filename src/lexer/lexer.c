@@ -124,14 +124,13 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
         {"norc", no_argument, 0, 4},
         {"ast-print", no_argument, 0, 1},
         {"type-print", no_argument, 0, 2},
-        {"timeout", required_argument, 0, 5},
         {"name-print", no_argument, 0, 6},
         {0, 0, 0, 0},
     };
     int option_index = 0;
     optind = 0;
     int i = 0;
-    while ((c = getopt_long(argc, argv, "c:t:", long_options, &option_index))
+    while ((c = getopt_long(argc, argv, "c:t:0:", long_options, &option_index))
            != -1)
     {
         if (c == 'c')
@@ -139,6 +138,10 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
             token = create_token(token, optarg);
             set_value("--exit", "1");
         }
+        else if (c == '0')
+            set_value(optarg, "1");
+        else if (c == '0')
+            set_value(optarg, "1");
         else if (c == 1)
             set_value("--ast-print", "1");
         else if (c == 6)
