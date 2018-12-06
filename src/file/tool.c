@@ -169,6 +169,28 @@ static int check_quote(char *str)
     return 0;
 }
 
+void parse_quote(char *parse, char *pt, struct Token *token)
+{
+    char *delim = {"\t \n"};
+    char *cpy = create_word(&parse,&pt);
+    add_token(&token, cpy);
+    free(cpy);
+    printf("parse = %s\n",parse);
+    if (parse[0] == parse[strlen(parse)-1] &&
+        parse[0] == '\"' && strlen(parse)>1)
+    {
+        parse = strtok(NULL, delim);
+        return;
+    }
+    parse = strtok(NULL, delim);
+    while (parse && check_quote(parse) == 0)
+    {
+        parse = strtok(NULL, delim);
+    }
+    printf("parse = %s\n",parse);
+    if (parse && check_quote(parse) == 1)
+        parse = strtok(NULL, delim);
+}
 
 /**
  ** \brief create the chain list composed of token.
@@ -223,25 +245,7 @@ struct Token *create_token(struct Token *token, char *str)
                 }
                 else if (parse[0] == '\"')
                 {
-                    char *cpy = create_word(&parse,&pt);
-                    add_token(&token, cpy);
-                    free(cpy);
-                    printf("parse = %s\n",parse);
-                    if (parse[0] == parse[strlen(parse)-1] &&
-                        parse[0] == '\"' && strlen(parse)>1)
-                        {
-                            parse = strtok(NULL, delim);
-                            j = 0;
-                            break;
-                        }
-                    parse = strtok(NULL, delim);
-                    while (parse && check_quote(parse) == 0)
-                    {
-                        parse = strtok(NULL, delim);
-                    }
-                    printf("parse = %s\n",parse);
-                    if (parse && check_quote(parse) == 1)
-                        parse = strtok(NULL, delim);
+                    parse_quote(parse,pt,token);
                     j = 0;
                     break;
                 }
