@@ -229,7 +229,7 @@ int my_echo(char **args)
         fprintf(stdout, "\n");
     return 0;
 }
-//mi
+//miok
 /*
 int main(int argc, char *argv[])
 {
