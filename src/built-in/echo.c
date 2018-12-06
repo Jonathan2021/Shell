@@ -297,5 +297,5 @@ int my_echo(char **args, struct fds fd)
     }
     if (flag[0] == 0)
         dprintf(fd.out, "\n");
-    return 0;
+    return 1;
 }
