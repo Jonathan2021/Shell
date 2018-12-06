@@ -113,7 +113,7 @@ void add_token(struct Token **token, char *str)
  ** \param argv the list of argument given by the user
  ** \param argc the number of argument given by the user
  ** \return the correct chain list without the options given by the user and
- *olso init the struct ps.
+ *also init the struct ps.
  **/
 struct Token *parse_path(struct Token *token, char **argv, long argc)
 {

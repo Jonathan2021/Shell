@@ -17,14 +17,9 @@
 #include "../built-in/built-in.h"
 
 /**
- ** \brief Execute the command pass in parameter and put in the good fd
- ** \param cmd list of command to execute
- ** \param fd the struture of file descrptor
- ** \return The return of the command executed
+ ** \brief Expands tilde accordingly to the SCL
+ ** \param name string to expand
  **/
-
-
-
 void expand_tilde(char *name)
 {
     int j = 0;
@@ -44,56 +39,69 @@ void expand_tilde(char *name)
                 strlen(name + 1));
         memmove(name, getenv("HOME"), strlen(getenv("HOME")));
         name[new_size - 1] = 0;
-
     }
-
-    else if(!strcmp(name, "~+"))
+    else if(!strcmp(name, "~+") || !strcmp(name, "~-"))
     {
+        const char *var = "OLDPWD";
+        if (!strcmp(name, "~+"))
+            var = "PWD";
         name[j] = old;
-        size_t new_size = strlen(name) + strlen(getenv("PWD")) - 1;
+        size_t new_size = strlen(name) + strlen(getenv(var)) - 1;
         name = realloc(name, new_size);
         memmove(name + new_size - 1 - strlen(name + 2), name + 2, 
                 strlen(name + 2));
-        memmove(name, getenv("PWD"), strlen(getenv("PWD")));
-        name[new_size - 1] = 0;
-    }
-    else if(!strcmp(name, "~-"))
-    {
-        name[j] = old;
-        size_t new_size = strlen(name) + strlen(getenv("OLDPWD")) - 1;
-        name = realloc(name, new_size);
-        memmove(name + new_size - 1 - strlen(name + 2), name + 2, 
-                strlen(name + 2));
-        memmove(name, getenv("OLDPWD"), strlen(getenv("OLDPWD")));
+        memmove(name, getenv(var), strlen(getenv(var)));
         name[new_size - 1] = 0;
     }
     else
         name[j] = old;
 }
 
+/**
+ ** \brief returns an allocated copy of a string
+ ** \param str string to be copied
+ ** \return The allocated and \0 terminated string
+ **/
+char *copy_str(char *str)
+{
+    char *res = calloc(strlen(str) + 1, sizeof(char));
+    memmove(res, str, strlen(str));
+    return res;
+}
+
+/**
+ ** \brief copies all the elements of a char ** list 
+ ** \param list list of elements to be copied
+ **/
 void malloc_list(char *list[])
 {
-    size_t len;
     for (int i = 0; list[i]; ++i)
     {
-        len = strlen(list[i]);
-        char *tmp = malloc(len + 1);
-        memmove(tmp, list[i], len);
-        tmp[len] = 0;
-        expand_tilde(tmp);
-        list[i] = tmp;
+        list[i] = copy_str(list[i]);
     }
 }
 
-void free_list(char *list[], int size)
+/**
+ ** \brief frees the content of a char ** list and itself
+ ** \param list the list to be freed
+ ** \param size the size of list
+ **/
+void free_list(char *list[], size_t size)
 {
-    for (int i = 0; i < size && list[i] ; ++i)
+    for (size_t i = 0; i < size && list[i] ; ++i)
     {
         free(list[i]);
     }
     free(list);
 }
 
+/**
+ ** \brief Calls the project's reimplementation of the builtin if it exists
+ ** \param cmd char* array with the name of the binary/builtin and its arguments
+ ** \param fd struct contain input, output and error file descriptors
+ ** \return return 1 if successful execution, 0 if not and -1 if the
+ *binary/builtin was not reimplemented
+ **/
 int builtin(char *cmd[], struct fds fd)
 {
     if (!strcmp(cmd[0], "cd"))
@@ -108,6 +116,14 @@ int builtin(char *cmd[], struct fds fd)
     return -1;
 }
 
+/**
+ ** \brief Executes the binary/builtin using execvp if not reimplemented
+ *in the project
+ ** \param cmd char* array with the name of the binary/builtin and its arguments
+ ** \param fd struct contain input, output and error file descriptors
+ ** \return return 1 if successful execution, 0 otherwise
+ *otherwise returns NULL
+ **/
 int my_exec(char *cmd[], struct fds fd)
 {
     int res = -1;
@@ -152,6 +168,12 @@ int my_exec(char *cmd[], struct fds fd)
     return res;
 }
 
+/**
+ ** \brief checks if the string is quoted and calls the adequate function
+ ** \param cur_name string to be checked
+ ** \return The modified function if the string was quoted, 
+ *otherwise returns NULL
+ **/
 char *double_quotes(char *cur_name)
 {
     size_t j = 0;
@@ -186,6 +208,12 @@ char *double_quotes(char *cur_name)
     return fill;
 }
 
+/**
+ ** \brief checks if the string is quoted and calls the adequate function
+ ** \param cur_name string to be checked
+ ** \return The modified function if the string was quoted, 
+ *otherwise returns NULL
+ **/
 char *quotes(char *cur_name)
 {
     char f = cur_name[0];
@@ -212,19 +240,14 @@ char *quotes(char *cur_name)
     return fill;
 }
 
-char *copy_str(char *str)
-{
-    char *res = calloc(strlen(str) + 1, sizeof(char));
-    memmove(res, str, strlen(str));
-    return res;
-}
+
 
 /**
  ** \brief Execute the command present in the AST node
- ** \param node the node to be evaluate
+ ** \param node the node to be evaluated
  ** \param index of the child to execute
- ** \param fd structure of file descriptor
- ** \return The return of the command executed
+ ** \param fd structur of file descriptor
+ ** \return The return value of the executed command
  **/
 int exec_init(struct AST *node, int *index, struct fds fd)
 {

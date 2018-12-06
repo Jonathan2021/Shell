@@ -36,7 +36,7 @@
  **
  ** \param argc number of argument
  ** \param argv the list of argument
- ** \return The chain list of type strcut Token *.
+ ** \return The chain list of type struct Token *.
  **/
 struct Token *carving(long argc, char **argv)
 {
