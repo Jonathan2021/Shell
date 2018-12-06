@@ -4,7 +4,7 @@
  ** \date 29 novembre 2018
  **
  **/
-
+#define _XOPEN_SOURCE 700
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -94,12 +94,12 @@ void free_list(char *list[], int size)
     free(list);
 }
 
-int builtin(char *cmd[])
+int builtin(char *cmd[], struct fds fd)
 {
     if (!strcmp(cmd[0], "cd"))
         return my_cd(cmd + 1);
     if (!strcmp(cmd[0], "echo"))
-        return my_echo(cmd + 1);
+        return my_echo(cmd + 1, fd);
     return -1;
 }
 
@@ -107,7 +107,7 @@ int my_exec(char *cmd[], struct fds fd)
 {
     malloc_list(cmd);
     int res = -1;
-    if ((res = builtin(cmd)) != -1)
+    if ((res = builtin(cmd, fd)) != -1)
         return res;
     res = 0;
     pid_t pid = fork();
