@@ -24,19 +24,19 @@
  ** \param str shopt
  **/
 
-void print_if_on(char *str)
+void print_if_on(char *str, struct fds fd)
 {
     char *print = get_value(str);
     if (print && strcmp(print, "1") == 0)
     {
-        printf("%s",str);
+        dprintf(fd.out,"%s",str);
         int i = 0;
         while (strlen(str) + i < 20)
         {
-            printf(" ");
+            dprintf(fd.out," ");
             i++;
         }
-        printf(":ON\n");
+        dprintf(fd.out,":ON\n");
     }
 }
 
@@ -44,16 +44,16 @@ void print_if_on(char *str)
  ** \brief print all shopt ON
  **/
 
-void print_on(void)
+void print_on(struct fds fd)
 {
-    print_if_on("ast_print");
-    print_if_on("dotglob");
-    print_if_on("expand_aliases");
-    print_if_on("extglob");
-    print_if_on("nocaseglob");
-    print_if_on("nullglob");
-    print_if_on("sourcepath");
-    print_if_on("xpg_echo");
+    print_if_on("ast_print",fd);
+    print_if_on("dotglob",fd);
+    print_if_on("expand_aliases",fd);
+    print_if_on("extglob",fd);
+    print_if_on("nocaseglob",fd);
+    print_if_on("nullglob",fd);
+    print_if_on("sourcepath",fd);
+    print_if_on("xpg_echo",fd);
 }
 
 /**
@@ -61,19 +61,19 @@ void print_on(void)
  ** \param str shopt
  **/
 
-void print_if_off(char *str)
+void print_if_off(char *str, struct fds fd)
 {
     char *print = get_value(str);
     if (!print || strcmp(print, "0") == 0)
     {
-        printf("%s",str);
+        dprintf(fd.out,"%s",str);
         int i = 0;
         while (strlen(str) + i < 20)
         {
-            printf(" ");
+            dprintf(fd.out," ");
             i++;
         }
-        printf(":OFF\n");
+        dprintf(fd.out,":OFF\n");
     }
 }
 
@@ -81,16 +81,16 @@ void print_if_off(char *str)
  ** \brief print all shopt OFF
  **/
 
-void print_off(void)
+void print_off(struct fds fd)
 {
-    print_if_off("ast_print");
-    print_if_off("dotglob");
-    print_if_off("expand_aliases");
-    print_if_off("extglob");
-    print_if_off("nocaseglob");
-    print_if_off("nullglob");
-    print_if_off("sourcepath");
-    print_if_off("xpg_echo");
+    print_if_off("ast_print",fd);
+    print_if_off("dotglob",fd);
+    print_if_off("expand_aliases",fd);
+    print_if_off("extglob",fd);
+    print_if_off("nocaseglob",fd);
+    print_if_off("nullglob",fd);
+    print_if_off("sourcepath",fd);
+    print_if_off("xpg_echo",fd);
 }
 
 /**
@@ -118,26 +118,26 @@ int check_shopt(char **argv, int *i)
  ** \param argv list of arg
  **/
 
-int my_shopt(char **argv)
+int my_shopt(char **argv, struct fds fd)
 {
     int i = 0;
     if (argv[0] == NULL)
     {
-        print_on();
-        print_off();
+        print_on(fd);
+        print_off(fd);
     }
     while (argv[i] != NULL && argv[i][0] == '-')
     {
         if ((strcmp(argv[i], "-s")) == 0)
-            print_on();
+            print_on(fd);
         else if ((strcmp(argv[i], "-u")) == 0)
-            print_off();
+            print_off(fd);
         else if ((strcmp(argv[i], "-q")) == 0)
             return check_shopt(argv,&i);
         else
         {
-            print_on();
-            print_off();
+            print_on(fd);
+            print_off(fd);
         }
 
         i++;
