@@ -158,7 +158,7 @@ int exec_init(struct AST *node, int *index, struct fds fd)
     int i = 0;
     char *cur_name;
     char *cur_type;
-    int res;
+    int res = 0;
     struct fds redir = {.in = -1, .out = -1, .err = -1};
     get_redirection(node, &redir, *index);
     merge_redirection(&fd, redir);
