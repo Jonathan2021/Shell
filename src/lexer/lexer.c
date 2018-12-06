@@ -176,7 +176,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
  ** \param t the full chain list of tokens with their types
  ** \return the chain list of token
  **/
-struct Token *lexer(struct Token *t)
+/*struct Token *lexer(struct Token *t)
 {
     struct AST *ast = input(&t);
     if (ast == NULL)
@@ -188,7 +188,7 @@ struct Token *lexer(struct Token *t)
         create_dot(ast, "output.gv");
     AST_destroy(ast);
     return t;
-}
+}/*
 
 /**
  ** \brief Free the chain list of token
