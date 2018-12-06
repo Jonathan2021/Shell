@@ -67,7 +67,8 @@ void expand_tilde(char *name)
         memmove(name, getenv("OLDPWD"), strlen(getenv("OLDPWD")));
         name[new_size - 1] = 0;
     }
-    name[j] = old;
+    else
+        name[j] = old;
 }
 
 void malloc_list(char *list[])
