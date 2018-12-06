@@ -108,6 +108,8 @@ int builtin(char *cmd[], struct fds fd)
         return my_cd(cmd + 1);
     if (!strcmp(cmd[0], "echo"))
         return my_echo(cmd + 1, fd);
+    if (!strcmp(cmd[0], "shopt"))
+        return my_shopt(cmd + 1);
     if (!strcmp(cmd[0], "exit") && !cmd[1])
     {
         set_value("exit", "1");
@@ -195,10 +197,13 @@ char *double_quotes(char *cur_name)
             char c = cur_name[i + 1];
             cur_name[i + 1] = 0;
             char *tmp = getvalue(cur_name + old_i);
-            size_t tmp_len = strlen(tmp);
-            for (size_t k = 0; k < tmp_len; ++k)
-            {
-                fill[j++] = tmp[k];
+            if (tmp)
+            { 
+                size_t tmp_len = strlen(tmp);
+                for (size_t k = 0; k < tmp_len; ++k)
+                {
+                    fill[j++] = tmp[k];
+                }
             }
             cur_name[i + 1] = c;
         }

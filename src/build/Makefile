@@ -31,7 +31,8 @@ SRC = src/parser/and_node.c \
 	src/parser/foo_token.c \
 	src/parser/rule_simple_command.c \
         src/built-in/cd.c \
-        src/built-in/echo.c
+        src/built-in/echo.c \
+        src/built-in/shopt.c
 EXEC = 42SH
 
 all: 
