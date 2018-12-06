@@ -175,7 +175,6 @@ void parse_quote(char **parse, char **pt, struct Token *token)
     char *cpy = create_word(parse,pt);
     add_token(&token, cpy);
     free(cpy);
-    printf("parse = %s\n",*parse);
     if (*parse[0] == parse[0][strlen(*parse)-1] &&
         *parse[0] == '\"' && strlen(*parse)>1)
     {
@@ -187,7 +186,6 @@ void parse_quote(char **parse, char **pt, struct Token *token)
     {
         *parse = strtok(NULL, delim);
     }
-    printf("parse = %s\n",*parse);
     if (*parse && check_quote(*parse) == 1)
         *parse = strtok(NULL, delim);
 }
