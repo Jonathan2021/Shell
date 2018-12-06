@@ -229,7 +229,7 @@ int my_echo(char **args)
         fprintf(stdout, "\n");
     return 0;
 }
-
+/*
 int main(int argc, char *argv[])
 {
     char **list = malloc((argc+1)*sizeof(char*));
@@ -249,4 +249,4 @@ int main(int argc, char *argv[])
     }
     my_echo(list);
     return 1;
-}
+}*/
