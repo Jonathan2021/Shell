@@ -4,7 +4,7 @@ e_for_i_in_one:
 
 e_for_keyword:
     type: "command_diff"
-    command: "for ;"
+    command: "for ; do ; done"
 
 
 e_for_keyword_composed:

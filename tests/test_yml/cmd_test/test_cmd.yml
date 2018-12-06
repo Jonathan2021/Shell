@@ -1,10 +1,10 @@
 cmd_ls:
     type: "command_diff"
-    command: "ls;"
+    command: "ls ;"
 
 cmd_pwd:
     type: "command_diff"
-    command: "pwd;"
+    command: "pwd ;"
 
 cmd_help:
     type: "command_diff"
