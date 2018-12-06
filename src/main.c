@@ -30,7 +30,6 @@
 #include "parser/include/rule.h"
 #include "print_ast/include/print_ast.h"
 
-
 /**
  ** \fn struct Token *carving(long argc, char **argv)
  ** \brief Carving the user input.
@@ -96,6 +95,7 @@ int main(int argc, char *argv[])
     fclose(file);
     delete_history();
     init_history();
+    setvalue("?", "0");
     carving(argc, argv);
     return 0;
 }

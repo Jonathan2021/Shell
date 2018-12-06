@@ -182,6 +182,10 @@ struct Token *lexer(struct Token *t)
         return t;
     struct fds fd = {.in = 0, .out = 1, .err = 2};
     ast->foo(ast, fd);
+    if (ast->res)
+        setvalue("?", "0");
+    else
+        setvalue("?", "1");
     char *print = get_value("--ast-print");
     if (print && t && strcmp(print, "1") == 0)
         create_dot(ast, "output.gv");
