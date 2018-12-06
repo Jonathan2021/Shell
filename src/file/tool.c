@@ -139,7 +139,7 @@ char *create_word(char **parse,char **str2)
     while (len != 0 && *parse && !end_string(*parse))
     {
         if (*parse[0] == '\0')
-            strncat(cpy," ",1);
+            strcat(cpy," ");
         else
             strncat(cpy,*parse,1);
         *parse = *parse +1;
