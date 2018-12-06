@@ -140,9 +140,15 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
             set_value("--exit", "1");
         }
         else if (c == '0' && argv[i][0] == '+')
+        {
             set_value(optarg, "1");
+            i ++;
+        }
         else if (c == '0'&& argv[i][0] == '-')
+        {
             set_value(optarg, "0");
+            i ++;
+        }
         else if (c == 1)
             set_value("--ast-print", "1");
         else if (c == 6)
