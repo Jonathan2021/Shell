@@ -37,7 +37,7 @@ echo_$ls:
     type: "output_diff"
     command: "echo $ls ;"
     expected:
-        stdout: "$ls\n"
+        stdout: "\n"
         rvalue: 0
 
 echo_42:

@@ -12,7 +12,7 @@ if_false_then_gdb:
 
 if_pwd_then_man:
     type: "command_diff"
-    command: "if pwd ; then man find ; fi"
+    command: "if pwd ; then echo man ; fi"
 
 if_ls_&&__pwd_then_echo_ls_else_echo_pwd:
     type: "command_diff"

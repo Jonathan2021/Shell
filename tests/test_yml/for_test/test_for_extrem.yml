@@ -2,11 +2,6 @@ e_for_i_in_one:
     type: "command_diff"
     command: "for i in 3 ; do echo bonjour ; done ;"
 
-e_for_keyword:
-    type: "command_diff"
-    command: "for ; do ; done"
-
-
 e_for_keyword_composed:
     type: "command_diff"
     command: "echo for cat ;"
@@ -44,11 +39,11 @@ e_for_i_in_p_one_two_ls:
 
 e_for_i_in_p_one_ls_inside:
     type: "command_diff"
-    command: "for i in ls ; do ls -a ; done ;"
+    command: "for i in ls ; do ls ; done ;"
 
 e_for_i_in_one_ls_inside:
     type: "command_diff"
-    command: "for i in ls ; do man man ; done ;"
+    command: "for i in ls ; do ls ; done ;"
 
 e_for_i_in_p_one_echo_inside:
     type: "command_diff"
