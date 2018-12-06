@@ -105,66 +105,6 @@ void set_value(char *name, char *value)
     tmp->name = name;
     tmp->next = get_ps();
 }
-
-/**
- ** \brief cutting the -c option
- ** \param argv list of the -c argument
- ** \param str the full argument of -c
- ** \return Number of argument cut in -c argument.
- **/
-long str_to_argv(char **argv, char *str)
-{
-    char *parse;
-    char *delim = {"\n \t"};
-    parse = strtok(str, delim);
-    long i = 1;
-    char *cpy = malloc(4095);
-    while (parse)
-    {
-        if (strlen(parse) > 1
-            && ((parse[0] == '\"' && parse[strlen(parse) - 1] == '\"')
-                   || (parse[0] == '\'' && parse[strlen(parse) - 1] == '\'')))
-        {
-            argv[i] = parse + 1;
-            argv[i][strlen(argv[i]) - 1] = 0;
-            i++;
-        }
-        else if (parse[0] == '\"' || strcmp(parse, "\"") == 0
-                 || parse[0] == '\'' || strcmp(parse, "\'") == 0)
-        {
-            if (parse[0] == '\"' || parse[0] == '\'')
-                argv[i] = parse + 1;
-            parse = strtok(NULL, delim);
-            while (parse
-                   && (parse[strlen(parse) - 1] != '\"'
-                          && strcmp(parse, "\"") != 0
-                          && parse[strlen(parse) - 1] != '\''
-                          && strcmp(parse, "\'") != 0))
-            {
-                strcpy(cpy, parse);
-                strcat(argv[i], " ");
-                strcat(argv[i], cpy);
-                parse = strtok(NULL, delim);
-            }
-            if (parse && strlen(parse) > 1
-                && (parse[strlen(parse) - 1] == '\"'
-                       || parse[strlen(parse) - 1] == '\''))
-            {
-                parse[strlen(parse) - 1] = 0;
-                strcpy(cpy, parse);
-                strcat(argv[i], " ");
-                strcat(argv[i], cpy);
-            }
-            i++;
-        }
-        argv[i] = parse;
-        parse = strtok(NULL, delim);
-        i++;
-    }
-    free(cpy);
-    argv[i] = NULL;
-    return i;
-}
 /**
  ** \brief Free the struct ps
  **/
@@ -180,6 +120,60 @@ void reset_value(void)
     free(ps);
 }
 
+int end_string(char *parse)
+{
+    if (parse && strncmp(parse,"\"",1) == 0 && strncmp(parse-1,"\\",1)!=0)
+        return 1;
+    return 0;
+
+}
+
+static int my_strlen(char *str)
+{
+    int i = 0;
+    while (str[i] != '\0')
+        i++;
+    return i;
+}
+
+char *create_word(char **parse,char **str2)
+{
+    char *cpy = calloc(4096,1);
+    char *check = *parse;
+    int len = my_strlen(*str2)-1;
+    strncat(cpy,*parse,1);
+    *parse = *parse +1;
+    while (len != 0 && *parse && !end_string(*parse))
+    {
+        if (*parse[0] == '\0')
+            strncat(cpy," ",1);
+        else
+            strncat(cpy,*parse,1);
+        *parse = *parse +1;
+        len --;
+    }
+    if (len == 0)
+        *parse = NULL;
+    else if (*parse)
+    {
+        strncat(cpy,*parse,1);
+        *parse = *parse +1;
+    }
+    *parse = check;
+    cpy[my_strlen(cpy)] = '\0';
+    return cpy;
+}
+
+static int check_quote(char *str)
+{
+    for (int i = 0; i < my_strlen(str); i++)
+    {
+        if (str[i] == '\"')
+            return 1;
+    }
+    return 0;
+}
+
 /**
  ** \brief create the chain list composed of token.
  ** \param token list chain
@@ -190,12 +184,15 @@ struct Token *create_token(struct Token *token, char *str)
 {
     char *parse;
     char *delim = {"\t \n"};
+    char *str2 = calloc(40960,1);
+    char *pt = str2;
+    strcpy(str2,str);
     parse = strtok(str, delim);
     char *grammar[20] = {")", "(", "&&", "||", ";;", "<<", ">>", "<&", ">&",
         "<>", "<<-", ">|", ";", "&", ">", "<"};
     while (parse)
     {
-        for (int j = 0; parse[j] != '\0';)
+        for (int j = 0; parse && parse[j] != '\0';)
         {
             for (int i = 0; grammar[i]; i++)
             {
@@ -228,14 +225,32 @@ struct Token *create_token(struct Token *token, char *str)
                     j = -1;
                     break;
                 }
+                else if (parse[0] == '\"')
+                {
+                    char *cpy = create_word(&parse,&pt);
+                    add_token(&token, cpy);
+                    free(cpy);
+                    parse = strtok(NULL, delim);
+                    while (parse && check_quote(parse) == 0)
+                    {
+                        parse = strtok(NULL, delim);
+                    }
+                    parse = strtok(NULL, delim);
+                    j = 0;
+                    break;
+                }
             }
             j++;
         }
+        if (!parse)
+            break;
         if (parse[0] != '\0')
             add_token(&token, parse);
+        pt = pt + strlen(parse);
         parse = strtok(NULL, delim);
     }
     add_token(&token, "\n");
+    free(str2);
     return token;
 }
 

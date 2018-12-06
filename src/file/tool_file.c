@@ -87,3 +87,63 @@ void reset_file(void)
     set_file("PS1", "");
     set_file("PS2", "");
 }
+
+/**
+ ** \brief cutting the -c option
+ ** \param argv list of the -c argument
+ ** \param str the full argument of -c
+ ** \return Number of argument cut in -c argument.
+ **/
+long str_to_argv(char **argv, char *str)
+{
+    char *parse;
+    char *delim = {"\n \t"};
+    parse = strtok(str, delim);
+    long i = 1;
+    char *cpy = malloc(4095);
+    while (parse)
+    {
+        if (strlen(parse) > 1
+            && ((parse[0] == '\"' && parse[strlen(parse) - 1] == '\"')
+                   || (parse[0] == '\'' && parse[strlen(parse) - 1] == '\'')))
+        {
+            argv[i] = parse + 1;
+            argv[i][strlen(argv[i]) - 1] = 0;
+            i++;
+        }
+        else if (parse[0] == '\"' || strcmp(parse, "\"") == 0
+                 || parse[0] == '\'' || strcmp(parse, "\'") == 0)
+        {
+            if (parse[0] == '\"' || parse[0] == '\'')
+                argv[i] = parse + 1;
+            parse = strtok(NULL, delim);
+            while (parse
+                   && (parse[strlen(parse) - 1] != '\"'
+                          && strcmp(parse, "\"") != 0
+                          && parse[strlen(parse) - 1] != '\''
+                          && strcmp(parse, "\'") != 0))
+            {
+                strcpy(cpy, parse);
+                strcat(argv[i], " ");
+                strcat(argv[i], cpy);
+                parse = strtok(NULL, delim);
+            }
+            if (parse && strlen(parse) > 1
+                && (parse[strlen(parse) - 1] == '\"'
+                       || parse[strlen(parse) - 1] == '\''))
+            {
+                parse[strlen(parse) - 1] = 0;
+                strcpy(cpy, parse);
+                strcat(argv[i], " ");
+                strcat(argv[i], cpy);
+            }
+            i++;
+        }
+        argv[i] = parse;
+        parse = strtok(NULL, delim);
+        i++;
+    }
+    free(cpy);
+    argv[i] = NULL;
+    return i;
+}

@@ -1,4 +1,0 @@
-IFS "\t \n"
---ast-print "0"
-version "0"
---type-print "0"

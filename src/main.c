@@ -56,6 +56,7 @@ struct Token *carving(long argc, char **argv)
         else
         {
             char *str = readline("42sh$ ");
+            str[strlen(str)] = '\0';
             if (!str)
                 continue;
             if (strncmp(str, "exit", 4) == 0)
