@@ -60,13 +60,10 @@ char *get_value(char *name)
  ** \param name is a basic string
  ** \return Yhe correspondant value associated to the variable.
  **/
-
 char *getvalue(char *name)
 {
     if (name[0] == '$')
-    {
-        return getenv(name + 1);
-    }
+        name = getenv(name + 1);
     return name;
 }
 

@@ -8,11 +8,13 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <stddef.h>
 #include "../include/shell.h"
 #include "include/lexer_struct.h"
 #include "include/my_tree.h"
 #include "include/redirection.h"
 #include "include/rule.h"
+#include "../built-in/built-in.h"
 
 /**
  ** \brief Execute the command pass in parameter and put in the good fd
@@ -20,9 +22,89 @@
  ** \param fd the struture of file descrptor
  ** \return The return of the command executed
  **/
+
+
+
+void expand_tilde(char *name)
+{
+    int j = 0;
+    for (; name[j]; ++j)
+    {
+        if (name[j] == '/')
+            break;
+    }
+    char old = name[j];
+    name[j] = 0;
+    if(!strcmp(name, "~"))
+    {
+        name[j] = old;
+        size_t new_size = strlen(name) + strlen(getenv("HOME"));
+        name = realloc(name, new_size);
+        memmove(name + new_size - 1 - strlen(name + 1), name + 1, 
+                strlen(name + 1));
+        memmove(name, getenv("HOME"), strlen(getenv("HOME")));
+        name[new_size - 1] = 0;
+
+    }
+
+    else if(!strcmp(name, "~+"))
+    {
+        name[j] = old;
+        size_t new_size = strlen(name) + strlen(getenv("PWD"));
+        name = realloc(name, new_size);
+        memmove(name + new_size - 1 - strlen(name + 2), name + 2, 
+                strlen(name + 2));
+        memmove(name, getenv("PWD"), strlen(getenv("PWD")));
+        name[new_size - 1] = 0;
+    }
+    else if(!strcmp(name, "~-"))
+    {
+        name[j] = old;
+        size_t new_size = strlen(name) + strlen(getenv("OLDPWD"));
+        name = realloc(name, new_size);
+        memmove(name + new_size - 1 - strlen(name + 2), name + 2, 
+                strlen(name + 2));
+        memmove(name, getenv("OLDPWD"), strlen(getenv("OLDPWD")));
+        name[new_size - 1] = 0;
+    } 
+}
+
+void malloc_list(char *list[])
+{
+    size_t len;
+    for (int i = 0; list[i]; ++i)
+    {
+        len = strlen(list[i]);
+        char *tmp = malloc(len + 1);
+        memmove(tmp, list[i], len);
+        tmp[len] = 0;
+        expand_tilde(tmp);
+        list[i] = tmp;
+    }
+}
+
+void free_list(char *list[])
+{
+    for (int i = 0; list[i]; ++i)
+    {
+        free(list[i]);
+    }
+}
+
+int builtin(char *cmd[])
+{
+    if (!strcmp(cmd[0], "cd"))
+        return my_cd(cmd + 1);
+    return -1;
+}
+
 int my_exec(char *cmd[], struct fds fd)
 {
-    int res = 0;
+    malloc_list(cmd);
+    int res = -1;
+    if ((res = builtin(cmd)) != -1)
+        return res;
+    res = 0;
     pid_t pid = fork();
     if (pid == -1)
         fprintf(stderr, "fork failed in compound\n");
@@ -59,6 +141,7 @@ int my_exec(char *cmd[], struct fds fd)
     }
     return res;
 }
+
 /**
  ** \brief Execute the command present in the AST node
  ** \param node the node to be evaluate
