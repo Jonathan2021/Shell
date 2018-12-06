@@ -1,0 +1,72 @@
+cd_src:
+    type: "command_diff"
+    command: "cd ../src/ ;  pwd "
+
+cd_alone:
+    type: "command_diff"
+    command: "cd ; pwd ; cd -"
+
+cd_doubleold_path:
+    type: "command_diff"
+    command: "cd ../src ; cd - ; cd -"
+
+cd_oldpath:
+    type: "command_diff"
+    command: "cd ../src/ ; cd - ; ls ; cd - ; cd -"
+
+cd_dot:
+    type: "command_diff"
+    command: "cd ."
+
+cd_tilt:
+    type: "command_diff"
+    command: "cd ~ ; cd -"
+
+cd_ls_dot:
+    type: "command_diff"
+    command: "cd ; ls ; cd -"
+
+cd_ls_tilt:
+    type: "command_diff"
+    command: "cd ~ ; ls "
+
+cd_ls_folder:
+    type: "command_diff"
+    command: "pwd ; cd ../src/ ; ls"
+
+double_cd:
+    type: "command_diff"
+    command: "cd ; ls ; cd -"
+
+double_cd_folder:
+    type: "command_diff"
+    command: "cd ../src/ ; cd .. ; ls"
+
+double_cd_doublefolder:
+    type: "command_diff"
+    command: "cd ../src/ ; cd lexer/ ; ls ; cd ../../ ; pwd"
+
+double_cd_pwd:
+    type: "command_diff"
+    command: "cd ; cd ; echo $PWD"
+
+double_cd_dot_pwd:
+    type: "command_diff"
+    command: "cd . ; pwd"
+
+cd_parentfolder_ls:
+    type: "command_diff"
+    command: "cd ../ ; ls"
+
+cd_parentfolder_pwd:
+    type: "command_diff"
+    command: "cd ../ ; ls"
+
+
+cd_tiltplus:
+    type: "command_diff"
+    command: "cd ~+ ; pwd"
+
+cd_tiltsub:
+    type: "command_diff"
+    command: "cd ../ ; cd ~- ; pwd"

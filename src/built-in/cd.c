@@ -77,8 +77,11 @@ static int settohome(void)
     const char *const home = getenv("HOME");
     if (home)
     {
+        char tmp [2048];
+        setenv("OLDPWD", getcwd(tmp, 2048), !0);
         if(chdir(home))
             return 0;
+        setenv("PWD", getcwd(tmp, 2048), !0);
         return 1;
     }
     return 0;
@@ -101,8 +104,12 @@ int my_cd(char **cd_argv)
         char tmp[2048];
         if (strncmp(cd_argv[0], "-",1) == 0)
         {
+            char *tt = getenv("PWD");
             if (chdir(getenv("OLDPWD")))
                 return 0;
+            setenv("PWD", getcwd(tmp, 2048), !0);
+            setenv("OLDPWD", tt , !0);
+            printf("%s\n", getenv("PWD"));
             return 1;
 
         }
