@@ -8,6 +8,11 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
+/**
+ ** \brief checks if string is a number
+ ** \param str string to be checked
+ ** \return return 1 if it is a number, 0 otherwise
+ **/
 int isnumber(char *str)
 {
     int i = 0;
@@ -19,6 +24,12 @@ int isnumber(char *str)
     return (!str[i]);
 }
 
+/**
+ ** \brief converts a string to an int if it is a number
+ ** \param str string to be converted
+ ** \return returns the corresponding converted int on sucess (>=0), 
+ *-1 on failure
+ **/
 int get_fd(char *str)
 {
     int fd;
@@ -32,6 +43,12 @@ int get_fd(char *str)
     return fd;
 }
 
+/**
+ ** \brief closes file descriptors if they are correct and different from 
+ *STRDIN_FILENO, STDOUT_FILENO or STDERR_FILENO
+ ** \param fd struct containing context dependent
+ *input, output, and err file descriptors
+ **/
 void close_redirection(struct fds *fd)
 {
     if (fd->in > 2)
@@ -42,6 +59,14 @@ void close_redirection(struct fds *fd)
         close(fd->err);
 }
 
+/**
+ ** \brief Replaces input, output or error with a new file descriptor
+ ** \param node pointer to the corresponding redirection node from the AST 
+ ** \param fd pointer to struct fds to modify with new file descriptor
+ ** \param file new file descriptor
+ ** \param io 0 to replace input, 1 for output and 2 for err
+ ** \return 1 if io was 0, 1 or 2; 0 otherwise
+ **/
 int replace_fd(struct AST *node, struct fds *fd, int file, int io)
 {
     if (node->child[0])
@@ -69,6 +94,11 @@ int replace_fd(struct AST *node, struct fds *fd, int file, int io)
     return 1;
 }
 
+/**
+ ** \brief evaluation of the > or >| redirection to a file;
+ ** \param node pointer to the > or >| node of the AST
+ ** \param fd pointer to a structure containing file descriptors to modify
+ **/
 void greater(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
@@ -79,6 +109,11 @@ void greater(struct AST *node, struct fds *fd)
         close(file);
 }
 
+/**
+ ** \brief evaluation of the >> redirection to a file;
+ ** \param node pointer to the >> node of the AST
+ ** \param fd pointer to a structure containing file descriptors to modify
+ **/
 void dgreat(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
@@ -89,6 +124,11 @@ void dgreat(struct AST *node, struct fds *fd)
         close(file);
 }
 
+/**
+ ** \brief evaluation of the < redirection to a file;
+ ** \param node pointer to the < node of the AST
+ ** \param fd pointer to a structure containing file descriptors to modify
+ **/
 void less(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
@@ -100,7 +140,11 @@ void less(struct AST *node, struct fds *fd)
     }
     replace_fd(node, fd, file, 0);
 }
-
+/**
+ ** \brief evaluation of the <> redirection to a file;
+ ** \param node pointer to the <> node of the AST
+ ** \param fd pointer to a structure containing file descriptors to modify
+ **/
 void lessgreat(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
@@ -120,6 +164,12 @@ void lessgreat(struct AST *node, struct fds *fd)
         close(file);
 }
 
+/**
+ ** \brief close input, output or error in fd depending on io
+ ** \param fd pointer to the struct containing input, output and error file 
+ *descriptors
+ ** \param io 0 for input, 1 for output and 2 for error
+ **/
 void my_close(struct fds *fd, int io)
 {
     if (!io)
@@ -140,6 +190,12 @@ void my_close(struct fds *fd, int io)
 
 }
 
+/**
+ ** \brief evaluation of the >& or <& redirection to a file;
+ ** \param node pointer to the >& or <& node of the AST
+ ** \param fd pointer to a structure containing file descriptors to modify
+ ** \param io the default file descriptor to change depending on the redirection
+ **/
 void something_and(struct AST *node, struct fds *fd, int io)
 {
     int file = -1;
@@ -185,6 +241,11 @@ void something_and(struct AST *node, struct fds *fd, int io)
     //else behaviour is not specified
 }
 
+/**
+ ** \brief Checks the redirection and calls the appropriate function
+ ** \param node pointer to the redirection node in the AST
+ ** \param fd pointer to a struct containing file descriptors modified later on
+ **/
 void redirect_word(struct AST *node, struct fds *fd)
 {
     if (!strcmp(node->self->name, ">"))
@@ -203,6 +264,12 @@ void redirect_word(struct AST *node, struct fds *fd)
         lessgreat(node, fd);
 }
 
+/**
+ ** \brief checks sanity of the redirection node and calls the appropriate 
+ *function depending on if it redirect to a heredoc or not
+ ** \param node pointer to the redirection node in the AST
+ ** \param fd pointer to a struct containing file descriptors modifies later on
+ **/
 void my_redirection(struct AST *node, struct fds *fd)
 {
     if (!node || node->nb_child < 2 || !node->child[1])
@@ -213,6 +280,13 @@ void my_redirection(struct AST *node, struct fds *fd)
     //    redirect_heredoc(node, fd);
 }
 
+/**
+ ** \brief Evaluates all the redirections until the next ;, \n or &
+ ** \param node pointer to a node containing a bunch of redirections
+ ** \param fds pointer to a struct containing file descriptors modified along 
+ *all the redirections
+ ** \param index indicates from which child of node we should start evaluating
+ **/
 void get_redirection(struct AST *node, struct fds *fd, int index)
 {
     if (!node)
@@ -231,6 +305,11 @@ void get_redirection(struct AST *node, struct fds *fd, int index)
     }
 }
 
+/**
+ ** \brief load file descriptors from on structure to another
+ ** \param fd pointer to the struct that will have its file descriptors modified
+ ** \param to_add struct containing file descriptors to load into the other
+ **/
 void merge_redirection(struct fds *fd, struct fds to_add)
 {
     if (to_add.in != -1)
@@ -241,6 +320,11 @@ void merge_redirection(struct fds *fd, struct fds to_add)
         fd->err = to_add.err;
 }
 
+/**
+ ** \brief Initiates a redirection node
+ ** \param token value of node->self, contains the name of the redirection
+ ** \return The redirection node we just created or NULL on failure
+ **/
 struct AST *redirection_init(struct Token *token)
 {
     struct AST *node = AST_init(2);
@@ -251,6 +335,11 @@ struct AST *redirection_init(struct Token *token)
     return node;
 }
 
+/**
+ ** \brief evaluation of the grammar rule for redirections
+ ** \param t pointer to an element of the chained list of tokens
+ ** \return a redirection node if it verified the grammar rule or NULL otherwise
+ **/
 struct AST *redirection(struct Token **t)
 {
     struct Token *pipe;

@@ -269,11 +269,11 @@ int exec_init(struct AST *node, int *index, struct fds fd)
             break;
         if (strcmp(cur_type, "WORD"))
         {
-            if (!node->child[*index]->foo)
-                fprintf(stderr, "node : %s has no foo\n",
-                    node->child[*index]->self->type);
-            node->child[*index]->foo(node->child[*index], fd);
-            res = node->child[*index]->res;
+            if (node->child[*index]->foo)
+            {
+                node->child[*index]->foo(node->child[*index], fd);
+                res = node->child[*index]->res;
+            }
         }
         else
         {
