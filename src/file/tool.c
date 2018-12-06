@@ -161,11 +161,14 @@ static int check_quote(char *str)
 {
     for (int i = 0; i < my_strlen(str); i++)
     {
+        if (i > 0 && str[i-1] == '\\' && str[i] == '\"')
+            continue;
         if (str[i] == '\"')
             return 1;
     }
     return 0;
 }
+
 
 /**
  ** \brief create the chain list composed of token.
@@ -223,12 +226,22 @@ struct Token *create_token(struct Token *token, char *str)
                     char *cpy = create_word(&parse,&pt);
                     add_token(&token, cpy);
                     free(cpy);
+                    printf("parse = %s\n",parse);
+                    if (parse[0] == parse[strlen(parse)-1] &&
+                        parse[0] == '\"' && strlen(parse)>1)
+                        {
+                            parse = strtok(NULL, delim);
+                            j = 0;
+                            break;
+                        }
                     parse = strtok(NULL, delim);
                     while (parse && check_quote(parse) == 0)
                     {
                         parse = strtok(NULL, delim);
                     }
-                    parse = strtok(NULL, delim);
+                    printf("parse = %s\n",parse);
+                    if (parse && check_quote(parse) == 1)
+                        parse = strtok(NULL, delim);
                     j = 0;
                     break;
                 }
