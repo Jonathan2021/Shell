@@ -82,8 +82,9 @@ void add_token(struct Token **token, char *str)
         next->type = "IO_NUMBER";
         next->next = NULL;
         add_token(&next, str2);
-        if (str3)
+        if (str3 && str3[0] != '\0' && strncmp(str3," ",1) != 0)
             add_token(&next, str3);
+        free(str3);
         free(str2);
     }
     if (!next->name)
@@ -159,7 +160,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
     if (get_value("--exit") == NULL && (argv[argc - 1] || !isatty(0)))
     {
         token = NULL;
-        if (isatty(0) && i < argc - 1)
+        if (isatty(0) && i <= argc - 1)
         {
             token = read_file(argv[argc - 1], token);
             set_value("--exit", "1");
