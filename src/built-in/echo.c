@@ -271,7 +271,7 @@ int option(char **args, int *flag)
  ** \return int
  **/
 
-int my_echo(char **args)
+int my_echo(char **args, struct fds fd)
 {
     int flag[2] = {0, 0};
     int i = option(args, flag);
@@ -281,21 +281,21 @@ int my_echo(char **args)
         if (flag[1] == 0)
         {
             if (args[i+1] != NULL)
-                fprintf(stdout, "%s ", args[i]);
+                dprintf(fd.out, "%s ", args[i]);
             else
-                fprintf(stdout, "%s", args[i]);
+                dprintf(fd.out, "%s", args[i]);
         }
         else
         {
             char *txt = change_txt(args[i]);
             if (args[i+1] != NULL)
-                fprintf(stdout,"%s ", txt);
+                dprintf(fd.out,"%s ", txt);
             else
-                fprintf(stdout,"%s", txt);
+                dprintf(fd.out,"%s", txt);
         }
         i++;
     }
     if (flag[0] == 0)
-        fprintf(stdout, "\n");
+        dprintf(fd.out, "\n");
     return 0;
 }
