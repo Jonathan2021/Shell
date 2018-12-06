@@ -281,7 +281,10 @@ int exec_init(struct AST *node, int *index, struct fds fd)
             if ((quote = quotes(cur_name)))
                 my_cmd[i] = quote;
             else
+            {
                 my_cmd[i] = copy_str(getvalue(cur_name));
+                expand_tilde(my_cmd[i]);
+            }
         }
     }
     (*index)++;
