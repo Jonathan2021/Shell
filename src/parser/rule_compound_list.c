@@ -156,7 +156,7 @@ int my_exec(char *cmd[], struct fds fd)
         }
         if (execvp(cmd[0], cmd) < 0)
         {
-            fprintf(stderr, "execvp failed\n");
+            fprintf(stderr, "%s: command not found\n", cmd[0]);
             exit(127);
         }
         exit(0);
