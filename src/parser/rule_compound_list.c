@@ -105,7 +105,6 @@ int builtin(char *cmd[], struct fds fd)
 
 int my_exec(char *cmd[], struct fds fd)
 {
-    malloc_list(cmd);
     int res = -1;
     if ((res = builtin(cmd, fd)) != -1)
         return res;
@@ -148,17 +147,18 @@ int my_exec(char *cmd[], struct fds fd)
     return res;
 }
 
-void zero_fill(char arr[], size_t len)
-{
-    for (size_t i = 0; i < len; ++i)
-        arr[i] = 0;
-}
-
-void double_quotes(char *cur_name, char fill[], size_t len)
+char *double_quotes(char *cur_name)
 {
     size_t j = 0;
+    size_t len = 4096;
+    char *fill = calloc(len, sizeof(char));
     for (size_t i = 0; cur_name[i] && j < len - 1; ++i)
     {
+        if(j + 1 >= len - 1)
+        {
+            len *= 2;
+            fill = realloc(fill, len);
+        }
         if (cur_name[i] == ' ')
             fill[j++] = ' ';
         else
@@ -176,27 +176,39 @@ void double_quotes(char *cur_name, char fill[], size_t len)
             cur_name[i + 1] = c;
         }
     }
+    fill = realloc(fill, j + 1);
     fill[j] = 0;
+    return fill;
 }
 
-int quotes(char *cur_name, char fill[], size_t len)
+char *quotes(char *cur_name)
 {
     char f = cur_name[0];
     char l = cur_name[strlen(cur_name) - 1];
     if (!((f == 39 || f == '"') && l == f && strlen(cur_name) > 2))
-        return 0;
+        return NULL;
     cur_name[strlen(cur_name) - 1] = 0;
     cur_name[0] = 0;
+    char *fill = NULL;
     if (f == 39)
     {
+        fill = calloc(strlen(cur_name + 1) + 1, sizeof(char));
+        if (!fill)
+            return NULL;
         memmove(fill, cur_name + 1, strlen(cur_name + 1));
-        fill[strlen(cur_name + 1)] = 0;
     }
     else
     {
-        double_quotes(cur_name + 1, fill, len);
+        fill = double_quotes(cur_name + 1);
     }
-    return 1;
+    return fill;
+}
+
+char *copy_str(char *str)
+{
+    char *res = calloc(strlen(str) + 1, sizeof(char));
+    memmove(res, str, strlen(str));
+    return res;
 }
 
 /**
@@ -234,12 +246,11 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         }
         else
         {
-            size_t len = 20 * strlen(cur_name);
-            char quote[len];
-            if (quotes(cur_name, quote, len))
+            char *quote = NULL;
+            if ((quote = quotes(cur_name)))
                 my_cmd[i] = quote;
             else
-                my_cmd[i] = getvalue(cur_name);
+                my_cmd[i] = copy_str(getvalue(cur_name));
         }
     }
     (*index)++;
