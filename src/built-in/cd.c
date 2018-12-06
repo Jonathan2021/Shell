@@ -79,10 +79,10 @@ static int settohome(void)
     {
         printf("chdir(%s) = %d\n", home, chdir(home));
         if(chdir(home))
-            return -1;
-        return 0;
+            return 0;
+        return 1;
     }
-    return -1;
+    return 0;
 }
 
 /**
@@ -104,7 +104,7 @@ int my_cd(char **cd_argv)
         {
             printf("change on %s = %d\n" \
                     , cd_argv[0], chdir(getenv("OLDPWD")));
-            return 0;
+            return 1;
 
         }
         else
@@ -120,7 +120,7 @@ int my_cd(char **cd_argv)
                         "42sh: cd: %s Not a directory\n", before);
                 if (before[0] == '~')
                     free(cd_argv[0]);
-                return -1;
+                return 0;
             }
             setenv("OLDPWD", getcwd(tmp, 2048), !0);
             printf("chnge on %s = %d\n", cd_argv[0] \
@@ -130,9 +130,9 @@ int my_cd(char **cd_argv)
             if (before[0] == '~')
                 free(cd_argv[0]);
             closedir(dir);
-            return 0;
+            return 1;
         }
-        return -1;
+        return 0;
     }
 }
 
