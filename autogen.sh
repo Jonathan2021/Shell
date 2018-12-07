@@ -32,5 +32,5 @@ else
         rm -rf doc/html
     fi
     rm -rf autom4te.cache/ compile config.h.in Makefile missing \
-    aclocal.m4 install-sh depcomp Makefile.in .pytest_cache
+    aclocal.m4 install-sh depcomp Makefile.in .pytest_cache configure
 fi
