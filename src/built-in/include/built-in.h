@@ -8,4 +8,5 @@ char *remove_next(char *txt, int i);
 int my_exit(struct AST *ast, struct Token *token);
 int exit_value(void);
 int my_shopt(char **str, struct fds fd);
+int my_history(char **str, struct fds fd);
 #endif /* ! H_BUILTIN */

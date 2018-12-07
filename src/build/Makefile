@@ -33,6 +33,7 @@ SRC = src/parser/and_node.c \
         src/built-in/cd.c \
         src/built-in/echo.c \
         src/built-in/shopt.c \
+        src/built-in/history.c \
         src/built-in/exit.c
 EXEC = 42SH
 

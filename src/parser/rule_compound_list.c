@@ -113,6 +113,8 @@ int builtin(char *cmd[], struct fds fd)
         return my_echo(cmd + 1, fd);
     if (!strcmp(cmd[0], "shopt"))
         return my_shopt(cmd + 1, fd);
+    if (!strcmp(cmd[0], "history"))
+        return my_history(cmd + 1, fd);
     if (!strcmp(cmd[0], "exit") && !cmd[1])
     {
         set_value("exit", "1");
