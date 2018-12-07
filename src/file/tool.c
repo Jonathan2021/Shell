@@ -287,6 +287,7 @@ struct Token *read_file(char *f, struct Token *token)
                 char *tok = malloc(strlen(parse) * 2);
                 strcpy(tok, parse);
                 add_token(&token, tok);
+                free(tok);
                 parse = strtok(NULL, delim);
             }
             add_token(&token, "\n");
@@ -308,6 +309,7 @@ struct Token *read_file(char *f, struct Token *token)
                 char *tok = malloc(strlen(parse) * 2);
                 strcpy(tok, parse);
                 add_token(&token, tok);
+                free(tok);
                 parse = strtok(NULL, delim);
             }
             add_token(&token, "\n");

@@ -59,13 +59,17 @@ struct Token *carving(long argc, char **argv)
             if (!str)
                 continue;
             if (strncmp(str, "exit", 4) == 0)
+            {
+                free(str);
                 return 0;
+            }
             if (str && (str[0] != '\n' && str[0] != '\0'))
             {
                 add_history(str);
                 append_history(1, ".42sh_history");
             }
             token = create_token(token, str);
+            free(str);
         }
         lexer(token);
         if (check_option(token))
