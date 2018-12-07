@@ -10,6 +10,7 @@ struct PS
 };
 
 extern struct PS *ps;
+extern int line_history;
 
 void add_token(struct Token **token, char *str);
 struct Token *parse_path(struct Token *token, char **argv, long argc);

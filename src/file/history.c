@@ -21,7 +21,7 @@
 #include <readline/readline.h>
 #include "../include/shell.h"
 
-static int line_history = 0;
+int line_history = 0;
 
 /**
  ** \brief Come back to the last command.

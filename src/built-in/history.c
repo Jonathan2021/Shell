@@ -33,7 +33,7 @@ void print_history(struct fds fd)
     while (fgets(str,4095,file))
     {
         int i = 0;
-        while (my_strlen(nb) + i < 5)
+        while (my_strlen(nb) + i < 6)
         {
             dprintf(fd.out," ");
             i ++;
@@ -44,6 +44,8 @@ void print_history(struct fds fd)
     fclose(file);
 }
 
+
+
 int my_history(char **argv, struct fds fd)
 {
     int i = 0;
@@ -53,6 +55,12 @@ int my_history(char **argv, struct fds fd)
     }
     while (argv[i] != NULL && argv[i][0] == '-')
     {
+        if ((strcmp(argv[i], "-c")) == 0)
+        {
+            delete_history();
+            init_history();
+            line_history = 0;
+        }
         i++;
     }
     return 0;
