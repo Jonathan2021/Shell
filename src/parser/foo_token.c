@@ -38,8 +38,8 @@ struct Token *call_ps2(struct Token **t)
     struct Token *tmp = *t;
     for (; tmp->next != NULL; tmp = tmp->next)
         ;
-    char *str = malloc(4095); // a free plus tard
-    printf("%s", get_file("PS2"));
+    char *str = malloc(4095);
+    printf("%s", getvalue("$PS2"));
     struct Token *res = NULL;
     if (fgets(str, 4095, stdin) == NULL)
         return NULL;
