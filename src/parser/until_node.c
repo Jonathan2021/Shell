@@ -22,7 +22,6 @@ void foo_until(struct AST *node, struct fds fd)
         return;
     }
     node->child[0]->foo(node->child[0], fd);
-    printf("child res is : %d\n", node->child[0]->res);
     node->res = !node->child[0]->res;
     while (node->res)
     {

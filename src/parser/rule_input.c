@@ -9,6 +9,21 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
+void next_newline(struct Token **t)
+{
+    struct Token *tmp = *t;
+    while (tmp)
+    {
+        if (!strcmp(tmp->name, "\n"))
+        {
+            tmp = tmp->next;
+            break;
+        }
+        tmp = tmp->next;
+    }
+    *t = tmp;
+}
+
 /**
  ** \brief the grammar rule which return the correct ast.
  ** \param t the token chain list
@@ -31,6 +46,8 @@ struct AST *input(struct Token **t)
         }
         else
         {
+            next_newline(&tmp);
+            *t = tmp;
             AST_destroy(node);
             return NULL;
         }
