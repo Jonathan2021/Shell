@@ -15,9 +15,9 @@
 void set_status(int res)
 {
     if (res)
-        setvalue("?" , "0");
+        setvalue("?", "0");
     else
-        setvalue("?" , "1");
+        setvalue("?", "1");
 }
 
 /**

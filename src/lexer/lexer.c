@@ -112,14 +112,15 @@ int option_shopt(char **argv)
 {
     int i = 1;
     int x = 1;
-    while(argv[i] && argv[i+1] && argv[i][0] != '\0' && argv[i+1][0] != '\0')
+    while (
+        argv[i] && argv[i + 1] && argv[i][0] != '\0' && argv[i + 1][0] != '\0')
     {
-        if(argv[i][0] == '+')
+        if (argv[i][0] == '+')
         {
-            set_value(argv[i+1], "1");
-            x +=2;
+            set_value(argv[i + 1], "1");
+            x += 2;
         }
-        i = i+1;
+        i = i + 1;
     }
     return x;
 }
@@ -149,7 +150,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
     optind = i;
     setenv("POSIXLY_CORRECT", "1", 0);
     while ((c = getopt_long(argc, argv, "c:0:", long_options, &option_index))
-            != -1)
+           != -1)
     {
         if (c == 'c')
         {

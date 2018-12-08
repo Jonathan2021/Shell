@@ -18,33 +18,31 @@ static int my_strlen(int x)
     while (x != 0)
     {
         x /= 10;
-        i ++;
+        i++;
     }
     return i;
 }
 
 void print_history(struct fds fd)
 {
-    FILE *file = fopen(".42sh_history","r+");
+    FILE *file = fopen(".42sh_history", "r+");
     if (!file)
         return;
     char str[4095];
     int nb = 1;
-    while (fgets(str,4095,file))
+    while (fgets(str, 4095, file))
     {
         int i = 0;
         while (my_strlen(nb) + i < 6)
         {
-            dprintf(fd.out," ");
-            i ++;
+            dprintf(fd.out, " ");
+            i++;
         }
-        dprintf(fd.out,"%i  %s",nb,str);
-        nb ++;
+        dprintf(fd.out, "%i  %s", nb, str);
+        nb++;
     }
     fclose(file);
 }
-
-
 
 int my_history(char **argv, struct fds fd)
 {
@@ -65,4 +63,3 @@ int my_history(char **argv, struct fds fd)
     }
     return 0;
 }
-

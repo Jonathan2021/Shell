@@ -23,7 +23,7 @@ void next_token(struct Token **tmp)
     if (res == NULL || (strcmp("\n", res->name) == 0 && res->next == NULL))
     {
         char *str = malloc(4095); // a free plus tard
-        fprintf(stderr,"%s", getvalue("$PS2"));
+        fprintf(stderr, "%s", getvalue("$PS2"));
         if (fgets(str, 4095, stdin) == NULL)
             return;
         res = create_token(res, str);

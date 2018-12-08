@@ -37,7 +37,7 @@ void sig(void)
     sigaction(SIGINT, &sac, NULL);
 }
 
-    /**
+/**
  ** \fn struct Token *carving(long argc, char **argv)
  ** \brief Carving the user input.
  **
@@ -45,72 +45,72 @@ void sig(void)
  ** \param argv the list of argument
  ** \return The chain list of type struct Token *.
  **/
-    struct Token *carving(long argc, char **argv)
+struct Token *carving(long argc, char **argv)
+{
+    struct Token *token = NULL;
+    init_ps();
+    int i = 0;
+    while (1)
     {
-        struct Token *token = NULL;
-        init_ps();
-        int i = 0;
-        while (1)
+        check_rl();
+        token = NULL;
+        if (i == 0)
         {
-            check_rl();
-            token = NULL;
-            if (i == 0)
-            {
-                i = 1;
-                token = parse_path(token, argv, argc);
-            }
-            else
-            {
-                sig();
-                char *str = readline(getvalue("$PS1"));
-                if (!str)
-                    continue;
-                str[strlen(str)] = '\0';
-                if (strncmp(str, "exit", 4) == 0)
-                {
-                    free(str);
-                    return 0;
-                }
-                if (str && (str[0] != '\n' && str[0] != '\0'))
-                {
-                    add_history(str);
-                    append_history(1, ".42sh_history");
-                }
-                token = create_token(token, str);
-                free(str);
-            }
-            lexer(token);
-            if (check_option(token))
-            {
-                DestroyToken(token);
-                reset_value();
-                exit(0);
-            }
-            DestroyToken(token);
-            if (!isatty(0))
-                exit(0);
+            i = 1;
+            token = parse_path(token, argv, argc);
         }
-        reset_value();
-        return 0;
+        else
+        {
+            sig();
+            char *str = readline(getvalue("$PS1"));
+            if (!str)
+                continue;
+            str[strlen(str)] = '\0';
+            if (strncmp(str, "exit", 4) == 0)
+            {
+                free(str);
+                return 0;
+            }
+            if (str && (str[0] != '\n' && str[0] != '\0'))
+            {
+                add_history(str);
+                append_history(1, ".42sh_history");
+            }
+            token = create_token(token, str);
+            free(str);
+        }
+        lexer(token);
+        if (check_option(token))
+        {
+            DestroyToken(token);
+            reset_value();
+            exit(0);
+        }
+        DestroyToken(token);
+        if (!isatty(0))
+            exit(0);
     }
-    /**
+    reset_value();
+    return 0;
+}
+/**
  ** \brief Main function in 42sh.
  **
  ** \param argc number of argument
  ** \param argv the list of argument
  ** \return The value 0
  **/
-    int main(int argc, char *argv[])
-    {
-        FILE *file = fopen("/tmp/42shrc", "w+");
-        fprintf(file, "PS1 \"42sh$ \"\nPS2 \"> \"");
-        fclose(file);
-        setvalue("PS1", "42sh$ ");
-        setvalue("PS2", "> ");
-        setvalue("echo-control-characters", "0");
-        delete_history();
-        init_history();
-        setvalue("?", "0");
-        carving(argc, argv);
-        return 0;
-    }
+int main(int argc, char *argv[])
+{
+    FILE *file = fopen("/tmp/42shrc", "w+");
+    fprintf(file, "PS1 \"42sh$ \"\nPS2 \"> \"");
+    fclose(file);
+    setvalue("PS1", "42sh$ ");
+    setvalue("PS2", "> ");
+    setvalue("echo-control-characters", "0");
+    delete_history();
+    init_history();
+    setvalue("?", "0");
+    carving(argc, argv);
+    return 0;
+}

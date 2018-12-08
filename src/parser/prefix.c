@@ -54,7 +54,8 @@ struct AST *assigment_init()
         free(token);
         return NULL;
     }
-    token->name = copy_str("="); // FIXME should maybe malloc it to facilitate freeing the tree
+    token->name = copy_str(
+        "="); // FIXME should maybe malloc it to facilitate freeing the tree
     token->type = "ASSIGMENT_WORD";
     node->self = token;
     node->foo = foo_assigment;

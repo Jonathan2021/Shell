@@ -8,7 +8,7 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
-static struct fds reference = { .in= -1, .out = -1, .err=-1};
+static struct fds reference = {.in = -1, .out = -1, .err = -1};
 
 int check_ref(int fd)
 {
@@ -227,7 +227,7 @@ void something_and(struct AST *node, struct fds *fd, int io)
         else if (io == 1)
         {
             if (fd->out > 2 && check_ref(fd->out))
-                    close(fd->out);
+                close(fd->out);
             fd->out = (!file) ? reference.in : reference.err;
         }
         else if (io == 2)
@@ -295,7 +295,8 @@ void my_redirection(struct AST *node, struct fds *fd, struct fds old)
  *all the redirections
  ** \param index indicates from which child of node we should start evaluating
  **/
-void get_redirection(struct AST *node, struct fds *fd, struct fds old, int index)
+void get_redirection(
+    struct AST *node, struct fds *fd, struct fds old, int index)
 {
     if (!node)
         return;
@@ -344,24 +345,24 @@ void merge_redirection(struct fds *fd, struct fds to_add)
 {
     if (to_add.in != -1)
     {
-       // if (to_add.in <= 2)
-         //   merge_special(fd, 0, to_add.in);
-        //else
-            fd->in = to_add.in;
+        // if (to_add.in <= 2)
+        //   merge_special(fd, 0, to_add.in);
+        // else
+        fd->in = to_add.in;
     }
     if (to_add.out != -1)
     {
-        //if (to_add.out <= 2)
-          //  merge_special(fd, 1, to_add.out);
-        //else
+        // if (to_add.out <= 2)
+        //  merge_special(fd, 1, to_add.out);
+        // else
         fd->out = to_add.out;
     }
     if (to_add.err != -1)
     {
-        //if (to_add.err <= 2)
+        // if (to_add.err <= 2)
         //    merge_special(fd, 2, to_add.err);
-        //else
-            fd->err = to_add.err;
+        // else
+        fd->err = to_add.err;
     }
 }
 
