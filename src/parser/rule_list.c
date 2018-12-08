@@ -45,11 +45,6 @@ struct AST *list(struct Token **t)
         add_list(list, word_init(t2));
         t2 = t2->next;
         *t = t2;
-        while (t2 && (strcmp("\n", t2->name) == 0))
-        {
-            t2 = t2->next;
-            *t = t2;
-        }
         if (!t2 || (node = and_or(&t2)) == NULL)
             break;
         add_list(list, node);
