@@ -38,19 +38,37 @@ DONE:
     - clean Doxyfile
     - func of node
     - option of 42sh
-    
-
-TODO:
     - redirection
     - valgrind
     - remove dead code
     - doxygene
-    - push on the branch on the epita's git
     - finish testsuit
     - one folder by categorie of test
-    - unitaire test
     - review of ps2
     - Time out of the testsuit
     - coding style
     - verif zombie
+    - alias
+    - pipe
+    - history
+    - exit
+    - cd
+    - shopt
+    - unalias
+    - echo
+    - continue
+    - break
+    - source
+    - variable
+    - quoting
+    - readline
+    - completion
+    
+
+TODO:
+    - push on the branch on the epita's git
+    - unit test
+    - job control
+    - command subsitution
+    - path expansion
 

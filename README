@@ -6,24 +6,28 @@ BUILD ./42SH BINARY:
     1- ./autogen
     2- ./configure
     3- make
+    or
+    1- ./autogen all
     --> ./42SH is now built
 
 CLEAN:
     ./autogen clean
 
 To build doxygen:
-    1- go in doc/
-    2- doxygen doxygen.conf
-    3- go in latex/
-    4- make refman.tex
+    1- make doc
 
 HOW TO USE 42SH:
+    [OPTION]
+    --name-print do a print of name linked token
+    --type-print do a print of type linked token
     --ast-print do a print of a DOT file
-    --type-print do a print of linked token
-    --version print actual version
+    --version | --ver print actual version
     --norc desactivate all resource reader
     -c "command" follow the bash behavior
-    cat "file" | ./42sh read file 
-    ./42sh < file read file
+    [ how to read file ]
+    cat "file" | ./42sh read_file 
+    ./42sh < file read_file
+    [ how to use it ]
+    	[GNU LONG OPTION] [OPTION] [FILE]
 
 *******************************************************************
