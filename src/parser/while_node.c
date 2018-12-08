@@ -65,7 +65,10 @@ struct AST *rule_while(struct Token **t)
         tmp = call_ps2(t);
 
     if (!(do_body = do_group(&tmp)))
+    {
+        AST_destroy(condition);
         return NULL;
+    }
     struct AST *node = while_init(name);
     node->child[0] = condition;
     node->child[1] = do_body;
