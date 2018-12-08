@@ -62,8 +62,7 @@ void sig(void)
             else
             {
                 sig();
-                fprintf(stderr, "%s", getvalue("$PS1"));
-                char *str = readline("");
+                char *str = readline(getvalue("$PS1"));
                 if (!str)
                     continue;
                 str[strlen(str)] = '\0';
