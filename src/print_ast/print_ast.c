@@ -151,6 +151,9 @@ int check_option(struct Token *token)
     print = get_value("--exit");
     if (print && strcmp(print, "1") == 0)
         return 1;
+    print = get_value("exit");
+    if (print && strcmp(print, "1") == 0)
+        return 1;
     return 0;
 }
 
