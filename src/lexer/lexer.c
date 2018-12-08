@@ -108,6 +108,22 @@ void add_token(struct Token **token, char *str)
     copy->next = next;
 }
 
+int option_shopt(char **argv)
+{
+    int i = 1;
+    int x = 1;
+    while(argv[i] && argv[i+1] && argv[i][0] != '\0' && argv[i+1][0] != '\0')
+    {
+        if(argv[i][0] == '+')
+        {
+            set_value(argv[i+1], "1");
+            x +=2;
+        }
+        i = i+1;
+    }
+    return x;
+}
+
 /**
  ** \brief Parse all the user input for the options
  ** \param token the full chain list of tokens
@@ -119,6 +135,7 @@ void add_token(struct Token **token, char *str)
 struct Token *parse_path(struct Token *token, char **argv, long argc)
 {
     int c = 0;
+    int i = option_shopt(argv);
     static struct option long_options[] = {
         {"version", no_argument, 0, 3},
         {"ver", no_argument, 0, 3},
@@ -129,8 +146,8 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
         {0, 0, 0, 0},
     };
     int option_index = 0;
-    optind = 0;
-    int i = 1;
+    optind = i;
+    setenv("POSIXLY_CORRECT", "1", 0);
     while ((c = getopt_long(argc, argv, "c:0:", long_options, &option_index))
             != -1)
     {
@@ -139,12 +156,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
             token = create_token(token, optarg);
             set_value("--exit", "1");
         }
-        else if (c == '0' && argv[i][0] == '+')
-        {
-            set_value(optarg, "1");
-            i++;
-        }
-        else if (c == '0' && argv[i][0] == '-')
+        else if (c == '0')
         {
             set_value(optarg, "0");
             i++;
