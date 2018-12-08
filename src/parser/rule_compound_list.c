@@ -174,7 +174,7 @@ int my_exec(char *cmd[], struct fds fd)
         {
             dup2(fd.err, 2);
         }
-       mcautious_close(fd);
+        cautious_close(fd);
         if (execvp(cmd[0], cmd) < 0)
         {
             fprintf(stderr, "%s: command not found\n", cmd[0]);
