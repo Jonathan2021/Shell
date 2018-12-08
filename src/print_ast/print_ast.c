@@ -145,7 +145,7 @@ int check_option(struct Token *token)
     print = get_value("version");
     if (print && strcmp(print, "1") == 0)
     {
-        printf("Version 0.5\n");
+        printf("Version 1\n");
         return 1;
     }
     print = get_value("--exit");
