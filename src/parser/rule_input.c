@@ -14,27 +14,19 @@
  ** \param t the token chain list
  ** \returm the correspondant AST of the givem chain list token
  **/
-
 struct AST *input(struct Token **t)
 {
     struct AST *node;
     struct Token *tmp = *t;
-    if (tmp == NULL || ((strcmp(tmp->name, "\n") == 0) && tmp->next == NULL))
+    if (tmp == NULL || strcmp(tmp->name, "\n") == 0)
         return NULL;
     if ((node = list(&tmp)) != NULL)
     {
-        if (strcmp(tmp->name, "\n") == 0)
+        if (tmp == NULL || strcmp(tmp->name, "\n") == 0)
         {
-            tmp = tmp->next;
-            if (!tmp)
-                return node;
-            else
-            {
-                *t = tmp;
-            }
-        }
-        else if(!tmp)
+            *t = tmp;
             return node;
+        }
         else
         {
             AST_destroy(node);
