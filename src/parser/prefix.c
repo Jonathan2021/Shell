@@ -25,14 +25,15 @@ void fill_assigment(struct AST *node, char *str)
     str[i] = 0;
     struct Token *left = malloc(sizeof(struct Token));
     struct Token *right = malloc(sizeof(struct Token));
-    left->name = str;
+    left->name = copy_str(str);
     left->type = "ASSIGMENT_WORD";
-    right->name = str + i + 1;
+    right->name = copy_str(str + i + 1);
     right->type = "ASSIGMENT_WORD";
     node->child[0] = AST_init(0);
     node->child[1] = AST_init(0);
     node->child[0]->self = left;
     node->child[1]->self = right;
+    str[i] = '=';
     // Risque de poser probleme quand on free puisque free left revient à free
     // right
 }
@@ -53,8 +54,7 @@ struct AST *assigment_init()
         free(token);
         return NULL;
     }
-    token->name
-        = "="; // FIXME should maybe malloc it to facilitate freeing the tree
+    token->name = copy_str("="); // FIXME should maybe malloc it to facilitate freeing the tree
     token->type = "ASSIGMENT_WORD";
     node->self = token;
     node->foo = foo_assigment;
