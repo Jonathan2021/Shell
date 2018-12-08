@@ -279,18 +279,15 @@ struct Token *read_file(char *f, struct Token *token)
         char str[4095];
         while (fgets(str, 4095, stdin))
         {
-            char *parse;
-            char *delim = {"\t \n"};
-            parse = strtok(str, delim);
-            while (parse)
+            if (!token)
+                token = create_token(token, str);
+            else
             {
-                char *tok = malloc(strlen(parse) * 2);
-                strcpy(tok, parse);
-                add_token(&token, tok);
-                free(tok);
-                parse = strtok(NULL, delim);
+                struct Token *cpy = token;
+                while (cpy->next)
+                    cpy = cpy->next;
+                cpy->next = create_token(cpy->next, str);
             }
-            add_token(&token, "\n");
         }
     }
     else
@@ -301,20 +298,16 @@ struct Token *read_file(char *f, struct Token *token)
         char str[4095];
         while (fgets(str, 4095, file))
         {
-            char *parse;
-            char *delim = {"\t \n"};
-            parse = strtok(str, delim);
-            while (parse)
+            if (!token)
+                token = create_token(token, str);
+            else
             {
-                char *tok = malloc(strlen(parse) * 2);
-                strcpy(tok, parse);
-                add_token(&token, tok);
-                free(tok);
-                parse = strtok(NULL, delim);
+                struct Token *cpy = token;
+                while (cpy->next)
+                    cpy = cpy->next;
+                cpy->next = create_token(cpy->next, str);
             }
-            add_token(&token, "\n");
         }
     }
-    add_token(&token, "\n");
     return token;
 }
