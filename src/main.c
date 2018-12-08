@@ -54,7 +54,8 @@ struct Token *carving(long argc, char **argv)
         }
         else
         {
-            char *str = readline("42sh$ ");
+            fprintf(stderr,"%s",getvalue("$PS1"));
+            char *str = readline("");
             str[strlen(str)] = '\0';
             if (!str)
                 continue;
@@ -97,6 +98,8 @@ int main(int argc, char *argv[])
     FILE *file = fopen("/tmp/42shrc", "w+");
     fprintf(file, "PS1 \"42sh$ \"\nPS2 \"> \"");
     fclose(file);
+    setvalue("PS1", "42sh$ ");
+    setvalue("PS2", "> ");
     delete_history();
     init_history();
     setvalue("?", "0");
