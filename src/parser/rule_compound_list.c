@@ -125,6 +125,23 @@ int builtin(char *cmd[], struct fds fd)
     return -1;
 }
 
+void cautious_close(struct fds fd)
+{
+    int in = 0;
+    int out = 0;
+    if (!fd.in)
+    {
+        close(fd.in);
+        in = 1;
+    }
+    if (fd.out != 1 && (!in || fd.out != fd.in))
+    {
+        close(fd.out);
+        out = 1;
+    }
+    if (fd.err != 2 && (!out || fd.out != fd.err) && (!in || fd.err != fd.in))
+        close(fd.err);
+}
 /**
  ** \brief Executes the binary/builtin using execvp if not reimplemented
  *in the project
@@ -148,18 +165,16 @@ int my_exec(char *cmd[], struct fds fd)
         if (fd.in)
         {
             dup2(fd.in, 0);
-            close(fd.in);
         }
         if (fd.out != 1)
         {
             dup2(fd.out, 1);
-            close(fd.out);
         }
         if (fd.err != 2)
         {
             dup2(fd.err, 2);
-            close(fd.err);
         }
+       mcautious_close(fd);
         if (execvp(cmd[0], cmd) < 0)
         {
             fprintf(stderr, "%s: command not found\n", cmd[0]);
@@ -268,8 +283,8 @@ int exec_init(struct AST *node, int *index, struct fds fd)
     char *cur_name;
     char *cur_type;
     int res = 0;
-    struct fds redir = {.in = -1, .out = -1, .err = -1};
-    get_redirection(node, &redir, *index);
+    struct fds redir = fd;
+    get_redirection(node, &redir, fd, *index);
     merge_redirection(&fd, redir);
     for (; *index < node->nb_child && node->child[*index] && i < 511;
          (*index)++, ++i)

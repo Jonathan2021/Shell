@@ -8,6 +8,13 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
+static struct fds reference = { .in= -1, .out = -1, .err=-1};
+
+int check_ref(int fd)
+{
+    return (fd != reference.in && fd != reference.out && fd != reference.err);
+}
+
 /**
  ** \brief checks if string is a number
  ** \param str string to be checked
@@ -51,11 +58,11 @@ int get_fd(char *str)
  **/
 void close_redirection(struct fds *fd)
 {
-    if (fd->in > 2)
+    if (fd->in > 2 && check_ref(fd->in))
         close(fd->in);
-    if (fd->out > 2)
+    if (fd->out > 2 && check_ref(fd->out))
         close(fd->out);
-    if (fd->err > 2)
+    if (fd->err > 2 && check_ref(fd->out))
         close(fd->err);
 }
 
@@ -73,19 +80,19 @@ int replace_fd(struct AST *node, struct fds *fd, int file, int io)
         io = get_fd(getvalue(node->child[0]->self->name));
     if (!io)
     {
-        if (fd->in > 2)
+        if (fd->in > 2 && check_ref(fd->in))
             close(fd->in);
         fd->in = file;
     }
     else if (io == 1)
     {
-        if (fd->out > 2)
+        if (fd->out > 2 && check_ref(fd->out))
             close(fd->out);
         fd->out = file;
     }
     else if (io == 2)
     {
-        if (fd->err > 2)
+        if (fd->err > 2 && check_ref(fd->err))
             close(fd->err);
         fd->err = file;
     }
@@ -174,17 +181,17 @@ void my_close(struct fds *fd, int io)
 {
     if (!io)
     {
-        if (fd->in > 2)
+        if (fd->in > 2 && check_ref(fd->in))
             close(fd->in);
     }
     else if (io == 1)
     {
-        if (fd->out > 2)
+        if (fd->out > 2 && check_ref(fd->out))
             close(fd->out);
     }
     else if (io == 2)
     {
-        if (fd->err > 2)
+        if (fd->err > 2 && check_ref(fd->err))
             close(fd->err);
     }
 }
@@ -213,21 +220,21 @@ void something_and(struct AST *node, struct fds *fd, int io)
         }
         if (!io)
         {
-            if (fd->in > 2)
+            if (fd->in > 2 && check_ref(fd->in))
                 close(fd->in);
-            fd->in = (file == 1) ? fd->out : fd->err;
+            fd->in = (file == 1) ? reference.out : reference.err;
         }
         else if (io == 1)
         {
-            if (fd->out > 2)
-                close(fd->out);
-            fd->out = (!file) ? fd->in : fd->err;
+            if (fd->out > 2 && check_ref(fd->out))
+                    close(fd->out);
+            fd->out = (!file) ? reference.in : reference.err;
         }
         else if (io == 2)
         {
-            if (fd->err > 2)
+            if (fd->err > 2 && check_ref(fd->err))
                 close(fd->err);
-            fd->err = (!file) ? fd->in : fd->err;
+            fd->err = (!file) ? reference.in : reference.out;
         }
         else
         {
@@ -270,8 +277,9 @@ void redirect_word(struct AST *node, struct fds *fd)
  ** \param node pointer to the redirection node in the AST
  ** \param fd pointer to a struct containing file descriptors modifies later on
  **/
-void my_redirection(struct AST *node, struct fds *fd)
+void my_redirection(struct AST *node, struct fds *fd, struct fds old)
 {
+    reference = old;
     if (!node || node->nb_child < 2 || !node->child[1])
         return;
     if (!strcmp("WORD", node->child[1]->self->type))
@@ -287,7 +295,7 @@ void my_redirection(struct AST *node, struct fds *fd)
  *all the redirections
  ** \param index indicates from which child of node we should start evaluating
  **/
-void get_redirection(struct AST *node, struct fds *fd, int index)
+void get_redirection(struct AST *node, struct fds *fd, struct fds old, int index)
 {
     if (!node)
         return;
@@ -301,10 +309,31 @@ void get_redirection(struct AST *node, struct fds *fd, int index)
             break;
 
         if (!strcmp(cur_child->self->type, "REDIRECTION"))
-            my_redirection(cur_child, fd);
+            my_redirection(cur_child, fd, old);
     }
 }
+/*
+int fd_place(struct fds fd, int index)
+{
+    if (!index)
+        return fd.in;
+    if (index == 1)
+        return fd.out;
+    if (index == 2)
+        return fd.out;
+    return -1;
+}
 
+void merge_special(struct fds *fd, int here, int place)
+{
+    if (!here)
+        fd->in = fd_place(*fd, place);
+    else if (here == 1)
+        fd->out = fd_place(*fd, place);
+    else if (here == 2)
+        fd->err = fd_place(*fd, place);
+}
+*/
 /**
  ** \brief load file descriptors from on structure to another
  ** \param fd pointer to the struct that will have its file descriptors
@@ -314,11 +343,26 @@ void get_redirection(struct AST *node, struct fds *fd, int index)
 void merge_redirection(struct fds *fd, struct fds to_add)
 {
     if (to_add.in != -1)
-        fd->in = to_add.in;
+    {
+       // if (to_add.in <= 2)
+         //   merge_special(fd, 0, to_add.in);
+        //else
+            fd->in = to_add.in;
+    }
     if (to_add.out != -1)
+    {
+        //if (to_add.out <= 2)
+          //  merge_special(fd, 1, to_add.out);
+        //else
         fd->out = to_add.out;
+    }
     if (to_add.err != -1)
-        fd->err = to_add.err;
+    {
+        //if (to_add.err <= 2)
+        //    merge_special(fd, 2, to_add.err);
+        //else
+            fd->err = to_add.err;
+    }
 }
 
 /**
