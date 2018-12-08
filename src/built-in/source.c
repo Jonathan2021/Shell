@@ -26,7 +26,6 @@ int source(char **arg)
         closedir(dir);
             return 1;
     }
-    closedir(dir);
     if (access( arg[0], F_OK ) != -1)
     {
         pid_t child;
