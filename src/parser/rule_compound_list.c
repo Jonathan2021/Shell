@@ -275,10 +275,15 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         cur_name = node->child[*index]->self->name;
         cur_type = node->child[*index]->self->type;
         if (!strcmp(cur_name, ";") || !strcmp(cur_name, "&")
-            || !strcmp(cur_name, "\n") || !strcmp(cur_type, "REDIRECTION"))
+            || !strcmp(cur_name, "\n"))
             break;
         if (strcmp(cur_type, "WORD"))
         {
+            if (!strcmp(cur_type, "REDIRECTION"))
+            {
+                --i;
+                continue;
+            }
             if (node->child[*index]->foo)
             {
                 node->child[*index]->foo(node->child[*index], fd);
