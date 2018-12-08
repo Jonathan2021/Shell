@@ -22,8 +22,10 @@ struct AST *input(struct Token **t)
         return NULL;
     if ((node = list(&tmp)) != NULL)
     {
-        if (tmp == NULL || strcmp(tmp->name, "\n") == 0)
+        if (strcmp(tmp->name, "\n") == 0 || !tmp)
         {
+            if (tmp)
+                tmp = tmp->next;
             *t = tmp;
             return node;
         }
