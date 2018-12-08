@@ -7,8 +7,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "../include/shell.h"
+
+void set_status(int res)
+{
+    if (res)
+        setvalue("?" , "0");
+    else
+        setvalue("?" , "1");
+}
 
 /**
  ** \brief create node ast with number of child

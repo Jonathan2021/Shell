@@ -23,11 +23,18 @@ struct AST *input(struct Token **t)
         return NULL;
     if ((node = list(&tmp)) != NULL)
     {
-        if (tmp == NULL || ((strcmp(tmp->name, "\n") == 0)))
+        if (strcmp(tmp->name, "\n") == 0)
         {
-            *t = tmp;
-            return node;
+            tmp = tmp->next;
+            if (!tmp)
+                return node;
+            else
+            {
+                *t = tmp;
+            }
         }
+        else if(!tmp)
+            return node;
         else
         {
             AST_destroy(node);

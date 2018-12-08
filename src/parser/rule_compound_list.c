@@ -303,6 +303,7 @@ int exec_init(struct AST *node, int *index, struct fds fd)
     (*index)++;
     if (my_cmd[0])
         res = my_exec(my_cmd, fd);
+    set_status(res);
     free_list(my_cmd, 512);
     close_redirection(&redir);
     return res;

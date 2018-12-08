@@ -43,4 +43,5 @@ struct AST *if_init(struct Token *token);
 void foo_if(struct AST *node, struct fds fd);
 
 struct AST *bang_init(struct Token *token);
+void set_status(int res);
 #endif /* ! MY_TREE_H */
