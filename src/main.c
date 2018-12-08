@@ -32,7 +32,7 @@
 
 void sig(void)
 {
-    struct sigaction sac;
+    struct sigaction sac = {0};
     sac.sa_handler = SIG_IGN;
     sigaction(SIGINT, &sac, NULL);
 }
