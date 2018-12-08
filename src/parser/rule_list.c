@@ -40,23 +40,8 @@ struct AST *list(struct Token **t)
     *t = t2;
     struct AST *list = list_init();
     add_list(list, node);
-    while (t2 && (strcmp(";", t2->name) == 0 || strcmp("&", t2->name) == 0
-            || strcmp("\n", t2->name) == 0))
+    while (t2 && (strcmp(";", t2->name) == 0 || strcmp("&", t2->name) == 0))
     {
-        if (strcmp("\n", t2->name) == 0)
-        {
-            struct Token *new = malloc(sizeof(struct Token));
-            new->name = malloc(1);
-            new->name[0] = '\n';
-            new->name[0] = '\0';
-            new->type = "NEW_LINE";
-
-            t2->name[0] = ';';
-            t2->type = "SEMICOLON";
-
-            new->next = t2->next;
-            t2->next = new;
-        }
         add_list(list, word_init(t2));
         t2 = t2->next;
         *t = t2;

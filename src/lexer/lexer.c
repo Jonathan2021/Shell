@@ -132,7 +132,7 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
     optind = 0;
     int i = 1;
     while ((c = getopt_long(argc, argv, "c:0:", long_options, &option_index))
-           != -1)
+            != -1)
     {
         if (c == 'c')
         {
@@ -185,15 +185,21 @@ struct Token *parse_path(struct Token *token, char **argv, long argc)
  **/
 struct Token *lexer(struct Token *t)
 {
-    struct AST *ast = input(&t);
-    if (ast == NULL)
-        return t;
-    struct fds fd = {.in = 0, .out = 1, .err = 2};
-    ast->foo(ast, fd);
-    char *print = get_value("--ast-print");
-    if (print && t && strcmp(print, "1") == 0)
-        create_dot(ast, "output.gv");
-    AST_destroy(ast);
+    while (t != NULL)
+    {
+        struct AST *ast = input(&t);
+        if (ast != NULL)
+        {
+            struct fds fd = {.in = 0, .out = 1, .err = 2};
+            ast->foo(ast, fd);
+            char *print = get_value("--ast-print");
+            if (print && t && strcmp(print, "1") == 0)
+                create_dot(ast, "output.gv");
+            AST_destroy(ast);
+        }
+        while (t && (strcmp("\n", t->name) == 0))
+            t = t->next;
+    }
     return t;
 }
 
