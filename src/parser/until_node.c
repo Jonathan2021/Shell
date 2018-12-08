@@ -67,7 +67,10 @@ struct AST *rule_until(struct Token **t)
         tmp = call_ps2(t);
 
     if (!(do_body = do_group(&tmp)))
+    {
+        AST_destroy(condition);
         return NULL;
+    }
     // Pas besoin  de tmp->next?
     struct AST *node = until_init(name);
     node->child[0] = condition;
