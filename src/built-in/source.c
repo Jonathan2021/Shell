@@ -6,7 +6,7 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <errno.h>
-
+#include "include/built-in.h"
 
 
 int source(char **arg)
@@ -51,7 +51,7 @@ int source(char **arg)
         {
             free(argv[0]);
             free(argv);
-            pid_t tpid = wait(&child_status);
+            wait(&child_status);
             return child_status;
         }
     }

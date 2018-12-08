@@ -10,15 +10,15 @@ bin_PROGRAMS = 42sh
 			   src/parser/rule_compound_list.c \
 			   src/parser/rule_for.c \
 			   src/main.c \
-			   src/built-in/cd.c \ 
-			   src/built-in/history.c \ 
-			   src/built-in/shopt.c \ 
-			   src/built-in/exit.c \ 
+			   src/built-in/cd.c \
+			   src/built-in/history.c \
+			   src/built-in/shopt.c \
+			   src/built-in/exit.c \
 			   src/lexer/lexer.c \
 			   src/file/history.c\
 			   src/print_ast/print_ast.c \
 			   src/file/tool.c \
-			   src/file/tool_file.c \ 
+			   src/file/tool_file.c \
 			   src/parser/rule_funcdec.c \
 			   src/parser/my_tree.c \
 			   src/parser/rule_input.c \
@@ -36,7 +36,8 @@ bin_PROGRAMS = 42sh
 			   src/parser/rule_shell_command.c \
 			   src/parser/foo_token.c \
 			   src/parser/rule_simple_command.c \
-               src/built-in/echo.c 
+               src/built-in/echo.c \
+			   src/built-in/source.c
 
 check:
 	cd tests/
