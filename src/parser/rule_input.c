@@ -14,7 +14,7 @@ void next_newline(struct Token **t)
     struct Token *tmp = *t;
     while (tmp)
     {
-        if (!strcmp(tmp->name, "\n"))
+        if (strcmp(tmp->name, "\n") == 0)
         {
             tmp = tmp->next;
             break;
@@ -52,5 +52,6 @@ struct AST *input(struct Token **t)
             return NULL;
         }
     }
+    next_newline(t);
     return NULL;
 }
