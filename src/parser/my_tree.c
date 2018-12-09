@@ -12,6 +12,11 @@
 #include "include/rule.h"
 #include "../include/shell.h"
 
+int is_delim(char *str)
+{
+    return (!strcmp(str, ";") || !strcmp(str, "\n") || !strcmp(str, "&"));
+}
+
 void set_status(int res)
 {
     if (res)
