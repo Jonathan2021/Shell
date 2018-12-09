@@ -206,7 +206,7 @@ struct Token *lexer(struct Token *t)
             struct fds fd = {.in = 0, .out = 1, .err = 2};
             ast->foo(ast, fd);
             char *print = get_value("--ast-print");
-            if (print && t && strcmp(print, "1") == 0)
+            if (print && strcmp(print, "1") == 0)
                 create_dot(ast, "output.gv");
             AST_destroy(ast);
         }
