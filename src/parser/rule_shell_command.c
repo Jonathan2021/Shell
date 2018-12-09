@@ -4,6 +4,9 @@
  ** \date 29 novembre 2018
  **/
 #include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include "include/foo.h"
 #include "include/my_tree.h"
@@ -25,7 +28,26 @@ struct AST *word_init(struct Token *token)
 void foo_shell_cmd(__attribute__((unused)) struct AST *node,
     __attribute__((unused)) struct fds fd)
 {
-    return;
+    if (!node || node->nb_child != 3 || !node->child[0] || !node->child[1] 
+            || !node->child[2])
+        return;
+    int res = 0;
+    pid_t pid = fork();
+    if (pid == -1)
+        fprintf(stderr, "fork failed in shell_command\n");
+    if (!pid)
+    {
+        node->child[1]->foo(node->child[1], fd);
+    }
+    else
+    {
+        int wstatus;
+        waitpid(pid, &wstatus, 0);
+        res = WIFEXITED(wstatus);
+        if (res)
+            res = WEXITSTATUS(wstatus);
+    }
+    node->res = res;
 }
 /**
  ** \brief Init a shell command AST node
