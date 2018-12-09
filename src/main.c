@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
     setvalue("echo-control-characters", "0");
     delete_history();
     init_history();
-    setvalue("?", "0");
+    set_status(0);
     carving(argc, argv);
     return 0;
 }

@@ -190,7 +190,7 @@ int my_exec(char *cmd[], struct fds fd)
 {
     int res = -1;
     if ((res = builtin(cmd, fd)) != -1)
-        return res;
+        return !res;
     res = 0;
     pid_t pid = fork();
     if (pid == -1)
@@ -210,7 +210,6 @@ int my_exec(char *cmd[], struct fds fd)
             exit(127);
         }
         close_standard();
-        exit(0);
     }
     else
     {
@@ -218,7 +217,7 @@ int my_exec(char *cmd[], struct fds fd)
         waitpid(pid, &wstatus, 0);
         res = WIFEXITED(wstatus);
         if (res)
-            res = !WEXITSTATUS(wstatus);
+            res = WEXITSTATUS(wstatus);
     }
     return res;
 }
@@ -371,7 +370,6 @@ void foo_compound(struct AST *node, struct fds fd)
     int index = 0;
     int res = 0;
     while (index < node->nb_child
-           && strcmp(node->child[index]->self->type, "REDIRECTION")
            && !exit_value())
         res = exec_init(node, &index, fd);
     node->res = res;

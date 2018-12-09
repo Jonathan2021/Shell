@@ -16,7 +16,7 @@ void foo_and(struct AST *node, struct fds fd)
         return;
     node->child[0]->foo(node->child[0], fd);
     node->res = node->child[0]->res;
-    if (!node->res)
+    if (!eval_node(node))
         return;
     node->child[1]->foo(node->child[1], fd);
     node->res = node->child[1]->res;
@@ -34,7 +34,7 @@ void foo_or(struct AST *node, struct fds fd)
         return;
     node->child[0]->foo(node->child[0], fd);
     node->res = node->child[0]->res;
-    if (node->res)
+    if (eval_node(node))
         return;
     node->child[1]->foo(node->child[1], fd);
     node->res = node->child[1]->res;

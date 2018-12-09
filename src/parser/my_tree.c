@@ -12,6 +12,23 @@
 #include "include/rule.h"
 #include "../include/shell.h"
 
+void my_itoa(char str[], int nb, int size)
+{
+    str[size--] = 0;
+    for (; size >= 0; --size)
+    {
+        str[size] = nb % 10 + '0';
+        nb = nb / 10;
+    }
+}
+
+int size_int(int nb)
+{
+    int i = 1;
+    for (int j = 10; nb / j ; ++i, j *= 10);
+    return i;
+}
+
 int is_delim(char *str)
 {
     return (!strcmp(str, ";") || !strcmp(str, "\n") || !strcmp(str, "&"));
@@ -19,10 +36,15 @@ int is_delim(char *str)
 
 void set_status(int res)
 {
-    if (res)
-        setvalue("?", "0");
-    else
-        setvalue("?", "1");
+    int size = size_int(res);
+    char str[size + 1];
+    my_itoa(str, res, size);
+    setvalue("?", str);
+}
+
+int eval_node(struct AST *node)
+{
+    return !node->res;
 }
 
 /**

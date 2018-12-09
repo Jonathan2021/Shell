@@ -38,6 +38,7 @@ void foo_rule_case(struct AST *node, struct fds fd)
                 {
                     cur_item->child[nbchild - 1]->foo(
                         cur_item->child[nbchild - 1], fd);
+                    node->res = cur_item->child[nbchild - 1]->res;
                     return;
                 }
             }

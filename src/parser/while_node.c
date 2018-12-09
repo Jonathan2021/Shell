@@ -25,6 +25,7 @@ void foo_while(struct AST *node, struct fds fd)
         node->child[0]->foo(node->child[0], fd);
         node->res = node->child[0]->res;
     }
+    node->res = node->child[1]->res;
 }
 /**
  ** \brief initializate the while node but not fill with good node in child

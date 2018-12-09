@@ -23,9 +23,9 @@ void foo_if(struct AST *node, struct fds fd)
         return;
     node->child[0]->foo(node->child[0], fd);
     node->res = node->child[0]->res;
-    if (node->res && node->nb_child > 1 && node->child[1])
+    if (eval_node(node) && node->nb_child > 1 && node->child[1])
         node->child[1]->foo(node->child[1], fd);
-    else if (!node->res && node->nb_child > 2 && node->child[2])
+    else if (!eval_node(node) && node->nb_child > 2 && node->child[2])
         node->child[2]->foo(node->child[2], fd);
 }
 
