@@ -283,9 +283,8 @@ int exec_init(struct AST *node, int *index, struct fds fd)
     char *cur_name;
     char *cur_type;
     int res = 0;
-    struct fds redir = fd;
-    get_redirection(node, &redir, fd, *index);
-    merge_redirection(&fd, redir);
+    init_static(fd);
+    get_redirection(node, &fd, *index);
     for (; *index < node->nb_child && node->child[*index] && i < 511;
          (*index)++, ++i)
     {
@@ -327,7 +326,7 @@ int exec_init(struct AST *node, int *index, struct fds fd)
         res = my_exec(my_cmd, fd);
     set_status(res);
     free_list(my_cmd, 512);
-    close_redirection(&redir);
+    close_redirection(&fd);
     return res;
 }
 

@@ -10,6 +10,11 @@
 
 static struct fds reference = {.in = -1, .out = -1, .err = -1};
 
+void init_static(struct fds fd)
+{
+    reference = fd;
+}
+
 int check_ref(int fd)
 {
     return (fd != reference.in && fd != reference.out && fd != reference.err);
@@ -277,9 +282,8 @@ void redirect_word(struct AST *node, struct fds *fd)
  ** \param node pointer to the redirection node in the AST
  ** \param fd pointer to a struct containing file descriptors modifies later on
  **/
-void my_redirection(struct AST *node, struct fds *fd, struct fds old)
+void my_redirection(struct AST *node, struct fds *fd)
 {
-    reference = old;
     if (!node || node->nb_child < 2 || !node->child[1])
         return;
     if (!strcmp("WORD", node->child[1]->self->type))
@@ -295,8 +299,7 @@ void my_redirection(struct AST *node, struct fds *fd, struct fds old)
  *all the redirections
  ** \param index indicates from which child of node we should start evaluating
  **/
-void get_redirection(
-    struct AST *node, struct fds *fd, struct fds old, int index)
+void get_redirection(struct AST *node, struct fds *fd, int index)
 {
     if (!node)
         return;
@@ -310,7 +313,7 @@ void get_redirection(
             break;
 
         if (!strcmp(cur_child->self->type, "REDIRECTION"))
-            my_redirection(cur_child, fd, old);
+            my_redirection(cur_child, fd);
     }
 }
 /*
@@ -341,6 +344,7 @@ void merge_special(struct fds *fd, int here, int place)
  *modified
  ** \param to_add struct containing file descriptors to load into the other
  **/
+ /*
 void merge_redirection(struct fds *fd, struct fds to_add)
 {
     if (to_add.in != -1)
@@ -365,7 +369,7 @@ void merge_redirection(struct fds *fd, struct fds to_add)
         fd->err = to_add.err;
     }
 }
-
+*/
 /**
  ** \brief Initiates a redirection node
  ** \param token value of node->self, contains the name of the redirection
