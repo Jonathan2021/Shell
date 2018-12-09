@@ -50,7 +50,7 @@ int is_ionumber(char *str)
  **/
 void add_token(struct Token **token, char *str)
 {
-    char *grammar[3][20] = {{"SEMICOLON", ";", "&", "\0"},
+    char *grammar[5][20] = {{"SEMICOLON", ";", "&", "\0"},
         {"PARENTHESE", "(", ")", "\0"},
         {"CURLY", "{", "}", "\0"},
         {"OPERATOR", "&&", "||", ";;", "<<", ">>", "<&", ">&", "<>", "<<-",
@@ -58,7 +58,7 @@ void add_token(struct Token **token, char *str)
         {"NEW_LINE", "\n", "\0"}};
     struct Token *next = malloc(sizeof(struct Token));
     next->name = NULL;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 5; i++)
     {
         for (int j = 0; grammar[i][j][0] != '\0'; j++)
         {
