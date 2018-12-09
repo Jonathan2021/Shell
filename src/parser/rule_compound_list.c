@@ -152,6 +152,14 @@ void close_all(struct fds fd)
     if (fd.out > 2)
         close(fd.err);
 }
+
+void close_standard(void)
+{
+    close(0);
+    close(1);
+    close(2);
+}
+
 void dup_all(struct fds *fd)
 {
     struct fds tmp = *fd;
@@ -198,9 +206,10 @@ int my_exec(char *cmd[], struct fds fd)
         {
             close_all(fd);
             fprintf(stderr, "%s: command not found\n", cmd[0]);
+            close_standard();
             exit(127);
         }
-            close_all(fd);
+        close_standard();
         exit(0);
     }
     else
