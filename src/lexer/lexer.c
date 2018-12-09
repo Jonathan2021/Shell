@@ -51,6 +51,8 @@ int is_ionumber(char *str)
 void add_token(struct Token **token, char *str)
 {
     char *grammar[3][20] = {{"SEMICOLON", ";", "&", "\0"},
+        {"PARENTHESE", "(", ")", "\0"},
+        {"CURLY", "{", "}", "\0"},
         {"OPERATOR", "&&", "||", ";;", "<<", ">>", "<&", ">&", "<>", "<<-",
             ">|", "|", ">", "<", "\0"},
         {"NEW_LINE", "\n", "\0"}};
