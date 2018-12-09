@@ -37,5 +37,6 @@ struct AST *bang_init(struct Token *token)
     if (!node)
         return NULL;
     node->self = token;
+    node->foo = foo_bang;
     return node;
 }

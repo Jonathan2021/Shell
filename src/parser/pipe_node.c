@@ -120,7 +120,10 @@ struct AST *pipeline(struct Token **t)
         *t = tmp;
     }
     if (origin)
+    {
         origin->child[0] = rattach;
+        origin->self->type = "BANG";
+    }
     else
         origin = rattach;
     return origin;
