@@ -38,6 +38,8 @@ void foo_shell_cmd(__attribute__((unused)) struct AST *node,
     if (!pid)
     {
         node->child[1]->foo(node->child[1], fd);
+        int exit_stat = node->child[1]->res;
+        exit(exit_stat);
     }
     else
     {
@@ -95,9 +97,10 @@ struct AST *shell_command(struct Token **t)
             if (t1 == NULL)
             {
                 AST_destroy(shell);
+                return NULL;
             }
             if ((!strcmp("}", t1->name) || !strcmp(")", t1->name))
-                && !strcmp(ouvre->name, t1->name))
+                && !strcmp(ouvre->type , t1->type))
             {
                 ferme = t1;
                 t1 = t1->next;

@@ -50,11 +50,6 @@ struct AST *command(struct Token **t)
 {
     struct Token *tmp = *t;
     struct AST *to_add;
-    if (tmp && (to_add = simple_command(&tmp)))
-    {
-        *t = tmp;
-        return to_add;
-    }
     struct AST *res = command_init();
     if (tmp && ((to_add = shell_command(&tmp)) || (to_add = funcdec(&tmp))))
     {
@@ -68,5 +63,10 @@ struct AST *command(struct Token **t)
         return res;
     }
     AST_destroy(res);
+    if (tmp && (to_add = simple_command(&tmp)))
+    {
+        *t = tmp;
+        return to_add;
+    }
     return NULL;
 }
