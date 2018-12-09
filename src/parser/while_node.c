@@ -19,7 +19,7 @@ void foo_while(struct AST *node, struct fds fd)
         return;
     node->child[0]->foo(node->child[0], fd);
     node->res = node->child[0]->res;
-    while (node->res)
+    while (eval_node(node))
     {
         node->child[1]->foo(node->child[1], fd);
         node->child[0]->foo(node->child[0], fd);
