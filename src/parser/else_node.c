@@ -38,21 +38,8 @@ struct AST *elif_init(struct Token *token)
     if (!node)
         return NULL;
     node->self = token;
+    node->foo = foo_if;
     return node;
-}
-
-/**
- ** \brief execute elif function
- ** \param node ast tree for execution
- ** \param file descriptor
- **/
-
-void foo_elif(struct AST *node, struct fds fd)
-{
-    if (!node || !node->child)
-        return;
-    node->child[0]->foo(node->child[0], fd);
-    node->res = node->child[0]->res;
 }
 
 /**
