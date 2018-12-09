@@ -142,6 +142,33 @@ void cautious_close(struct fds fd)
     if (fd.err != 2 && (!out || fd.out != fd.err) && (!in || fd.err != fd.in))
         close(fd.err);
 }
+
+void close_all(struct fds fd)
+{
+    if (fd.in > 2)
+        close(fd.in);
+    if (fd.out > 2)
+        close(fd.out);
+    if (fd.out > 2)
+        close(fd.err);
+}
+void dup_all(struct fds *fd)
+{
+    struct fds tmp = *fd;
+    fd->in = dup(fd->in);
+    if (fd->out == tmp.in)
+        fd->out = fd->in;
+    else
+        fd->out = dup(fd->out);
+    if (fd->err == tmp.in)
+        fd->out = fd->in;
+    else if (fd->err == tmp.out)
+        fd->err = fd->out;
+    else
+        fd->err = dup(fd->err);
+    close_all(tmp);
+}
+
 /**
  ** \brief Executes the binary/builtin using execvp if not reimplemented
  *in the project
@@ -162,24 +189,18 @@ int my_exec(char *cmd[], struct fds fd)
         fprintf(stderr, "fork failed in compound\n");
     if (!pid)
     {
-        if (fd.in)
-        {
-            dup2(fd.in, 0);
-        }
-        if (fd.out != 1)
-        {
-            dup2(fd.out, 1);
-        }
-        if (fd.err != 2)
-        {
-            dup2(fd.err, 2);
-        }
-        cautious_close(fd);
+        dup_all(&fd);
+        dup2(fd.in, 0);
+        dup2(fd.out, 1);
+        dup2(fd.err, 2);
+        close_all(fd);
         if (execvp(cmd[0], cmd) < 0)
         {
+            close_all(fd);
             fprintf(stderr, "%s: command not found\n", cmd[0]);
             exit(127);
         }
+            close_all(fd);
         exit(0);
     }
     else
@@ -290,8 +311,7 @@ int exec_init(struct AST *node, int *index, struct fds fd)
     {
         cur_name = node->child[*index]->self->name;
         cur_type = node->child[*index]->self->type;
-        if (!strcmp(cur_name, ";") || !strcmp(cur_name, "&")
-            || !strcmp(cur_name, "\n"))
+        if (is_delim(cur_name))
             break;
         if (strcmp(cur_type, "WORD"))
         {

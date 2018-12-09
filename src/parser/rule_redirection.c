@@ -71,6 +71,7 @@ void close_redirection(struct fds *fd)
         close(fd->err);
 }
 
+void my_close(struct fds *fd, int io);
 /**
  ** \brief Replaces input, output or error with a new file descriptor
  ** \param node pointer to the corresponding redirection node from the AST
@@ -85,20 +86,17 @@ int replace_fd(struct AST *node, struct fds *fd, int file, int io)
         io = get_fd(getvalue(node->child[0]->self->name));
     if (!io)
     {
-        if (fd->in > 2 && check_ref(fd->in))
-            close(fd->in);
+        my_close(fd, io);
         fd->in = file;
     }
     else if (io == 1)
     {
-        if (fd->out > 2 && check_ref(fd->out))
-            close(fd->out);
+        my_close(fd, io);
         fd->out = file;
     }
     else if (io == 2)
     {
-        if (fd->err > 2 && check_ref(fd->err))
-            close(fd->err);
+        my_close(fd, io);
         fd->err = file;
     }
     else
@@ -176,6 +174,29 @@ void lessgreat(struct AST *node, struct fds *fd)
         close(file);
 }
 
+int fd_place(struct fds fd, int index)
+{
+    if (!index)
+        return fd.in;
+    if (index == 1)
+        return fd.out;
+    if (index == 2)
+        return fd.out;
+    return -1;
+}
+
+int in_another(struct fds *fd, int index)
+{
+    int res = 0;
+    int ref = fd_place(*fd, index);
+    for (int tmp = 0; tmp < 3 ; ++tmp)
+    {
+        if(tmp != index)
+            res += (ref == fd_place(*fd, tmp));
+    }
+    return res;
+}
+
 /**
  ** \brief close input, output or error in fd depending on io
  ** \param fd pointer to the struct containing input, output and error file
@@ -186,17 +207,17 @@ void my_close(struct fds *fd, int io)
 {
     if (!io)
     {
-        if (fd->in > 2 && check_ref(fd->in))
+        if (fd->in > 2 && check_ref(fd->in) && !in_another(fd, io))
             close(fd->in);
     }
     else if (io == 1)
     {
-        if (fd->out > 2 && check_ref(fd->out))
+        if (fd->out > 2 && check_ref(fd->out) && !in_another(fd, io))
             close(fd->out);
     }
     else if (io == 2)
     {
-        if (fd->err > 2 && check_ref(fd->err))
+        if (fd->err > 2 && check_ref(fd->err) && !in_another(fd, io))
             close(fd->err);
     }
 }
@@ -225,21 +246,18 @@ void something_and(struct AST *node, struct fds *fd, int io)
         }
         if (!io)
         {
-            if (fd->in > 2 && check_ref(fd->in))
-                close(fd->in);
-            fd->in = (file == 1) ? reference.out : reference.err;
+            my_close(fd, io);
+            fd->in = (file == 1) ? fd->out : fd->err;
         }
         else if (io == 1)
         {
-            if (fd->out > 2 && check_ref(fd->out))
-                close(fd->out);
-            fd->out = (!file) ? reference.in : reference.err;
+            my_close(fd, io);
+            fd->out = (!file) ? fd->in : fd->err;
         }
         else if (io == 2)
         {
-            if (fd->err > 2 && check_ref(fd->err))
-                close(fd->err);
-            fd->err = (!file) ? reference.in : reference.out;
+            my_close(fd, io);
+            fd->err = (!file) ? fd->in : fd->out;
         }
         else
         {
@@ -307,27 +325,15 @@ void get_redirection(struct AST *node, struct fds *fd, int index)
     for (int i = index; i < node->nb_child && node->child[i]; ++i)
     {
         cur_child = node->child[i];
-        if (!strcmp(cur_child->self->name, ";")
-            || !strcmp(cur_child->self->name, "&")
-            || !strcmp(cur_child->self->name, "\n"))
+        if (is_delim(cur_child->self->name))
             break;
-
         if (!strcmp(cur_child->self->type, "REDIRECTION"))
             my_redirection(cur_child, fd);
     }
 }
-/*
-int fd_place(struct fds fd, int index)
-{
-    if (!index)
-        return fd.in;
-    if (index == 1)
-        return fd.out;
-    if (index == 2)
-        return fd.out;
-    return -1;
-}
 
+
+/*
 void merge_special(struct fds *fd, int here, int place)
 {
     if (!here)
