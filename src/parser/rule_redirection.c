@@ -10,11 +10,20 @@
 
 static struct fds reference = {.in = -1, .out = -1, .err = -1};
 
+/**
+ ** \brief sets parameters into their corresponding static global variable
+ ** \param fd struct of file descriptors
+ **/
 void init_static(struct fds fd)
 {
     reference = fd;
 }
 
+/**
+ ** \brief checks if fd is in the static reference
+ ** \param fd file descriptor to check
+ ** \return returns 1 if not in reference, 0 otherwise
+ **/
 int check_ref(int fd)
 {
     return (fd != reference.in && fd != reference.out && fd != reference.err);
@@ -72,6 +81,7 @@ void close_redirection(struct fds *fd)
 }
 
 void my_close(struct fds *fd, int io);
+
 /**
  ** \brief Replaces input, output or error with a new file descriptor
  ** \param node pointer to the corresponding redirection node from the AST
@@ -150,6 +160,7 @@ void less(struct AST *node, struct fds *fd)
     }
     replace_fd(node, fd, file, 0);
 }
+
 /**
  ** \brief evaluation of the <> redirection to a file;
  ** \param node pointer to the <> node of the AST
@@ -174,6 +185,12 @@ void lessgreat(struct AST *node, struct fds *fd)
         close(file);
 }
 
+/**
+ ** \brief finds the file descriptor corresponding to the index
+ ** \param fd struct of file descriptors
+ ** \param index index used to find the desired file descriptor in fd
+ ** \return fd.in if index=0, fd.out if index=1, fd.err if index=2, -1 otherwise
+ **/
 int fd_place(struct fds fd, int index)
 {
     if (!index)
@@ -185,6 +202,13 @@ int fd_place(struct fds fd, int index)
     return -1;
 }
 
+/**
+ ** \brief checks if the file descriptor at index is the same as a
+ *file descriptor in another index
+ ** \param fd pointer to a struct of file descriptors
+ ** \param index index of file descriptor to compare
+ ** \return returns 1 another file descriptor is the same, 0 otherwise
+ **/
 int in_another(struct fds *fd, int index)
 {
     int res = 0;
@@ -311,7 +335,7 @@ void my_redirection(struct AST *node, struct fds *fd)
 }
 
 /**
- ** \brief Evaluates all the redirections until the next ;, \n or &
+ ** \brief Evaluates all the redirections until the next ; or \n or &
  ** \param node pointer to a node containing a bunch of redirections
  ** \param fds pointer to a struct containing file descriptors modified along
  *all the redirections
@@ -332,50 +356,6 @@ void get_redirection(struct AST *node, struct fds *fd, int index)
     }
 }
 
-
-/*
-void merge_special(struct fds *fd, int here, int place)
-{
-    if (!here)
-        fd->in = fd_place(*fd, place);
-    else if (here == 1)
-        fd->out = fd_place(*fd, place);
-    else if (here == 2)
-        fd->err = fd_place(*fd, place);
-}
-*/
-/**
- ** \brief load file descriptors from on structure to another
- ** \param fd pointer to the struct that will have its file descriptors
- *modified
- ** \param to_add struct containing file descriptors to load into the other
- **/
- /*
-void merge_redirection(struct fds *fd, struct fds to_add)
-{
-    if (to_add.in != -1)
-    {
-        // if (to_add.in <= 2)
-        //   merge_special(fd, 0, to_add.in);
-        // else
-        fd->in = to_add.in;
-    }
-    if (to_add.out != -1)
-    {
-        // if (to_add.out <= 2)
-        //  merge_special(fd, 1, to_add.out);
-        // else
-        fd->out = to_add.out;
-    }
-    if (to_add.err != -1)
-    {
-        // if (to_add.err <= 2)
-        //    merge_special(fd, 2, to_add.err);
-        // else
-        fd->err = to_add.err;
-    }
-}
-*/
 /**
  ** \brief Initiates a redirection node
  ** \param token value of node->self, contains the name of the redirection

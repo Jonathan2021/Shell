@@ -10,6 +10,11 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
+/**
+ ** \brief execution of node and
+ ** \param node ast tree for execution
+ ** \param fd  file descriptors for execution
+ **/
 void foo_and(struct AST *node, struct fds fd)
 {
     if (!node || !node->child[0] || !node->child[1])
@@ -27,7 +32,6 @@ void foo_and(struct AST *node, struct fds fd)
  ** \param node ast tree for execution
  ** \param fd  file descriptor for execution
  **/
-
 void foo_or(struct AST *node, struct fds fd)
 {
     if (!node || !node->child[0] || !node->child[1])

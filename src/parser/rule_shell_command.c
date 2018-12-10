@@ -25,6 +25,11 @@ struct AST *word_init(struct Token *token)
     return node;
 }
 
+/**
+ ** \brief executes the shell command AST
+ ** \param node pointer to the AST
+ ** \param fd struct of file descriptors
+ **/
 void foo_shell_cmd(__attribute__((unused)) struct AST *node,
     __attribute__((unused)) struct fds fd)
 {

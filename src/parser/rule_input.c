@@ -9,6 +9,10 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
+/**
+ ** \brief changes the value of t to the first token after a newline
+ ** \param t the token chain list
+ **/
 void next_newline(struct Token **t)
 {
     struct Token *tmp = *t;
@@ -27,7 +31,7 @@ void next_newline(struct Token **t)
 /**
  ** \brief the grammar rule which return the correct ast.
  ** \param t the token chain list
- ** \returm the correspondant AST of the givem chain list token
+ ** \return the correspondant AST of the givem chain list token
  **/
 struct AST *input(struct Token **t)
 {

@@ -15,7 +15,6 @@
  ** \param node ast tree for execution
  ** \param fd  file descriptor for execution
  **/
-
 void foo_bang(struct AST *node, struct fds fd)
 {
     if (node && node->child[0])
@@ -30,7 +29,6 @@ void foo_bang(struct AST *node, struct fds fd)
  ** \param linked list of token
  ** \return node bang
  **/
-
 struct AST *bang_init(struct Token *token)
 {
     struct AST *node = AST_init(1);

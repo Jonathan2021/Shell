@@ -34,6 +34,7 @@ int reserve(struct Token *token)
     }
     return 1;
 }
+
 /**
  ** \brief Create a simple_command node AST
  ** \return The AST node initializied

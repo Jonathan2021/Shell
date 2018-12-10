@@ -10,6 +10,11 @@
 #include "include/my_tree.h"
 #include "include/rule.h"
 
+/**
+ ** \brief executes ASSIGMENT WORD tree
+ ** \param node pointer to AST tree
+ ** \param fd struct of file descriptor
+ **/
 void foo_assigment(struct AST *node, __attribute__((unused)) struct fds fd)
 {
     if (!node || node->nb_child < 2 || !node->child[0] || !node->child[1])
@@ -24,6 +29,12 @@ void foo_assigment(struct AST *node, __attribute__((unused)) struct fds fd)
     node->res = 0;
     set_status(node->res);
 }
+
+/**
+ ** \brief completes ASSIGMENT WORD tree with name and value
+ ** \param str string with the assigment
+ ** \param node pointer to the AST to complete
+ **/
 
 void fill_assigment(struct AST *node, char *str)
 {
@@ -42,9 +53,8 @@ void fill_assigment(struct AST *node, char *str)
     node->child[0]->self = left;
     node->child[1]->self = right;
     str[i] = '=';
-    // Risque de poser probleme quand on free puisque free left revient à free
-    // right
 }
+
 /**
  ** \brief init assigment node
  ** \param token linked list
@@ -69,10 +79,11 @@ struct AST *assigment_init()
     node->foo = foo_assigment;
     return node;
 }
+
 /**
- ** \brief check grammar prefix and create prefix node
- ** \param token linked list
- ** \return node prefix
+ ** \brief checks if string respects the assigment value format
+ ** \param str string to check
+ ** \return returns 1 if it is an assigment word, else 0
  **/
 
 int is_assigment(char *str)
@@ -84,6 +95,12 @@ int is_assigment(char *str)
         ;
     return (str[i] == '=');
 }
+
+/**
+ ** \brief check grammar prefix and create prefix node
+ ** \param token linked list
+ ** \return node prefix
+ **/
 
 struct AST *prefix(struct Token **t)
 {

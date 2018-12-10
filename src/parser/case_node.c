@@ -9,6 +9,11 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+
+/**
+ ** \brief initiates case node
+ ** \return returns the node created
+ **/
 struct AST *case_init(void)
 {
     struct Token *token = malloc(sizeof(struct Token));

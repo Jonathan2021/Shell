@@ -125,24 +125,33 @@ int builtin(char *cmd[], struct fds fd)
     return -1;
 }
 
+/**
+ ** \brief closes file descriptors in fd without closing them twice and without
+ * closing 0, 1 or 2
+ ** \param fd struct of file descriptors
+ **/
 void cautious_close(struct fds fd)
 {
     int in = 0;
     int out = 0;
-    if (!fd.in)
+    if (fd.in > 2)
     {
         close(fd.in);
         in = 1;
     }
-    if (fd.out != 1 && (!in || fd.out != fd.in))
+    if (fd.out > 2 && (!in || fd.out != fd.in))
     {
         close(fd.out);
         out = 1;
     }
-    if (fd.err != 2 && (!out || fd.out != fd.err) && (!in || fd.err != fd.in))
+    if (fd.err > 2 && (!out || fd.out != fd.err) && (!in || fd.err != fd.in))
         close(fd.err);
 }
 
+/**
+ ** \brief closes file descriptors in fd without closing 0, 1 or 2
+ ** \param fd struct of file descriptors
+ **/
 void close_all(struct fds fd)
 {
     if (fd.in > 2)
@@ -153,6 +162,9 @@ void close_all(struct fds fd)
         close(fd.err);
 }
 
+/**
+ ** \brief closes 0, 1 and 2
+ **/
 void close_standard(void)
 {
     close(0);
@@ -160,6 +172,10 @@ void close_standard(void)
     close(2);
 }
 
+/**
+ ** \brief dup file descriptors in fd
+ ** \param fd struct of file descriptors
+ **/
 void dup_all(struct fds *fd)
 {
     struct fds tmp = *fd;

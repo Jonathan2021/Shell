@@ -13,6 +13,12 @@
 #include "include/rule.h"
 #include "../include/shell.h"
 
+/**
+ ** \brief checks if a string is a quote
+ ** \param  str string to check
+ ** \return  returns 1 if it is a quote, 0 if not
+ **/
+
 int is_quoted(char *str)
 {
     if(!str)
@@ -24,6 +30,11 @@ int is_quoted(char *str)
     return ((f == 39 || f == '"') && f== str[len - 1]);
 }
 
+/**
+ ** \brief checks if a string is a quote
+ ** \param  str string to check
+ ** \return  returns 1 if it is a quote, 0 if not
+ **/
 void my_itoa(char str[], int nb, int size)
 {
     str[size--] = 0;
@@ -34,6 +45,11 @@ void my_itoa(char str[], int nb, int size)
     }
 }
 
+/**
+ ** \brief counts the number of digits in a number
+ ** \param  nb number to count
+ ** \return  returns number of digits in nb
+ **/
 int size_int(int nb)
 {
     int i = 1;
@@ -41,11 +57,20 @@ int size_int(int nb)
     return i;
 }
 
+/**
+ ** \brief checks if the string is one of the delimiters
+ ** \param  str string to check
+ ** \return  returns 1 if it is one of the delimiters, 0 if not
+ **/
 int is_delim(char *str)
 {
     return (!strcmp(str, ";") || !strcmp(str, "\n") || !strcmp(str, "&"));
 }
 
+/**
+ ** \brief sets ? environment variable to the desired value
+ ** \param  int res value to be set
+ **/
 void set_status(int res)
 {
     int size = size_int(res);
@@ -53,6 +78,12 @@ void set_status(int res)
     my_itoa(str, res, size);
     setvalue("?", str);
 }
+
+/**
+ ** \brief evaluates node->res
+ ** \param  node node which res will be evaluated
+ ** \return  returns 1 if node->res == 0, 0 if not
+ **/
 
 int eval_node(struct AST *node)
 {
