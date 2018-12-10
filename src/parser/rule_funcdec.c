@@ -48,8 +48,8 @@ struct AST *funcdec(struct Token **t)
     }
     if (strcmp("WORD", tmp->type) == 0)
     {
+        name = tmp;
         next_token(&tmp);
-        tmp = tmp->next;
         if (tmp == NULL)
             return NULL;
     }
