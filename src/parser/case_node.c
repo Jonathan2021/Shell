@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "include/foo.h"
 
 /**
  ** \brief initiates case node

@@ -84,7 +84,6 @@ struct AST *pipeline(struct Token **t)
     struct AST *origin = NULL;
     struct AST *tmp_ast;
     struct AST *rattach;
-    // struct AST *first_cmd;
 
     struct Token *tmp = *t;
     if (tmp && !strcmp("!", tmp->name))
@@ -97,7 +96,6 @@ struct AST *pipeline(struct Token **t)
         AST_destroy(origin);
         return NULL;
     }
-    // first_cmd = rattach;
     *t = tmp;
     while (1)
     {

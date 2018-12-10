@@ -8,6 +8,7 @@
 #include "../include/shell.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "include/foo.h"
 
 /**
  ** \brief Execution of case node
@@ -76,35 +77,37 @@ struct AST *rule_case(struct Token **t)
     struct Token *condition;
     struct AST *case_body = NULL;
     struct Token *tmp = *t;
-    if (strcmp(tmp->name, "case"))
+    if (tmp == NULL || strcmp(tmp->name, "case"))
         return NULL;
-    tmp = tmp->next;
+    next_token(&tmp);
     if (tmp == NULL || strcmp(tmp->type, "WORD"))
         return NULL;
     condition = tmp;
-    tmp = tmp->next;
+    next_token(&tmp);
     if (tmp == NULL)
         return NULL;
     while (strcmp(tmp->name, "\n") == 0)
     {
-        tmp = tmp->next;
+        next_token(&tmp);
         if (tmp == NULL)
             break;
     }
     if (tmp == NULL || strcmp(tmp->name, "in"))
         return NULL;
-    tmp = tmp->next;
+    next_token(&tmp);
     if (tmp == NULL)
         return NULL;
     while (strcmp(tmp->name, "\n") == 0)
     {
-        tmp = tmp->next;
+        next_token(&tmp);
         if (tmp == NULL)
         {
             return NULL;
         }
     }
     case_body = case_clause(&tmp);
+    if (tmp == NULL)
+        tmp = call_ps2(t);
     if (tmp == NULL || strcmp(tmp->name, "esac"))
     {
         if (case_body)

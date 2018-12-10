@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
+#include "include/foo.h"
 
 void set_func(
     __attribute__((unused)) char *a, __attribute__((unused)) struct AST *b)
@@ -41,14 +42,13 @@ struct AST *funcdec(struct Token **t)
     struct Token *tmp = *t;
     if (strcmp("function", tmp->name) == 0)
     {
-        tmp = tmp->next;
+        next_token(&tmp);
         if (tmp == NULL)
             return NULL;
     }
     if (strcmp("WORD", tmp->type) == 0)
     {
-        // a verifier avec regex
-        name = tmp;
+        next_token(&tmp);
         tmp = tmp->next;
         if (tmp == NULL)
             return NULL;
@@ -57,16 +57,16 @@ struct AST *funcdec(struct Token **t)
         return NULL;
     if (strcmp("(", tmp->name) != 0)
         return NULL;
-    tmp = tmp->next;
+    next_token(&tmp);
     if (tmp == NULL || strcmp(")", tmp->name) != 0)
         return NULL;
-    tmp = tmp->next;
+    next_token(&tmp);
     if (tmp == NULL)
         return NULL;
 
     while (strcmp("\n", tmp->name) == 0)
     {
-        tmp = tmp->next;
+        next_token(&tmp);
         if (tmp == NULL)
             return NULL;
     }
