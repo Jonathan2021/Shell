@@ -43,7 +43,7 @@ struct AST *do_group(struct Token **t)
         return NULL;
     if (tmp == NULL)
         tmp = call_ps2(t);
-    if (strcmp(tmp->name, "done"))
+    if (tmp && tmp->name && strcmp(tmp->name, "done"))
     {
         AST_destroy(do_grp);
         return NULL;

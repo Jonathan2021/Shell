@@ -62,7 +62,7 @@ struct AST *else_clause(struct Token **t)
         }
     }
     tmp = *t;
-    if (strcmp(tmp->name, "elif") == 0)
+    if (tmp && strcmp(tmp->name, "elif") == 0)
     {
         next_token(&tmp);
         struct AST *condition = NULL;

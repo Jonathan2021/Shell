@@ -58,5 +58,6 @@ struct AST *input(struct Token **t)
         }
     }
     next_newline(t);
+    set_status(2);
     return NULL;
 }
