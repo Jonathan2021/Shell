@@ -36,7 +36,7 @@ void print_if_on(char *str, struct fds fd)
             dprintf(fd.out, " ");
             i++;
         }
-        dprintf(fd.out, ":ON\n");
+        dprintf(fd.out, ":on\n");
     }
 }
 
@@ -73,7 +73,7 @@ void print_if_off(char *str, struct fds fd)
             dprintf(fd.out, " ");
             i++;
         }
-        dprintf(fd.out, ":OFF\n");
+        dprintf(fd.out, ":off\n");
     }
 }
 
