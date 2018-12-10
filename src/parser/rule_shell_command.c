@@ -91,7 +91,7 @@ struct AST *shell_command(struct Token **t)
     struct Token *ouvre;
     struct Token *ferme;
     struct AST *shell = NULL;
-    if (strcmp("{", t1->name) == 0 || strcmp("(", t1->name) == 0)
+    if (t1 && t1->name && (strcmp("{", t1->name) == 0 || strcmp("(", t1->name) == 0))
     {
         ouvre = t1;
         t1 = t1->next;
@@ -104,7 +104,7 @@ struct AST *shell_command(struct Token **t)
                 AST_destroy(shell);
                 return NULL;
             }
-            if (t1 && t1->name ((!strcmp("}", t1->name) || !strcmp(")", t1->name))
+            if (t1 && t1->name && ((!strcmp("}", t1->name) || !strcmp(")", t1->name))
                 && !strcmp(ouvre->type , t1->type)))
             {
                 ferme = t1;
