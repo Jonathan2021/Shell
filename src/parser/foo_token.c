@@ -7,6 +7,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <readline/history.h>
+#include <readline/readline.h>
 #include "../include/shell.h"
 #include "include/my_tree.h"
 #include "include/rule.h"
@@ -38,10 +40,9 @@ struct Token *call_ps2(struct Token **t)
     struct Token *tmp = *t;
     for (; tmp->next != NULL; tmp = tmp->next)
         ;
-    char *str = malloc(4095);
-    printf("%s", getvalue("$PS2"));
     struct Token *res = NULL;
-    if (fgets(str, 4095, stdin) == NULL)
+    char *str = readline(getvalue("$PS2"));
+    if (!str)
         return NULL;
     res = create_token(res, str);
     tmp->next = res;
