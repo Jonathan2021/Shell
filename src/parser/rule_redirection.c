@@ -122,7 +122,8 @@ int replace_fd(struct AST *node, struct fds *fd, int file, int io)
 void greater(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
-    int file = open(getvalue(path), O_WRONLY | O_TRUNC | O_CREAT, 0644);
+    path = getvalue(path);
+    int file = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0644);
     if (file == -1)
         fprintf(stderr, "greater: open failed\n");
     else if (!replace_fd(node, fd, file, 1))
@@ -137,7 +138,10 @@ void greater(struct AST *node, struct fds *fd)
 void dgreat(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
-    int file = open(getvalue(path), O_WRONLY | O_APPEND | O_CREAT, 0644);
+    path = getvalue(path);
+    if(!path)
+        return;
+    int file = open(path, O_WRONLY | O_APPEND | O_CREAT, 0644);
     if (file == -1)
         fprintf(stderr, "dgreat: open failed\n");
     else if (!replace_fd(node, fd, file, 1))
@@ -152,7 +156,10 @@ void dgreat(struct AST *node, struct fds *fd)
 void less(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
-    int file = open(getvalue(path), O_RDONLY);
+    path = getvalue(path);
+    if (!path)
+        return;
+    int file = open(path, O_RDONLY);
     if (file == -1)
     {
         perror("");
@@ -169,14 +176,17 @@ void less(struct AST *node, struct fds *fd)
 void lessgreat(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
+    path = getvalue(path);
+    if(!path)
+        return;
     int file = -1;
     int io = 0;
     if (node->child[0])
         io = get_fd(getvalue(node->child[0]->self->name));
     if (io)
-        file = open(getvalue(path), O_RDWR | O_TRUNC | O_CREAT, 0644);
+        file = open(path, O_RDWR | O_TRUNC | O_CREAT, 0644);
     else
-        file = open(getvalue(path), O_RDWR | O_CREAT, 0644);
+        file = open(path, O_RDWR | O_CREAT, 0644);
     if (file == -1)
     {
         perror("");
