@@ -65,6 +65,8 @@ char *getvalue(char *name)
 {
     if (name[0] == '$')
         name = getenv(name + 1);
+    if (name == NULL)
+        name = "";
     return name;
 }
 

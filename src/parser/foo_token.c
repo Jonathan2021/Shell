@@ -38,8 +38,7 @@ void next_token(struct Token **tmp)
 struct Token *call_ps2(struct Token **t)
 {
     struct Token *tmp = *t;
-    for (; tmp->next != NULL; tmp = tmp->next)
-        ;
+    for (; tmp->next != NULL; tmp = tmp->next);
     struct Token *res = NULL;
     char *str = readline(getvalue("$PS2"));
     if (!str)
