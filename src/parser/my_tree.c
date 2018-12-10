@@ -8,9 +8,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
 #include "include/my_tree.h"
 #include "include/rule.h"
 #include "../include/shell.h"
+
+int is_quoted(char *str)
+{
+    if(!str)
+        return 0;
+    size_t len = strlen(str);
+    if(len <= 1)
+        return 0;
+    char f = str[0];
+    return ((f == 39 || f == '"') && f== str[len - 1]);
+}
 
 void my_itoa(char str[], int nb, int size)
 {

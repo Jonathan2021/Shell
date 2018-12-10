@@ -47,4 +47,5 @@ void set_status(int res);
 int is_delim(char *str);
 char *copy_str(char *str);
 int eval_node(struct AST *node);
+int is_quoted(char *str);
 #endif /* ! MY_TREE_H */
