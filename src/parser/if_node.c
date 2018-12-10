@@ -71,7 +71,7 @@ struct AST *rule_if(struct Token **t)
     if (tmp == NULL)
         tmp = call_ps2(t);
 
-    if (strcmp("then", tmp->name) != 0)
+    if (tmp && strcmp("then", tmp->name) != 0)
     {
         AST_destroy(condition);
         return NULL;
