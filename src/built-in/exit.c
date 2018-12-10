@@ -6,6 +6,7 @@
  **/
 
 #include <stdlib.h>
+#include <unistd.h>
 #include "include/built-in.h"
 #include "../include/shell.h"
 
@@ -21,6 +22,9 @@ int my_exit(struct AST *ast, struct Token *token)
     AST_destroy(ast);
     DestroyToken(token);
     reset_value();
+    close(0);
+    close(1);
+    close(2);
     exit(res);
 }
 

@@ -108,7 +108,7 @@ void free_list(char *list[], size_t size)
 int builtin(char *cmd[], struct fds fd)
 {
     if (!strcmp(cmd[0], "cd"))
-        return my_cd(cmd + 1);
+        return my_cd(cmd + 1, fd);
     if (!strcmp(cmd[0], "echo"))
         return my_echo(cmd + 1, fd);
     if (!strcmp(cmd[0], "shopt"))

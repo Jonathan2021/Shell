@@ -6,6 +6,7 @@
  **/
 
 #define _XOPEN_SOURCE 600
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -94,7 +95,7 @@ static int settohome(void)
  ** \param the list of the argument of cd
  ** \return if the operation pass good or not
  **/
-int my_cd(char **cd_argv)
+int my_cd(char **cd_argv, struct fds fd)
 {
     if (cd_argv == NULL || cd_argv[0] == NULL || cd_argv[0][0] == '\0')
     {
@@ -110,7 +111,7 @@ int my_cd(char **cd_argv)
                 return 0;
             setenv("PWD", getcwd(tmp, 2048), !0);
             setenv("OLDPWD", tt, !0);
-            printf("%s\n", getenv("PWD"));
+            dprintf(fd.out, "%s\n", getenv("PWD"));
             return 1;
         }
         else
@@ -122,7 +123,7 @@ int my_cd(char **cd_argv)
             DIR *dir = opendir(cd_argv[0]);
             if (!dir)
             {
-                fprintf(stdout, "42sh: cd: %s Not a directory\n", before);
+                dprintf(fd.err, "42sh: cd: %s Not a directory\n", before);
                 if (before[0] == '~')
                     free(cd_argv[0]);
                 return 0;

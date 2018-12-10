@@ -84,11 +84,15 @@ struct Token *carving(long argc, char **argv)
         {
             DestroyToken(token);
             reset_value();
+            close_standard();
             exit(atoi(getvalue("$?")));
         }
         DestroyToken(token);
         if (!isatty(0))
+        {
+            close_standard();
             exit(atoi(getvalue("$?")));
+        }
     }
     reset_value();
     return 0;
@@ -113,5 +117,6 @@ int main(int argc, char *argv[])
     set_status(0);
     carving(argc, argv);
     int res = atoi(getvalue("$?"));
+    close_standard();
     return res;
 }
