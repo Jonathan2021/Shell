@@ -292,7 +292,6 @@ void something_and(struct AST *node, struct fds *fd, int io)
     {
         my_close(fd, io);
     }
-    // else behaviour is not specified
 }
 
 /**
@@ -330,8 +329,6 @@ void my_redirection(struct AST *node, struct fds *fd)
         return;
     if (!strcmp("WORD", node->child[1]->self->type))
         redirect_word(node, fd);
-    // else if (!strcmp("HEREDOC", node->child[1]->self->type))
-    //    redirect_heredoc(node, fd);
 }
 
 /**
