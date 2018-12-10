@@ -27,7 +27,7 @@
 
 char *color(struct AST *cur)
 {
-    char *grammar[32][20] = {{"SEMICOLON", "[color=aquamarine]"},
+    char *grammar[34][20] = {{"SEMICOLON", "[color=aquamarine]"},
         {"BANG", "[color=aquamarine]"},
         {"PARENTHESE", "[color=aquamarine]"},
         {"SHELL COMMAND", "[color=aquamarine]"},
@@ -37,6 +37,7 @@ char *color(struct AST *cur)
         {"ASSIGMENT_WORD", "[color=antiquewhite4]"},
         {"NEW_LINE", "[color=antiquewhite4]"}, {"OP_IO", "[color=darkgreen]"},
         {"CLOBBER", "[color=darkslateblue]"}, {"IF", "[color=khaki1]"},
+        {"WHILE", "[color=darkslateblue]"}, {"UNTIL", "[color=khaki1]"},
         {"FI", "[color=saddlebrown]"}, {"THEN", "[color=orange]"},
         {"ELIF", "[color=gold]"}, {"ELSE", "[color=orangered]"},
         {"LOOP", "[color=magenta]"}, {"BRACE", "[color=paleturquoise4]"},
