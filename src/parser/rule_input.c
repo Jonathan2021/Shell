@@ -46,6 +46,7 @@ struct AST *input(struct Token **t)
         }
         else
         {
+            set_status(1);
             next_newline(&tmp);
             *t = tmp;
             AST_destroy(node);

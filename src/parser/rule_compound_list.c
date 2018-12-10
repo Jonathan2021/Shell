@@ -120,7 +120,7 @@ int builtin(char *cmd[], struct fds fd)
     if (!strcmp(cmd[0], "exit") && !cmd[1])
     {
         set_value("exit", "1");
-        return 1;
+        return atoi(getvalue("$?"));
     }
     return -1;
 }
@@ -190,7 +190,7 @@ int my_exec(char *cmd[], struct fds fd)
 {
     int res = -1;
     if ((res = builtin(cmd, fd)) != -1)
-        return !res;
+        return res;
     res = 0;
     pid_t pid = fork();
     if (pid == -1)

@@ -17,10 +17,11 @@
 
 int my_exit(struct AST *ast, struct Token *token)
 {
+    int res = atoi(getvalue("$?"));
     AST_destroy(ast);
     DestroyToken(token);
     reset_value();
-    exit(0);
+    exit(res);
 }
 
 int exit_value(void)
