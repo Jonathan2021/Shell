@@ -57,7 +57,6 @@ struct AST *command(struct Token **t)
         AST_destroy(res);
         return to_add;
     }
-    AST_destroy(res);
     if (tmp && ((to_add = shell_command(&tmp)) || (to_add = funcdec(&tmp))))
     {
         add_cmd(res, to_add);
@@ -69,5 +68,6 @@ struct AST *command(struct Token **t)
         }
         return res;
     }
+    AST_destroy(res);
     return NULL;
 }
