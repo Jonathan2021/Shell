@@ -90,7 +90,7 @@ void malloc_list(char *list[])
  **/
 void free_list(char *list[], size_t size)
 {
-    for (size_t i = 0; i < size && list[i]; ++i)
+    for (size_t i = 0; i < size; ++i)
     {
         free(list[i]);
     }
