@@ -49,7 +49,7 @@ char *color(struct AST *cur)
         {"CASE", "[color=green1]"}, {"SIMPLE COMMAND", "[color=green1]"},
         {"REDIRECTION", "[color=green1]"}, {"IN", "[color=black]"}};
     char *color = malloc(60);
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < 34; i++)
     {
         if (strcmp(grammar[i][0], cur->self->type) == 0)
         {
