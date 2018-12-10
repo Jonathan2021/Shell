@@ -54,6 +54,7 @@ struct AST *command(struct Token **t)
     if (tmp && (to_add = simple_command(&tmp)))
     {
         *t = tmp;
+        AST_destroy(res);
         return to_add;
     }
     if (tmp && ((to_add = shell_command(&tmp)) || (to_add = funcdec(&tmp))))
