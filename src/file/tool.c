@@ -206,8 +206,8 @@ struct Token *create_token(struct Token *token, char *str)
     char *pt = str2;
     strcpy(str2, str);
     parse = strtok(str, delim);
-    char *grammar[20] = {")", "(","}","{", "&&", "||", ";;", "<<", ">>", "<&", ">&",
-        "<>", "<<-", ">|", ";", "&", ">", "<"};
+    char *grammar[20] = {")", "(", "}", "{", "&&", "||", ";;", "<<", ">>",
+        "<&", ">&", "<>", "<<-", ">|", ";", "&", ">", "<"};
     while (parse)
     {
         for (int j = 0; parse && parse[j] != '\0';)

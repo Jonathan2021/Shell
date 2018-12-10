@@ -33,8 +33,8 @@ struct AST *word_init(struct Token *token)
 void foo_shell_cmd(__attribute__((unused)) struct AST *node,
     __attribute__((unused)) struct fds fd)
 {
-    if (!node || node->nb_child != 3 || !node->child[0] || !node->child[1] 
-            || !node->child[2])
+    if (!node || node->nb_child != 3 || !node->child[0] || !node->child[1]
+        || !node->child[2])
         return;
     int res = 0;
     pid_t pid = fork();
@@ -91,7 +91,8 @@ struct AST *shell_command(struct Token **t)
     struct Token *ouvre;
     struct Token *ferme;
     struct AST *shell = NULL;
-    if (t1 && t1->name && (strcmp("{", t1->name) == 0 || strcmp("(", t1->name) == 0))
+    if (t1 && t1->name
+        && (strcmp("{", t1->name) == 0 || strcmp("(", t1->name) == 0))
     {
         ouvre = t1;
         t1 = t1->next;
@@ -104,8 +105,9 @@ struct AST *shell_command(struct Token **t)
                 AST_destroy(shell);
                 return NULL;
             }
-            if (t1 && t1->name && ((!strcmp("}", t1->name) || !strcmp(")", t1->name))
-                && !strcmp(ouvre->type , t1->type)))
+            if (t1 && t1->name
+                && ((!strcmp("}", t1->name) || !strcmp(")", t1->name))
+                       && !strcmp(ouvre->type, t1->type)))
             {
                 ferme = t1;
                 t1 = t1->next;

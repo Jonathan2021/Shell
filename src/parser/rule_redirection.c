@@ -139,7 +139,7 @@ void dgreat(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
     path = getvalue(path);
-    if(!path)
+    if (!path)
         return;
     int file = open(path, O_WRONLY | O_APPEND | O_CREAT, 0644);
     if (file == -1)
@@ -177,7 +177,7 @@ void lessgreat(struct AST *node, struct fds *fd)
 {
     char *path = node->child[1]->self->name;
     path = getvalue(path);
-    if(!path)
+    if (!path)
         return;
     int file = -1;
     int io = 0;
@@ -199,7 +199,8 @@ void lessgreat(struct AST *node, struct fds *fd)
  ** \brief finds the file descriptor corresponding to the index
  ** \param fd struct of file descriptors
  ** \param index index used to find the desired file descriptor in fd
- ** \return fd.in if index=0, fd.out if index=1, fd.err if index=2, -1 otherwise
+ ** \return fd.in if index=0, fd.out if index=1, fd.err if index=2, -1
+ *otherwise
  **/
 int fd_place(struct fds fd, int index)
 {
@@ -223,9 +224,9 @@ int in_another(struct fds *fd, int index)
 {
     int res = 0;
     int ref = fd_place(*fd, index);
-    for (int tmp = 0; tmp < 3 ; ++tmp)
+    for (int tmp = 0; tmp < 3; ++tmp)
     {
-        if(tmp != index)
+        if (tmp != index)
             res += (ref == fd_place(*fd, tmp));
     }
     return res;

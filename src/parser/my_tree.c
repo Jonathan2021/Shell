@@ -21,13 +21,13 @@
 
 int is_quoted(char *str)
 {
-    if(!str)
+    if (!str)
         return 0;
     size_t len = strlen(str);
-    if(len <= 1)
+    if (len <= 1)
         return 0;
     char f = str[0];
-    return ((f == 39 || f == '"') && f== str[len - 1]);
+    return ((f == 39 || f == '"') && f == str[len - 1]);
 }
 
 /**
@@ -53,7 +53,8 @@ void my_itoa(char str[], int nb, int size)
 int size_int(int nb)
 {
     int i = 1;
-    for (int j = 10; nb / j ; ++i, j *= 10);
+    for (int j = 10; nb / j; ++i, j *= 10)
+        ;
     return i;
 }
 
@@ -121,16 +122,17 @@ void AST_destroy(struct AST *s)
 {
     if (s == NULL)
         return;
-    if (!strcmp(s->self->type, "ASSIGMENT_WORD"))
+    if (s->self && !strcmp(s->self->type, "ASSIGMENT_WORD"))
     {
         free(s->self->name);
         free(s->self);
     }
-    else if (strcmp(s->self->name, "list") == 0
-             || strcmp(s->self->name, "simple command") == 0
-             || strcmp(s->self->name, "command") == 0
-             || strcmp(s->self->name, "compound") == 0
-             || strcmp(s->self->name, "SHELL COMMAND") == 0)
+    else if (s->self
+             && (strcmp(s->self->name, "list") == 0
+                    || strcmp(s->self->name, "simple command") == 0
+                    || strcmp(s->self->name, "command") == 0
+                    || strcmp(s->self->name, "compound") == 0
+                    || strcmp(s->self->name, "SHELL COMMAND") == 0))
         free(s->self);
     for (int i = 0; i < s->nb_child; i++)
     {

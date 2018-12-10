@@ -19,13 +19,15 @@ void foo_assigment(struct AST *node, __attribute__((unused)) struct fds fd)
 {
     if (!node || node->nb_child < 2 || !node->child[0] || !node->child[1])
         return;
-    if(node->child[0]->self->name[0] == '$')
+    if (node->child[0]->self->name[0] == '$')
     {
-        fprintf(stderr, "=%s: command not found\n", node->child[1]->self->name);
+        fprintf(
+            stderr, "=%s: command not found\n", node->child[1]->self->name);
         node->res = 127;
     }
     else
-        setvalue(node->child[0]->self->name, getvalue(node->child[1]->self->name));
+        setvalue(
+            node->child[0]->self->name, getvalue(node->child[1]->self->name));
     node->res = 0;
     set_status(node->res);
 }
@@ -88,7 +90,8 @@ struct AST *assigment_init()
 
 int is_assigment(char *str)
 {
-    if (!str || str[0] == '=' || (str[0] > '0' && str[0] < '9') || is_quoted(str))
+    if (!str || str[0] == '=' || (str[0] > '0' && str[0] < '9')
+        || is_quoted(str))
         return 0;
     int i = 0;
     for (; str[i] != '=' && str[i] != 0; ++i)

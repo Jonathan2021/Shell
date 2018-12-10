@@ -28,11 +28,9 @@
 char *color(struct AST *cur)
 {
     char *grammar[34][20] = {{"SEMICOLON", "[color=aquamarine]"},
-        {"BANG", "[color=aquamarine]"},
-        {"PARENTHESE", "[color=aquamarine]"},
+        {"BANG", "[color=aquamarine]"}, {"PARENTHESE", "[color=aquamarine]"},
         {"SHELL COMMAND", "[color=aquamarine]"},
-        {"CURLY", "[color=aquamarine]"},
-        {"OPERATOR", "[color=antiquewhite4]"},
+        {"CURLY", "[color=aquamarine]"}, {"OPERATOR", "[color=antiquewhite4]"},
         {"IO_NUMBER", "[color=antiquewhite4]"},
         {"ASSIGMENT_WORD", "[color=antiquewhite4]"},
         {"NEW_LINE", "[color=antiquewhite4]"}, {"OP_IO", "[color=darkgreen]"},

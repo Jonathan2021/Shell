@@ -385,8 +385,7 @@ void foo_compound(struct AST *node, struct fds fd)
         return;
     int index = 0;
     int res = 0;
-    while (index < node->nb_child
-           && !exit_value())
+    while (index < node->nb_child && !exit_value())
         res = exec_init(node, &index, fd);
     node->res = res;
 }
